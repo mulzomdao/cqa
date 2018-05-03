@@ -23,9 +23,8 @@
         </div>
     </div><!--page title end-->
 
-    
-
     <div class="container mb30" style="padding-left: 30px; padding-right: 30px;">
+        
         <div class="row">
             
             <div class='col-lg-12'>
@@ -36,9 +35,8 @@
                         <input type="text" class="form-control form-control-sm mb-2 mr-sm-2 mb-sm-0" id="inlineFormInput" placeholder="교재/템플릿검색" style="width: 168px">
                         <button class="form-control btn-primary form-control-sm" style="width: 70px"> 검 색 </button>
                     </div>
-                    <div class="col-md-3 mb20">
-                    </div><!--/col-->
-                    <div class="col-md-3 mb20">
+                    <div class="col-md-3" style="padding: 0px">
+                        <h4 class="mb10">교재/템플릿 목록</h4>
                     </div><!--/col-->
                 </nav>
 
@@ -48,121 +46,79 @@
                             <img src="assan/images/shop/p1.jpg" alt="" class="img-fluid">
                         </a>
                         <div class="clearfix product-meta" style="font-size: 12px">
-                            <p class="lead mb0"><a href="#">Women Bags</a></p>
-                            <h5 class=""> $9.99</h5>
+                            <p class="lead mb0"><a href="#">[템플릿] 11 피클디쉬(소)</a></p>
+                            <h5 class=""> 17,500</h5>
                         </div>
                     </div><!--/col-->
                     <div class="col-md-3 mb20">
-                        <a href="#" class="simple-hover">
+                        <a href="education_book_detail.php" class="simple-hover">
                             <img src="assan/images/shop/p2.jpg" alt="" class="img-fluid">
                         </a>
                         <div class="clearfix product-meta" style="font-size: 12px">
-                            <p class="lead mb0"><a href="#">Women Tops</a></p>
-                            <h5 class=""> $25.00</h5>
+                            <p class="lead mb0"><a href="#">[템플릿] 10 템플릿이용 곡선피싱</a></p>
+                            <h5 class=""> 10,500</h5>
                         </div>
                     </div><!--/col-->
                     <div class="col-md-3 mb20">
-                        <a href="#" class="simple-hover">
+                        <a href="education_book_detail.php" class="simple-hover">
                             <img src="assan/images/shop/p3.jpg" alt="" class="img-fluid">
                             <span class='product-label bg-primary'>New</span>
                         </a>
                         <div class="clearfix product-meta" style="font-size: 12px">
-                            <p class="lead mb0"><a href="#">Winter rounded t-shirts</a></p>
-                            <h5 class=""><del>29.00</del> $9.99</h5>
+                            <p class="lead mb0"><a href="#">[템플릿] 09 스타패턴의 응용</a></p>
+                            <h5 class=""><del>22,000</del> 15,400</h5>
                         </div>
                     </div><!--/col-->
                     <div class="col-md-3 mb20">
-                        <a href="#" class="simple-hover">
+                        <a href="education_book_detail.php" class="simple-hover">
                             <img src="assan/images/shop/p5.jpg" alt="" class="img-fluid">
                         </a>
                         <div class="clearfix product-meta" style="font-size: 12px">
 
-                            <p class="lead mb0"><a href="#">Men Jeans</a></p>
-                            <h5 class=""><del>29.00</del>  $7.0</h5>
+                            <p class="lead mb0"><a href="#">[템플릿] 08 원바젤로</a></p>
+                            <h5 class=""><del>18,000</del>  14,000</h5>
                         </div>
                     </div><!--/col-->
                 </div>
                 <div class="row">
                     <div class="col-md-3 mb20">
-                        <a href="#" class="simple-hover">
-                            <img src="assan/images/shop/p5.jpg" alt="" class="img-fluid">
-                        </a>
-                        <div class="clearfix product-meta" style="font-size: 12px">
-
-                            <p class="lead mb0"><a href="#">Men Jeans</a></p>
-                            <h5 class=""><del>29.00</del>  $7.0</h5>
-                        </div>
-                    </div><!--/col-->
-                    <div class="col-md-3 mb20">
-                        <a href="#" class="simple-hover">
-                            <img src="assan/images/shop/p6.jpg" alt="" class="img-fluid">
-                        </a>
-                        <div class="clearfix product-meta" style="font-size: 12px">
-
-                            <p class="lead mb0"><a href="#">Winter T-shirts</a></p>
-                            <h5 class=""> $25.00</h5>
-                        </div>
-                    </div><!--/col-->
-                    <div class="col-md-3 mb20">
-                        <a href="#" class="simple-hover">
-                            <img src="assan/images/shop/p7.jpg" alt="" class="img-fluid">
-                        </a>
-                        <div class="clearfix product-meta" style="font-size: 12px">
-
-                            <p class="lead mb0"><a href="#">Rounded t-shirts</a></p>
-                            <h5 class=""><del>29.00</del> $9.99</h5>
-                        </div>
-                    </div><!--/col-->
-                    <div class="col-md-3 mb20">
-                        <a href="#" class="simple-hover">
-                            <img src="assan/images/shop/p5.jpg" alt="" class="img-fluid">
-                        </a>
-                        <div class="clearfix product-meta" style="font-size: 12px">
-
-                            <p class="lead mb0"><a href="#">Men Jeans</a></p>
-                            <h5 class=""><del>29.00</del>  $7.0</h5>
-                        </div>
-                    </div><!--/col-->
-                </div>
-                <div class="row">
-                        <div class="col-md-3 mb20">
-                        <a href="#" class="simple-hover">
+                        <a href="education_book_detail.php" class="simple-hover">
                             <img src="assan/images/shop/p8.jpg" alt="" class="img-fluid">
                         </a>
                         <div class="clearfix product-meta" style="font-size: 12px">
 
-                            <p class="lead mb0"><a href="#">Women T-shirts</a></p>
-                            <h5 class=""> $21.00</h5>
+                            <p class="lead mb0"><a href="#">[템플릿] 07 육각형의 응용</a></p>
+                            <h5 class=""> 21,000</h5>
                         </div>
                     </div><!--/col-->
                     <div class="col-md-3 mb20">
-                        <a href="#" class="simple-hover">
+                        <a href="education_book_detail.php" class="simple-hover">
                             <img src="assan/images/shop/p4.jpg" alt="" class="img-fluid">
                         </a>
                         <div class="clearfix product-meta" style="font-size: 12px">
 
-                            <p class="lead mb0"><a href="#">Women sandals</a></p>
-                            <h5 class=""> $21.00</h5>
+                            <p class="lead mb0"><a href="#">[템플릿] 06 원패치</a></p>
+                            <h5 class=""> 14,000</h5>
                         </div>
                     </div><!--/col-->
                     <div class="col-md-3 mb20">
-                        <a href="#" class="simple-hover">
+                        <a href="education_book_detail.php" class="simple-hover">
                             <img src="assan/images/shop/p3.jpg" alt="" class="img-fluid">
                         </a>
                         <div class="clearfix product-meta" style="font-size: 12px">
 
-                            <p class="lead mb0"><a href="#">Winter rounded t-shirts</a></p>
-                            <h5 class=""><del>29.00</del> $9.99</h5>
+                            <p class="lead mb0"><a href="#">[템플릿] 05 술주정뱅이의 길</a></p>
+                            <h5 class=""><del>15,000</del> 10,500</h5>
                         </div>
                     </div><!--/col-->
                     <div class="col-md-3 mb20">
-                        <a href="#" class="simple-hover">
+                        <a href="education_book_detail.php" class="simple-hover">
                             <img src="assan/images/shop/p5.jpg" alt="" class="img-fluid">
                         </a>
                         <div class="clearfix product-meta" style="font-size: 12px">
 
-                            <p class="lead mb0"><a href="#">Men Jeans</a></p>
-                            <h5 class=""><del>29.00</del>  $7.0</h5>
+                            <p class="lead mb0"><a href="#">[템플릿] 02 드레스덴 플레이트</a></p>
+                            <h5 class=""><del>18,500</del>  10,500</h5>
                         </div>
                     </div>
                 </div>

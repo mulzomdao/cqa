@@ -10,13 +10,13 @@
         <div class="container">
             <div class="row">
                 <div class=" col-md-6">
-                    <h4>협회가입 - <span>협회가입신청</span></h4>
+                    <h4>협회자격증 - <span>시험공지/접수</span></h4>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 mb0">
                     <ol class="breadcrumb text-md-right">
                         <li class="breadcrumb-item active"><a href="index.php">Home</a></li>
-                        <li class="breadcrumb-item active">협회가입</li>
-                        <li class="breadcrumb-item">협회가입신청</li>
+                        <li class="breadcrumb-item active">협회자격증</li>
+                        <li class="breadcrumb-item">시험공지/접수</li>
                     </ol>
                 </div>
             </div>
@@ -31,25 +31,47 @@
             </a>
         </article>
 
-        <h4 class="mb10">협회가입정보</h4>
+        <h4 class="mb10">시험접수정보</h4>
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group row" style="margin-bottom: 5px">
-                    <label for="example-text-input" class="col-1 col-form-label text-right" style="padding-right: 0px">아이디</label>
+                    <label for="example-text-input" class="col-1 col-form-label text-right" style="padding-right: 0px">시험</label>
                     <div class="col-5">                                
-                        <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
+                        <select class="form-control form-control-sm" name="account">
+                            <option value='36' >2018년 2급 자격검정 면제및 시험</option>
+                            <option value='34' >2017 강사자격 및 이관심사</option>
+                            <option value='33' >2017년 2급 핸드, 머신 자격검정 시험</option>
+                            <option value='32' >2016 CQA강사자격 및 이관심사</option>
+                            <option value='31' >2016 2급 핸드, 머신 자격시험</option>
+                            <option value='30' >2015 강사자격및 이관심사</option>
+                            <option value='29' >2015 2급 핸드 머신 시험</option>
+                            <option value='28' >2014 강사자격  및 이관심사</option>
+                            <option value='27' >2014 핸드 머신 2급시험</option>
+                            <option value='26' >2013 청원군 2급자격시험</option>
+                            <option value='20' >2013 2급자격시험 태국</option>
+                            <option value='19' >2013 강사자격심사 및 이관심사</option>
+                            <option value='18' >2013 2급자격시험</option>
+                            <option value='17' >2012 강사자격증</option>
+                            <option value='16' >2012 2급 자격 시험</option>
+                            <option value='15' >2011 강사자격증</option>
+                            <option value='14' >2011 2급 자격시헙</option>
+                            <option value='13' >2010 강사자격증</option>
+                            <option value='12' >2010 2급시험</option>
+                            <option value='11' >2009,CQA 강사자격 및 이관심사 안내</option>
+                            <option value='7' >2009, 2급 자격시험</option>
+                        </select>
                     </div>
-                    <label for="example-text-input" class="col-1 col-form-label text-right" style="padding-right: 0px">이름</label>
+                    <label for="example-text-input" class="col-1 col-form-label text-right" style="padding-right: 0px">아이디</label>
                     <div class="col-5">
                         <input class="form-control form-control-sm" type="search" value="" id="example-search-input">
                     </div>
                 </div>
                 <div class="form-group row" style="margin-bottom: 5px">
-                    <label for="example-text-input" class="col-1 col-form-label text-right" style="padding-right: 0px">비밀번호</label>
+                    <label for="example-text-input" class="col-1 col-form-label text-right" style="padding-right: 0px">성명</label>
                     <div class="col-5">          
                         <input class="form-control form-control-sm" type="search" value="" id="example-search-input">
                     </div>
-                    <label for="example-text-input" class="col-1 col-form-label text-right" style="padding-right: 0px">비번확인</label>
+                    <label for="example-text-input" class="col-1 col-form-label text-right" style="padding-right: 0px">성명(영문)</label>
                     <div class="col-5">
                         <input class="form-control form-control-sm" type="search" value="" id="example-search-input">
                     </div>
@@ -66,17 +88,32 @@
                             <div class="col-sm-4" style="padding-left: 15px; padding-right: 0px;">                                                
                                 <select class="form-control form-control-sm" name="account">
                                     <option value="">년도</option>
-                                    <option value='2010'>2010년</option><option value='2009'>2009년</option><option value='2008'>2008년</option><option value='2007'>2007년</option><option value='2006'>2006년</option><option value='2005'>2005년</option><option value='2004'>2004년</option><option value='2003'>2003년</option><option value='2002'>2002년</option><option value='2001'>2001년</option><option value='2000'>2000년</option><option value='1999'>1999년</option><option value='1998'>1998년</option><option value='1997'>1997년</option><option value='1996'>1996년</option><option value='1995'>1995년</option><option value='1994'>1994년</option><option value='1993'>1993년</option><option value='1992'>1992년</option><option value='1991'>1991년</option><option value='1990'>1990년</option><option value='1989'>1989년</option><option value='1988'>1988년</option><option value='1987'>1987년</option><option value='1986'>1986년</option><option value='1985'>1985년</option><option value='1984'>1984년</option><option value='1983'>1983년</option><option value='1982'>1982년</option><option value='1981'>1981년</option><option value='1980'>1980년</option><option value='1979'>1979년</option><option value='1978'>1978년</option><option value='1977'>1977년</option><option value='1976'>1976년</option><option value='1975'>1975년</option><option value='1974'>1974년</option><option value='1973'>1973년</option><option value='1972'>1972년</option><option value='1971'>1971년</option><option value='1970'>1970년</option><option value='1969'>1969년</option><option value='1968'>1968년</option><option value='1967'>1967년</option><option value='1966'>1966년</option><option value='1965'>1965년</option><option value='1964'>1964년</option><option value='1963'>1963년</option><option value='1962'>1962년</option><option value='1961'>1961년</option><option value='1960'>1960년</option><option value='1959'>1959년</option><option value='1958'>1958년</option><option value='1957'>1957년</option><option value='1956'>1956년</option><option value='1955'>1955년</option><option value='1954'>1954년</option><option value='1953'>1953년</option><option value='1952'>1952년</option><option value='1951'>1951년</option><option value='1950'>1950년</option>                                </select>
+                                    <?
+                                        for ($i = 2010; $i >= 1950; $i--) {
+                                            echo "<option value='" . $i . "'>" . $i . "년</option>";
+                                        }
+                                    ?>
+                                </select>
                             </div>
                             <div class="col-sm-4" style="padding-left: 5px; padding-right: 5px;">                                              
                                 <select class="form-control form-control-sm" name="account">
                                     <option value="">월</option>
-                                    <option value='1'>1월</option><option value='2'>2월</option><option value='3'>3월</option><option value='4'>4월</option><option value='5'>5월</option><option value='6'>6월</option><option value='7'>7월</option><option value='8'>8월</option><option value='9'>9월</option><option value='10'>10월</option><option value='11'>11월</option><option value='12'>12월</option>                                </select>
+                                    <?
+                                        for ($i = 1; $i <= 12; $i++) {
+                                            echo "<option value='" . $i . "'>" . $i . "월</option>";
+                                        }
+                                    ?>
+                                </select>
                             </div>
                             <div class="col-sm-4" style="padding-left: 0px; padding-right: 14px;">                                         
                                 <select class="form-control form-control-sm" name="account">
                                     <option value="">일</option>
-                                    <option value='1'>1월</option><option value='2'>2월</option><option value='3'>3월</option><option value='4'>4월</option><option value='5'>5월</option><option value='6'>6월</option><option value='7'>7월</option><option value='8'>8월</option><option value='9'>9월</option><option value='10'>10월</option><option value='11'>11월</option><option value='12'>12월</option><option value='13'>13월</option><option value='14'>14월</option><option value='15'>15월</option><option value='16'>16월</option><option value='17'>17월</option><option value='18'>18월</option><option value='19'>19월</option><option value='20'>20월</option><option value='21'>21월</option><option value='22'>22월</option><option value='23'>23월</option><option value='24'>24월</option><option value='25'>25월</option><option value='26'>26월</option><option value='27'>27월</option><option value='28'>28월</option><option value='29'>29월</option><option value='30'>30월</option><option value='31'>31월</option>                                </select>
+                                    <?
+                                        for ($i = 1; $i <= 31; $i++) {
+                                            echo "<option value='" . $i . "'>" . $i . "월</option>";
+                                        }
+                                    ?>
+                                </select>
                             </div> 
                         </div>
                     </div>
@@ -91,7 +128,7 @@
                             </div>
                         </div>                        
                         <div class="form-group row" style="margin-bottom: 0px">
-                        <label for="example-text-input" class="col-2 col-form-label text-right" style="padding-right: 0px">핸드폰</label>
+                        <label for="example-text-input" class="col-2 col-form-label text-right" style="padding-right: 0px">핸드폰전화</label>
                             
                             <div class="col-10">
                                 <input class="form-control form-control-sm" type="email" value="" id="example-email-input">
@@ -131,17 +168,6 @@
                             <div class="input-group-addon" style="padding-bottom: 0px;padding-top: 0px;">@</div>
                         </div>
                     </div>
-                    <label for="example-text-input" class="col-1 col-form-label text-right" style="padding-right: 0px">홈페이지</label>
-                    <div class="col-5">          
-                        <input class="form-control form-control-sm" type="search" value="" id="example-search-input">
-                    </div>
-                </div>
-
-                <div class="form-group row" style="margin-bottom: 5px">
-                    <label for="example-text-input" class="col-1 col-form-label text-right" style="padding-right: 0px">영문성명</label>
-                    <div class="col-5">
-                        <input class="form-control form-control-sm" type="search" value="" id="example-search-input">
-                    </div>
                     <label for="example-text-input" class="col-1 col-form-label text-right" style="padding-right: 0px">사진</label>
                     <div class="col-5" style="padding-top: 1px">      
                         <input type="file" class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp">
@@ -149,39 +175,22 @@
                 </div>
 
                 <div class="form-group row" style="margin-bottom: 5px">
-                    <label for="example-text-input" class="col-1 col-form-label text-right" style="padding-right: 0px">회원자격</label>
+                    <label for="example-text-input" class="col-1 col-form-label text-right" style="padding-right: 0px">응시과목</label>
                     <div class="col-5">          
-                        <select class="form-control form-control-sm" id="exampleSelect1">
-                            <!-- <option>자격선택</option> -->
-                            <option>준회원 (cqa웹사이트 열람만 가능)</option>
-                            <!-- <option>정회원 1년 (30,000원)</option>
-                            <option>정회원 2년 (50,000원)</option>
-                            <option>정회원 3년 (70,000원)</option>
-                            <option>정회원 평생 (300,000원)</option> -->
-                        </select>
+                        <select class="form-control form-control-sm" name="account">
+                            <option value="">핸드면제</option>
+                            <option value="0">머신면제</option>
+                            <option value="5">핸드퀼트</option>
+                            <option value="10">머신퀼트</option>
+                        </select>    
                     </div>
-                    <label for="example-text-input" class="col-1 col-form-label text-right" style="padding-right: 0px">추천인</label>
+                    <label for="example-text-input" class="col-1 col-form-label text-right" style="padding-right: 0px">응시유형</label>
                     <div class="col-5">
-                        <select class="form-control form-control-sm" id="exampleSelect1">
-                            <option value=''>추천인선택</option>
-                            <option value='10'>[LYDIA 30] 장흥숙 (10-00)</option>
-                            <option value='07' >[S퀼트] 송재란 (07-00)</option>
-                            <option value='09' >[그린퀼트] 김경주 (09-00)</option>
-                            <option value='04-01' >[생활의향기] 이현정 (04-01)</option>
-                            <option value='07-07' >[소소공방] 현미경 (07-07)</option>
-                            <option value='08' >[아원퀼트] 최은영 (08-00)</option>
-                            <option value='03-05' >[요술나라 요술 손] 유미숙 (03-05)</option>
-                            <option value='01-04' >[퀼트 수작] 변성혜 (01-04)</option>
-                            <option value='08-03' >[퀼트 조] 조현화 (08-03)</option>
-                            <option value='11-03' >[퀼트&돌] 오승미 (11-03)</option>
-                            <option value='07-04' >[퀼트&미] 김미정 (07-04)</option>
-                            <option value='09-05' >[퀼트나들이] 박정애 (09-05)</option>
-                            <option value='07-06' >[퀼트바람] 이수연 (07-06)</option>
-                            <option value='01' >[퀼트지음] 엄재영/오선희 (01-00)</option>
-                            <option value='03' >[한혜경퀼트] 한혜경 (03-00)</option>
-                            <option value='03-04' >[허니비퀼트] 김정미 (03-04)</option>
-                            <option value="00-00" >추천인 없음 (00-00)</option>
-                        </select>                  
+                        <select class="form-control form-control-sm" name="account">
+                            <option value="0">자격시험응시</option>
+                            <option value="5">시험 및 교육 면제심사요청</option>
+                            <option value="10">자격증 이관심사요청</option>
+                        </select>                            
                     </div>
                 </div>
 

@@ -60,7 +60,7 @@
 
                                 <fieldset class="form-horizontal">
                                     <div class="form-group" style="margin-bottom: 5px">
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">시험</label>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">자격검정</label>
                                         <div class="col-sm-5">
                                             <select class="form-control input-sm m-b" name="account" style="padding-bottom: 2px; margin-bottom: 0px; padding-top: 0px; padding-left: 5px;">
                                                 <option value='36' >2018년 2급 자격검정 면제및 시험</option>
@@ -171,11 +171,10 @@
                                             </select>              
                                         </div>
                                         <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">응시유형</label>
-                                        <div class="col-sm-5">
-                                            
-                                            <label class="radio-inline"><input type="radio" value="option1" id="inlineCheckbox1" checked=""> 자격시험응시 </label>
-                                            <label class="radio-inline"><input type="radio" value="option1" id="inlineCheckbox1"> 시험 및 교육 면제심사요청 </label>
-                                            <label class="radio-inline"><input type="radio" value="option1" id="inlineCheckbox1"> 자격증 이관심사요청 </label>  
+                                        <div class="col-sm-5">                                            
+                                            <label class="radio-inline"><input type="radio" value="option1" id="inlineCheckbox1" checked=""> 검정시험 </label>
+                                            <label class="radio-inline"><input type="radio" value="option1" id="inlineCheckbox1"> 시험면제 </label>
+                                            <label class="radio-inline"><input type="radio" value="option1" id="inlineCheckbox1"> 강사이관 </label>  
                                         </div>
                                     </div>
                                     <div class="form-group" style="margin-bottom: 5px">
@@ -198,7 +197,8 @@
                                             <select class="form-control input-sm m-b" name="account" style="padding-bottom: 2px; margin-bottom: 0px; padding-top: 0px; padding-left: 5px;">
                                                 <option value="0">서울 양재동 한국퀼트센터</option>
                                             </select>                   
-                                        </div><label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">사진</label>
+                                        </div>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">사진</label>
                                         <div class="col-sm-5">                                        
                                             <div class="fileinput fileinput-new input-group" data-provides="fileinput" style="margin: 0px">
                                                 <div class="form-control input-sm" data-trigger="fileinput">

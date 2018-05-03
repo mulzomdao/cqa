@@ -22,83 +22,48 @@
             </div>
         </div>
     </div><!--page title end-->
+    
 
     <div class="container mb30" style="padding-left: 30px; padding-right: 30px;">
+
+        <article class="article-post mb10" style="border-bottom-width: 0px; padding-bottom: 0px">
+            <a class="post-thumb mb30" href="#">
+                <img src="image/1H7U2716-00-4_resize.jpg" alt="" class="img-fluid">
+            </a>
+        </article>
+        
+        <h4 class="mb10">접수정보</h4>
+        <p>
+            CQA주관 자격시험 응시결과를 온라인으로 간단하게 조회하실 수 있습니다.</br>
+            서면접수 : 서울시 서초구 양재천로 19길 34 서림빌딩 4층 (사)한국퀼트연합</br>
+            온라인접수 : 협회자격증 > 신청접수
+        </p>     
+
+        <hr style="margin-top: 0px; margin-bottom: 0px;">
         <div class="row">
-            <div class="col-md-12">
-
-                <article class="article-post mb10" style="border-bottom-width: 0px; padding-bottom: 0px">
-                    <a class="post-thumb mb30" href="#">
-                        <img src="image/1H7U2716-00-4_resize.jpg" alt="" class="img-fluid">
-                        <!-- <div class="post-overlay">
-                            <span>In Photography</span>
-                        </div> -->
-                    </a><!--thumb-->
-                </article><!--article-->
-    
-                <h4 class="mb10">Default Unordered Lists</h4>
-                <ul class="mb30">
-                    <li>Lorem ipsum dolor sit amet</li>
-
-                    <li>
-                        Nulla volutpat aliquam velit 
-                        <ul>
-                            <li>Phasellus iaculis neque</li>
-
-                        </ul>
-                    </li>
-                    <li>Faucibus porta lacus fringilla vel</li>
-
-                </ul>
-                <h4 class="mb10">Ordered Lists</h4>
-                <ol class="mb30">
-                    <li>Lorem ipsum dolor sit amet</li>
-                    <li>Consectetur adipiscing elit</li>
-                    <li>
-                        Nulla volutpat aliquam velit 
-                        <ul>
-                            <li>Phasellus iaculis neque</li>
-                            <li>Purus sodales ultricies</li>
-                        </ul>
-                    </li>
-                    <li>Faucibus porta lacus fringilla vel</li>
-                </ol>
-                <h4 class="mb10">Unstyles Lists</h4>
-                <p>
-                    Add the class 
-                    <code>.list-unstyled</code>
-                    to 
-                    <code>ul</code>
-                    elements to remove all default styling from the list.
-                </p>
-                <ul class="mb30 list-unstyled">
-                    <li>Lorem ipsum dolor sit amet</li>
-                    <li>
-                        Nulla volutpat aliquam velit 
-                        <ul>
-                            <li>Phasellus iaculis neque</li>
-                        </ul>
-                    </li>
-                    <li>Faucibus porta lacus fringilla vel</li>
-
-                </ul>
-                <h4 class="mb10">Inline Lists</h4>
-                <p>
-                    Add the class 
-                    <code>.list-inline</code>
-                    to the 
-                    <code>ul</code>
-                    element and 
-                    <code>.list-inline-item</code>
-                    to each list item.
-                </p>
-                <ul class="list-inline">
-                    <li class="list-inline-item">Lorem ipsum</li>
-                    <li class="list-inline-item">Phasellus iaculis</li>
-                    <li class="list-inline-item">Nulla volutpat</li>
-                </ul>
+            <div class="col-lg-12">
+                <table class="table" style="margin-bottom: 0px">
+                    <thead>
+                        <tr class="text-center">
+                            <th>시험명</th>
+                            <th>성명</th>
+                            <th>시험일시</th>
+                            <th>결과</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="text-center">
+                            <td>2018년 2금 자격검정 면제 및 시험</td>
+                            <td>김미애</td>
+                            <td>2018-03-24</td>
+                            <td>합격</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
+        <hr style="margin-top: 0px; margin-bottom: 10px; border-top-width: 2px">
+        
     </div>
 
     <?include "include/bottom.php"?>

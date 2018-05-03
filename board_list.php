@@ -25,8 +25,8 @@
 
     <div class="container mb30" style="padding-left: 30px; padding-right: 30px;">
 
-        <div class="row mb10">
-            <div class="col-lg-4" style="padding-top: 8px">Total : 100</div>
+        <div class="row" style="margin-bottom: 7px">
+            <div class="col-lg-4"><h4 class="mb10">공지사항 목록</h4></div>
             <div class="col-lg-8">
                 <div class="pull-right">
                     <div class="form-inline">
@@ -37,10 +37,7 @@
 
                             <select class="form-control form-control-sm" id="exampleSelect1" style="width: 100px; padding-top: 4px; padding-bottom: 8px;">
                                 <option>제목</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
+                                <option>이름</option>
                             </select>
                         </div>
 
@@ -61,81 +58,32 @@
                         <tr class="text-center">
                             <th width="5%">No</th>
                             <th width="*">제목</th>
-                            <th width="12%">First Name</th>
-                            <th width="12%">Last Name</th>
-                            <th width="12%">Username</th>
+                            <th width="12%">이름</th>
+                            <th width="12%">등록일</th>
+                            <th width="12%">조회수</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr class="text-center">
-                            <th scope="row">1</th>
-                            <td class="text-left"><a href="board_view.php">consecstetur adipiscing elit, sed do eiusmod tempor incidi s</a></td>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
+                            <th scope="row">3</th>
+                            <td class="text-left"><a href="board_view.php">한국퀼트연합 자격정보 안내</a></td>
+                            <td>관리자</td>
+                            <td>2017-10-16</td>
+                            <td>69</td>
                         </tr>
                         <tr class="text-center">
                             <th scope="row">2</th>
-                            <td class="text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidi</td>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
+                            <td class="text-left"><a href="board_view.php">사단법인한국퀼트연합의 민간자격등록자격증</a></td>
+                            <td>관리자</td>
+                            <td>2017-08-31</td>
+                            <td>81</td>
                         </tr>
                         <tr class="text-center">
-                            <th scope="row">3</th>
-                            <td class="text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidi</td>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                        </tr>
-                        <tr class="text-center">
-                            <th scope="row">4</th>
-                            <td class="text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidi</td>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                        </tr>
-                        <tr class="text-center">
-                            <th scope="row">5</th>
-                            <td class="text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidi</td>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                        </tr>
-                        <tr class="text-center">
-                            <th scope="row">6</th>
-                            <td class="text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidi</td>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                        </tr>
-                        <tr class="text-center">
-                            <th scope="row">7</th>
-                            <td class="text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidi</td>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                        </tr>
-                        <tr class="text-center">
-                            <th scope="row">8</th>
-                            <td class="text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidi</td>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                        </tr>
-                        <tr class="text-center">
-                            <th scope="row">9</th>
-                            <td class="text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidi</td>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                        </tr>
-                        <tr class="text-center">
-                            <th scope="row">10</th>
-                            <td class="text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidi</td>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
+                            <th scope="row">1</th>
+                            <td class="text-left"><a href="board_view.php">민간등록자격에 대해서 알려드립니다</a></td>
+                            <td>관리자</td>
+                            <td>2017-08-31</td>
+                            <td>93</td>
                         </tr>
                     </tbody>
                 </table>
@@ -144,7 +92,7 @@
 
         <hr style="margin-top: 0px; margin-bottom: 10px; border-top-width: 2px">
         <div class="row">
-            <div class="col-lg-4" style="padding-top: 6px"></div>
+            <div class="col-lg-4" style="padding-top: 6px">Total : 100</div>
 
             <div class="col-lg-8">
                 <nav aria-label="Page navigation example">

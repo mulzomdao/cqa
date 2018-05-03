@@ -23,12 +23,14 @@
         </div>
     </div><!--page title end-->
 
-    <div class="container mb30" style="padding-left: 30px; padding-right: 30px;">    
+    <div class="container mb30" style="padding-left: 30px; padding-right: 30px;">   
+
         <article class="article-post mb10" style="border-bottom-width: 0px; padding-bottom: 0px">
             <a class="post-thumb mb30" href="#">
-                <img src="assan/images/entry2.jpg" alt="" class="img-fluid">
-            </a><!--thumb-->
-        </article>          
+                <img src="image/1H7U2732-00-2_resize.jpg" alt="" class="img-fluid">
+            </a>
+        </article>
+        
         <h4 class="mb10">실용전통공예 분과는</h4>
         <p>
             (유.무형)문화재 복원활용을 목적으로 고증을 거쳐 조형, 섬유, 단청분야을 적절한 복원 방법을 사용하여 학생 및 일반에게 역사교육의 장으로 그리고 문화적 체험의 장으로 실천적 방안의 개념을 도입하여 문화재의 가치를 고유성에 두고 현실적 공간에서 활용하는 쓰임의 공예로써 표현물 체험교육을 목적으로 합니다.

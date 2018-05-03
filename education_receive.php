@@ -10,109 +10,60 @@
         <div class="container">
             <div class="row">
                 <div class=" col-md-6">
-                    <h4>CQA교육/교재 - <span>교육접수</span></h4>
+                    <h4>CQA교육/교재 - <span>교육접수현황</span></h4>
                 </div>
                 <div class="col-md-6 mb0">
                     <ol class="breadcrumb text-md-right">
                         <li class="breadcrumb-item active"><a href="index.php">Home</a></li>
                         <li class="breadcrumb-item active">CQA교육/교재</li>
-                        <li class="breadcrumb-item">교육접수</li>
+                        <li class="breadcrumb-item">교육접수현황</li>
                     </ol>
                 </div>
             </div>
         </div>
     </div><!--page title end-->
+    
 
     <div class="container mb30" style="padding-left: 30px; padding-right: 30px;">
+
+        <article class="article-post mb10" style="border-bottom-width: 0px; padding-bottom: 0px">
+            <a class="post-thumb mb30" href="#">
+                <img src="image/1H7U7677-00-1_resize.jpg" alt="" class="img-fluid">
+            </a>
+        </article>
+        
+        <h4 class="mb10">교육접수정보</h4>
+        <p>
+            CQA주관 자격교육 응시결과를 온라인으로 간단하게 조회하실 수 있습니다.</br>
+            서면접수 : 서울시 서초구 양재천로 19길 34 서림빌딩 4층 (사)한국퀼트연합</br>
+            온라인접수 : CQA교육/교재 > 교육공지
+        </p>     
+
+        <hr style="margin-top: 0px; margin-bottom: 0px;">
         <div class="row">
-
-            <div class="col-md-12">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group row" style="margin-bottom: 5px">
-                            <label for="example-text-input" class="col-2 col-form-label text-right" style="padding-right: 0px">Text</label>
-                            <div class="col-10">
-                                <input class="form-control form-control-sm" type="text" value="Artisanal kale11" id="example-text-input">
-                            </div>
-                        </div>
-                        <div class="form-group row" style="margin-bottom: 5px">
-                        <label for="example-text-input" class="col-2 col-form-label text-right" style="padding-right: 0px">Search</label>
-                            <div class="col-10">
-                                <input class="form-control form-control-sm" type="search" value="How do I shoot web" id="example-search-input">
-                            </div>
-                        </div>
-                        <div class="form-group row" style="margin-bottom: 5px">
-                            <label for="example-text-input" class="col-2 col-form-label text-right" style="padding-right: 0px">Email</label>
-                            <div class="col-10">
-                                <input class="form-control form-control-sm" type="email" value="bootstrap@example.com" id="example-email-input">
-                            </div>
-                        </div>
-                        <div class="form-group row" style="margin-bottom: 5px">
-                            <label for="example-text-input" class="col-2 col-form-label text-right" style="padding-right: 0px">URL</label>
-                            <div class="col-10">
-                                <input class= "form-control form-control-sm" type="url" value="https://getbootstrap.com" id="example-url-input">
-                            </div>
-                        </div>
-                        <div class="form-group row" style="margin-bottom: 5px">
-                            <label for="example-text-input" class="col-2 col-form-label text-right" style="padding-right: 0px">Telephone</label>
-                            <div class="col-10">
-                                <input class= "form-control form-control-sm" type="tel" value="1-(555)-555-5555" id="example-tel-input">
-                            </div>
-                        </div>
-                        <div class="form-group row" style="margin-bottom: 5px">
-                        <label for="example-text-input" class="col-2 col-form-label text-right" style="padding-right: 0px">Password</label>
-                            <div class="col-10">
-                                <input class= "form-control form-control-sm" type="password" value="hunter2" id="example-password-input">
-                            </div>
-                        </div>
-                        <div class="form-group row" style="margin-bottom: 5px">
-                            <label for="example-text-input" class="col-2 col-form-label text-right" style="padding-right: 0px">Number</label>
-                            <div class="col-10">
-                                <input class= "form-control form-control-sm" type="number" value="42" id="example-number-input">
-                            </div>
-                        </div>
-                        <div class="form-group row" style="margin-bottom: 5px">
-                            <label for="example-text-input" class="col-2 col-form-label text-right" style="padding-right: 0px">Date and time</label>
-                            <div class="col-10">
-                                <input class= "form-control form-control-sm" type="datetime-local" value="2011-08-19T13:45:00" id="example-datetime-local-input">
-                            </div>
-                        </div>
-                        <div class="form-group row" style="margin-bottom: 5px">
-                            <label for="example-text-input" class="col-2 col-form-label text-right" style="padding-right: 0px">Date</label>
-                            <div class="col-10">
-                                <input class= "form-control form-control-sm" type="date" value="2011-08-19" id="example-date-input">
-                            </div>
-                        </div>
-                        <div class="form-group row" style="margin-bottom: 5px">
-                            <label for="example-text-input" class="col-2 col-form-label text-right" style="padding-right: 0px">Month</label>
-                            <div class="col-10">
-                                <input class= "form-control form-control-sm" type="month" value="2011-08" id="example-month-input">
-                            </div>
-                        </div>
-                        <div class="form-group row" style="margin-bottom: 5px">
-                            <label for="example-text-input" class="col-2 col-form-label text-right" style="padding-right: 0px">Week</label>
-                            <div class="col-10">
-                                <input class= "form-control form-control-sm" type="week" value="2011-W33" id="example-week-input">
-                            </div>
-                        </div>
-                        <div class="form-group row" style="margin-bottom: 5px">
-                            <label for="example-text-input" class="col-2 col-form-label text-right" style="padding-right: 0px">Time</label>
-                            <div class="col-10">
-                                <input class= "form-control form-control-sm" type="time" value="13:45:00" id="example-time-input">
-                            </div>
-                        </div>    
-
-                        <div class="form-group pull-right" style="margin-top: 5px; margin-bottom: 0px;">
-                            <form class="form-inline">
-                                <button class="form-control btn-primary form-control-sm mr-sm-2" style="width: 70px"> 취 소 </button>
-                                <button class="form-control btn-primary form-control-sm" style="width: 70px"> 등 록 </button>
-                            </form>
-                        </div>            
-                    </div>
-                </div>
+            <div class="col-lg-12">
+                <table class="table" style="margin-bottom: 0px">
+                    <thead>
+                        <tr class="text-center">
+                            <th>교육명</th>
+                            <th>성명</th>
+                            <th>교육일시</th>
+                            <th>결과</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="text-center">
+                            <td>2018년 2금 자격검정 면제 및 교육</td>
+                            <td>김미애</td>
+                            <td>2018-03-24</td>
+                            <td>이수</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-
         </div>
+        <hr style="margin-top: 0px; margin-bottom: 10px; border-top-width: 2px">
+        
     </div>
 
     <?include "include/bottom.php"?>

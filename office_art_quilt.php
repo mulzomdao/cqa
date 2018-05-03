@@ -10,13 +10,13 @@
         <div class="container">
             <div class="row">
                 <div class=" col-md-6">
-                    <h4>지회/지부 - <span>한국아트퀼트</span></h4>
+                    <h4>지회/지부 - <span>분과-한국아트퀼트</span></h4>
                 </div>
                 <div class=" col-md-6 mb0">
                     <ol class="breadcrumb text-md-right">
                         <li class="breadcrumb-item active"><a href="index.php">Home</a></li>
                         <li class="breadcrumb-item active">지회/지부</li>
-                        <li class="breadcrumb-item">한국아트퀼트</li>
+                        <li class="breadcrumb-item">분과-한국아트퀼트</li>
                     </ol>
                 </div>
             </div>
@@ -25,11 +25,17 @@
 
     <div class="container mb30" style="padding-left: 30px; padding-right: 30px;">
 
-        <h4 class="mb10">한국아트퀼트 분과</h4>
+        <article class="article-post mb10" style="border-bottom-width: 0px; padding-bottom: 0px">
+            <a class="post-thumb mb30" href="#">
+                <img src="image/1H7U2732-00-2_resize.jpg" alt="" class="img-fluid">
+            </a>
+        </article>
+
+        <h4 class="mb10">분과-한국아트퀼트 안내</h4>
         <p>
             2014년, 첫 전시를 시작으로
-            매년  한국아트퀼트전이 열리고 있으며</br>
-            기존의 트레디셔널한 퀼트작품에 새로운 창의적요소와
+            매년  한국아트퀼트전이 열리고 있으며
+            기존의 트레디셔널한 퀼트작품에 새로운 창의적요소와</br>
             도전적인 작가의식을 업그레이드한 퀼트작품을 만들고 싶은 모든 퀼터들에게 열려있는 공간입니다. 
         </p>     
 
@@ -42,10 +48,7 @@
                         <div class="input-group mr-sm-2">
                             <select class="form-control form-control-sm" id="exampleSelect1" style="width: 100px; padding-top: 4px; padding-bottom: 8px;">
                                 <option>제목</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
+                                <option>이름</option>
                             </select>
                         </div>
                         <label class="sr-only" for="inlineFormInput">제목</label>
@@ -65,81 +68,32 @@
                         <tr class="text-center">
                             <th width="5%">No</th>
                             <th width="*">제목</th>
-                            <th width="12%">First Name</th>
-                            <th width="12%">Last Name</th>
-                            <th width="12%">Username</th>
+                            <th width="12%">이름</th>
+                            <th width="12%">날짜</th>
+                            <th width="12%">조회수</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr class="text-center">
-                            <th scope="row">1</th>
-                            <td class="text-left"><a href="board_view.php">consecstetur adipiscing elit, sed do eiusmod tempor incidi s</a></td>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
+                            <th scope="row">3</th>
+                            <td class="text-left"><a href="board_view.php">Chin Shin hee 아트퀼트전 [7]</a></td>
+                            <td>관리자</td>
+                            <td>2015-06-15</td>
+                            <td>376</td>
                         </tr>
                         <tr class="text-center">
                             <th scope="row">2</th>
-                            <td class="text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidi</td>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
+                            <td class="text-left"><a href="board_view.php">아트스터디는 ...</a></td>
+                            <td>관리자</td>
+                            <td>2014-09-24</td>
+                            <td>389</td>
                         </tr>
                         <tr class="text-center">
-                            <th scope="row">3</th>
-                            <td class="text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidi</td>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                        </tr>
-                        <tr class="text-center">
-                            <th scope="row">4</th>
-                            <td class="text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidi</td>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                        </tr>
-                        <tr class="text-center">
-                            <th scope="row">5</th>
-                            <td class="text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidi</td>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                        </tr>
-                        <tr class="text-center">
-                            <th scope="row">6</th>
-                            <td class="text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidi</td>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                        </tr>
-                        <tr class="text-center">
-                            <th scope="row">7</th>
-                            <td class="text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidi</td>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                        </tr>
-                        <tr class="text-center">
-                            <th scope="row">8</th>
-                            <td class="text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidi</td>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                        </tr>
-                        <tr class="text-center">
-                            <th scope="row">9</th>
-                            <td class="text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidi</td>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                        </tr>
-                        <tr class="text-center">
-                            <th scope="row">10</th>
-                            <td class="text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidi</td>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
+                            <th scope="row">1</th>
+                            <td class="text-left"><a href="board_view.php">2014 첫번째 아트퀼트 정기모임 공지 [65] [관]</a></td>
+                            <td>관리자</td>
+                            <td>2014-09-24</td>
+                            <td>387</td>
                         </tr>
                     </tbody>
                 </table>
