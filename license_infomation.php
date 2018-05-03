@@ -113,7 +113,7 @@
 
             </tbody>
         </table>
-        ※민간자격조회 바로가기▶민간자격 정보서비스(www.pqi.or.kr)
+        ※민간자격조회 바로가기▶민간자격 정보서비스(<a href="https://www.pqi.or.kr" target="_blank">www.pqi.or.kr</a>)
     </div>
 
     <?include "include/bottom.php"?>

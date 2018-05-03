@@ -32,11 +32,11 @@
                     <div class="widget style1">
                         <div class="row">
                             <div class="col-xs-4 text-center">
-                                <i class="fa fa-trophy fa-5x"></i>
+                                <i class="fa fa-users fa-5x"></i>
                             </div>
                             <div class="col-xs-8 text-right">
-                                <span> Today income </span>
-                                <h2 class="font-bold">$ 4,232</h2>
+                                <span> 최근한달 가입자 </span>
+                                <h2 class="font-bold">4,232</h2>
                             </div>
                         </div>
                     </div>
@@ -45,11 +45,11 @@
                     <div class="widget style1 navy-bg">
                         <div class="row">
                             <div class="col-xs-4">
-                                <i class="fa fa-cloud fa-5x"></i>
+                                <i class="fa fa-file-text-o fa-5x"></i>
                             </div>
                             <div class="col-xs-8 text-right">
-                                <span> Today degrees </span>
-                                <h2 class="font-bold">26'C</h2>
+                                <span> 최근한달 시험접수 </span>
+                                <h2 class="font-bold">26</h2>
                             </div>
                         </div>
                     </div>
@@ -58,10 +58,10 @@
                     <div class="widget style1 lazur-bg">
                         <div class="row">
                             <div class="col-xs-4">
-                                <i class="fa fa-envelope-o fa-5x"></i>
+                                <i class="fa fa-pencil-square-o fa-5x"></i>
                             </div>
                             <div class="col-xs-8 text-right">
-                                <span> New messages </span>
+                                <span> 최근한달 교육접수 </span>
                                 <h2 class="font-bold">260</h2>
                             </div>
                         </div>
@@ -71,10 +71,10 @@
                     <div class="widget style1 yellow-bg">
                         <div class="row">
                             <div class="col-xs-4">
-                                <i class="fa fa-music fa-5x"></i>
+                                <i class="fa fa-keyboard-o fa-5x"></i>
                             </div>
                             <div class="col-xs-8 text-right">
-                                <span> New albums </span>
+                                <span> 최근한달 게시글 </span>
                                 <h2 class="font-bold">12</h2>
                             </div>
                         </div>
@@ -85,7 +85,7 @@
             <div class="row">
                 <div class="col-lg-6">
                     <div class="ibox-content">
-                        <h2>TODO List</h2>
+                        <h2>팝업</h2>
                         <small>This is example of task list</small>
                         <ul class="todo-list m-t">
                             <li>
@@ -114,7 +114,7 @@
                 <div class="col-lg-6">
                     <div class="ibox float-e-margins">
                         <div class="ibox-content">
-                            <h2>TODO Small version</h2>
+                            <h2>공지사항</h2>
                             <small>This is example of small version of todo list</small>
                             <ul class="todo-list m-t small-list">
                                 <li>
@@ -150,7 +150,7 @@
                 <div class="col-lg-6">
                     <div class="ibox float-e-margins">
                         <div class="ibox-title">
-                            <h5>Collaps panels</h5>
+                            <h2>뉴스</h2>
                             <div class="ibox-tools">
                             </div>
                         </div>
@@ -202,7 +202,7 @@
                 <div class="col-lg-6">
                     <div class="ibox float-e-margins">
                         <div class="ibox-title">
-                            <h5>Collaps panels</h5>
+                            <h2>자유게시판</h2>
                             <div class="ibox-tools">
                             </div>
                         </div>                        

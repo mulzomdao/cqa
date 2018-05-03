@@ -51,39 +51,33 @@
 
         <div class="row">
             <div class="col-md-4 mb30">
-                <h4 class="text-uppercase">
-                    공지사항 <small></small>
-                </h4>
+                <h4 class="text-uppercase">공지사항 <small></small></h4>
                 <p>
-                    - 한국퀼트연합 자격정보 안내</br>
-                    - 사단법인한국퀼트연합의 민간자격등록자격증</br>
-                    - 민간등록자격에 대해서 알려드립니다</br>
-                    - 2012 기업회원 및 지부 모집 공지</br>
-                    - 한국퀼트연합 (CQA) 강사 명단 [관]
+                    - <a href="board_view.php">한국퀼트연합 자격정보 안내</a></br>
+                    - <a href="board_view.php">사단법인한국퀼트연합의 민간자격등록자격증</a></br>
+                    - <a href="board_view.php">민간등록자격에 대해서 알려드립니다</a></br>
+                    - <a href="board_view.php">2012 기업회원 및 지부 모집 공지</a></br>
+                    - <a href="board_view.php">한국퀼트연합 (CQA) 강사 명단 [관]</a></br>
                 </p>
             </div>
             <div class="col-md-4 mb30">
-                <h4 class="text-uppercase">
-                    뉴스 <small></small>
-                </h4>
+                <h4 class="text-uppercase">뉴스 <small></small></h4>
                 <p>
-                    - 2018 한국퀼트페스티벌 공모전 수상작 발표합니다!</br>
-                    - 2018 2급자격 검정시험 합격자를 발표</br>
-                    - 2018년 2급자격 검정 교육 안내</br>
-                    - 2018 교육-4 (핸드)</br>
-                    - 2018 교육-3 (머신)
+                    - <a href="board_view.php">2018 2급자격 검정시험 합격자를 발표</a></br>
+                    - <a href="board_view.php">2018 한국퀼트페스티벌 공모전 수상작 발표합니다!</a></br>
+                    - <a href="board_view.php">2018년 2급자격 검정 교육 안내</a></br>
+                    - <a href="board_view.php">2018 교육-4 (핸드)</a></br>
+                    - <a href="board_view.php">2018 교육-3 (머신)</a>
                 </p>
             </div>
             <div class="col-md-4 mb30">
-                <h4 class="text-uppercase">
-                    자유게시판 <small></small>
-                </h4>
+                <h4 class="text-uppercase">자유게시판 <small></small></h4>
                 <p>
-                    - 2급 자격시험에 관한 의견입니다.</br>
-                    - 연회비 입금했습니다</br>
-                    - 정회원 회비 입금</br>
-                    - 연회비 입급했습니다.</br>
-                    - 연회비입금
+                    - <a href="board_view.php">2급 자격시험에 관한 의견입니다.</a></br>
+                    - <a href="board_view.php">연회비 입금했습니다</a></br>
+                    - <a href="board_view.php">정회원 회비 입금</a></br>
+                    - <a href="board_view.php">연회비 입급했습니다.</a></br>
+                    - <a href="board_view.php">연회비입금</a>
                 </p>
             </div>
         </div>

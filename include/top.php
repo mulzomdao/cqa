@@ -22,45 +22,47 @@
     <div class="container">
         <div class="float-sm-right">
             <ul class="list-inline mb0">
+
                 <li class="list-inline-item">
-                    <a href="#" class="social-icon-sm si-gray si-gray-round si-faceeducation_book">
-                        <i class="fa fa-faceeducation_book"></i>
-                        <i class="fa fa-faceeducation_book"></i>
+                    <a href="http://www.facebook.com" class="social-icon-sm si-gray si-gray-round si-facebook" target="_blank">
+                        <i class="fa fa-facebook"></i>
+                        <i class="fa fa-facebook"></i>
                     </a>
                 </li>
                 <li class="list-inline-item">
-                    <a href="#" class="social-icon-sm si-gray si-gray-round si-twitter">
+                    <a href="https://twitter.com" class="social-icon-sm si-gray si-gray-round si-twitter" target="_blank">
                         <i class="fa fa-twitter"></i>
                         <i class="fa fa-twitter"></i>
                     </a>
                 </li>
                 <li class="list-inline-item">
-                    <a href="#" class="social-icon-sm si-gray si-gray-round si-instagram">
+                    <a href="https://www.instagram.com" class="social-icon-sm si-gray si-gray-round si-instagram" target="_blank">
                         <i class="fa fa-instagram"></i>
                         <i class="fa fa-instagram"></i>
                     </a>
                 </li>
                 <li class="list-inline-item">
-                    <a href="#" class="social-icon-sm si-gray si-gray-round si-g-plus">
+                    <a href="https://plus.google.com" class="social-icon-sm si-gray si-gray-round si-g-plus" target="_blank">
                         <i class="fa fa-google-plus"></i>
                         <i class="fa fa-google-plus"></i>
                     </a>
                 </li>
             </ul>
         </div>
-        <div class="float-sm-left">
+        <div class="float-sm-left" style="padding-top: 6px">
             <ul class="list-inline mb0 links">
-                <li class="list-inline-item" style="padding-left: 0px"><a href="#">Login</a></li>
+                <li class="list-inline-item" style="padding-left: 0px"><a href="login.php">Login</a></li>
+                <li class="list-inline-item" style="padding-left: 0px"><a href="#">Logout</a></li>
                 <li class="list-inline-item"><a href="member_join.php">Register</a></li>
                 <li class="list-inline-item"><a href="admin/index.php">Admin</a></li>
-                <li class="list-inline-item dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Lang</a>
+                <!-- <li class="list-inline-item dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Lang</a>
                     <ul class="dropdown-menu lang-dropdown">
                         <li><a href="#" class="dropdown-item">English</a></li>
                         <li><a href="#" class="dropdown-item">Spanish</a></li>
                         <li><a href="#" class="dropdown-item">French</a></li>
                         <li><a href="#" class="dropdown-item">Arban</a></li>
                     </ul>
-                </li>
+                </li> -->
             </ul>
         </div>
     </div>

@@ -50,7 +50,7 @@
                 </ol>
 
                 → 온라인 회원가입 <a href="member_join.php">바로가기</a></br>
-                → CQA 홈페이지 로그인 바로가기
+                → CQA 홈페이지 로그인 <a href="login.php">바로가기</a>
             </div>
         </div>
     </div>
