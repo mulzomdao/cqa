@@ -57,27 +57,27 @@
                                 <fieldset class="form-horizontal">
 
                                     <div class="form-group" style="margin-bottom: 5px">
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">지회/지부번호</label>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 지회/지부</label>
                                         <div class="col-sm-5">
                                             <div class="col-sm-6" style="padding-left: 0px; padding-right: 2px">
-                                                <input type="text" class="form-control input-sm" value="">
+                                                <input type="text" class="form-control input-sm" value="" placeholder="지회번호">
                                             </div>
                                             <div class="col-sm-6" style="padding-left: 2px; padding-right: 0px">
-                                                <input type="text" class="form-control input-sm" value="">
+                                                <input type="text" class="form-control input-sm" value="" placeholder="지부번호">
                                             </div>                                            
                                         </div>
 
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">성명</label>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 성명</label>
                                         <div class="col-sm-5"><input type="text" class="form-control input-sm" value=""></div>
                                     </div>
                                     <div class="form-group" style="margin-bottom: 5px">
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">지역</label>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 지역</label>
                                         <div class="col-sm-5"><input type="text" class="form-control input-sm" value=""></div>
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">상호명</label>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 상호명</label>
                                         <div class="col-sm-5"><input type="text" class="form-control input-sm" value=""></div>
                                     </div>
                                     <div class="form-group" style="margin-bottom: 5px">
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">휴대폰</label>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 휴대폰</label>
                                         <div class="col-sm-5"><input type="text" class="form-control input-sm" value=""></div>
                                         <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">이메일</label>
                                         <div class="col-sm-5"><input type="text" class="form-control input-sm" value=""></div>
@@ -100,7 +100,7 @@
                                             </div> 
 
                                         </div>
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">승인여부</label>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 승인여부</label>
                                         <div class="col-sm-5">
                                             <label class="radio-inline"><input type="radio" value="option1" id="inlineCheckbox1" checked> 승인 </label> 
                                             <label class="radio-inline"><input type="radio" value="option1" id="inlineCheckbox1"> 비승인 </label> 
@@ -116,9 +116,9 @@
                                         <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px; padding-top: 24px;">샵주소</label>
                                         <div class="col-sm-5">
                                             <div class="col-sm-3" style="padding: 0px; margin-bottom: 5px">
-                                                <div class="input-group"><input type="text" class="form-control input-sm" value="">
+                                                <div class="input-group"><input type="text" class="form-control input-sm" value="" placeholder="우편번호">
                                                     <span class="input-group-btn">
-                                                        <a type="button" class="btn btn-sm btn-primary"><i class="fa fa-search"></i></a> 
+                                                        <a type="button" class="btn btn-sm btn-primary" style="margin-bottom: 0px;"><i class="fa fa-search"></i></a> 
                                                     </span>
                                                 </div>
                                             </div>
@@ -133,9 +133,9 @@
                                         <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px; padding-top: 24px;">집주소</label>
                                         <div class="col-sm-5">
                                             <div class="col-sm-3" style="padding: 0px; margin-bottom: 5px">
-                                                <div class="input-group"><input type="text" class="form-control input-sm" value="">
+                                                <div class="input-group"><input type="text" class="form-control input-sm" value="" placeholder="우편번호">
                                                     <span class="input-group-btn">
-                                                        <a type="button" class="btn btn-sm btn-primary"><i class="fa fa-search"></i></a> 
+                                                        <a type="button" class="btn btn-sm btn-primary" style="margin-bottom: 0px;"><i class="fa fa-search"></i></a> 
                                                     </span>
                                                 </div>
                                             </div>
@@ -150,8 +150,8 @@
                                     <div class="form-group" style="margin-bottom: 5px">
                                         <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">홈페이지</label>
                                         <div class="col-sm-5"><input type="text" class="form-control input-sm" value=""></div>
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">등록자</label>
-                                        <div class="col-sm-5"><input type="text" class="form-control input-sm" value="" readonly></div>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 등록자</label>
+                                        <div class="col-sm-5"><input type="text" class="form-control input-sm" value="admin" readonly></div>
                                     </div>
                                     <div class="form-group" style="margin-bottom: 5px">
                                         <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">메모</label>

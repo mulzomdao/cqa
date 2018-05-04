@@ -60,9 +60,9 @@
 
                                 <fieldset class="form-horizontal">
                                     <div class="form-group" style="margin-bottom: 5px">
-                                        <label class="col-sm-1 control-label text-success" style="padding-left: 0px; padding-right: 0px">시험명</label>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 시험명</label>
                                         <div class="col-sm-5"><input type="text" class="form-control input-sm" placeholder=""></div>
-                                        <label class="col-sm-1 control-label text-success" style="padding-left: 0px; padding-right: 0px">합격자발표</label>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">합격자발표</label>
                                         <div class="col-sm-5">
                                             <div class="input-group date">
                                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
@@ -71,14 +71,14 @@
                                         </div>
                                     </div>
                                     <div class="form-group" style="margin-bottom: 5px">
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">핸드퀼트 시험일</label>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><small>핸드퀼트 </small>시험일</label>
                                         <div class="col-sm-5">
                                             <div class="input-group date">
                                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                                <input id="date_modified" type="text" class="form-control input-sm" value="">
+                                                <input id="date_modified" type="text" class="form-control input-sm" value="" placeholder="시험일">
                                             </div>                                                
                                         </div>
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">머신퀼트 시험일</label>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><small>머신퀼트 </small>시험일</label>
                                         <div class="col-sm-5">
                                             <div class="input-group date">
                                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
@@ -87,7 +87,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group" style="margin-bottom: 5px">
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">핸드퀼트 접수기간</label>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><small>핸드퀼트 </small>접수기간</label>
                                         <div class="col-sm-5">
                                             <div class="col-sm-6" style="padding: 0px; padding-right: 2px">
                                                 <div class="input-group date">
@@ -102,7 +102,7 @@
                                                 </div>                                                
                                             </div>
                                         </div>
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">머신퀼트 접수기간</label>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><small>머신퀼트 </small>접수기간</label>
                                         <div class="col-sm-5">
                                             <div class="col-sm-6" style="padding: 0px; padding-right: 2px">
                                                 <div class="input-group date">
@@ -120,14 +120,14 @@
                                     </div>
 
                                     <div class="form-group" style="margin-bottom: 5px">
-                                        <label class="col-sm-1 control-label text-success" style="padding-left: 0px; padding-right: 0px">고사장</label>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 고사장</label>
                                         <div class="col-sm-5"><input type="text" class="form-control input-sm" placeholder=""></div>
-                                        <label class="col-sm-1 control-label text-success" style="padding-left: 0px; padding-right: 0px">응시과목</label>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 응시과목</label>
                                         <div class="col-sm-5"><input type="text" class="form-control input-sm" placeholder=""></div>
                                     </div>
 
                                     <div class="form-group" style="margin-bottom: 5px">
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">시험안내</label>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 시험안내</label>
                                         <div class="col-sm-11">
                                             <div class="summernote"></div>                                            
                                         </div>

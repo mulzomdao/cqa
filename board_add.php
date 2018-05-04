@@ -29,13 +29,13 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group row" style="margin-bottom: 5px">
-                    <label for="example-text-input" class="col-1 col-form-label text-right" style="padding-right: 0px">성명</label>
+                    <label for="example-text-input" class="col-1 col-form-label text-right" style="padding-right: 0px"><i class="ti-check"></i> 성명</label>
                     <div class="col-11">          
                         <input class="form-control form-control-sm" type="search" value="" id="example-search-input">
                     </div>
                 </div>
                 <div class="form-group row" style="margin-bottom: 5px">
-                    <label for="example-text-input" class="col-1 col-form-label text-right" style="padding-right: 0px">제목</label>
+                    <label for="example-text-input" class="col-1 col-form-label text-right" style="padding-right: 0px"><i class="ti-check"></i> 제목</label>
                     <div class="col-11">
                         <input class="form-control form-control-sm" type="text" value="" id="example-text-input">
                     </div>
@@ -47,15 +47,15 @@
                     </div>
                 </div>
                 <div class="form-group row" style="margin-bottom: 5px">
-                    <label for="example-textarea" class="col-1 col-form-label text-right" style="padding-right: 0px">내용</label>
+                    <label for="example-textarea" class="col-1 col-form-label text-right" style="padding-right: 0px"><i class="ti-check"></i> 내용</label>
                     <div class="col-11">
                         <textarea class="form-control form-control-sm" id="example-textarea" rows="16"></textarea>
                     </div>
                 </div>
                 <div class="form-group pull-right" style="margin-top: 5px; margin-bottom: 0px;">
                     <div class="form-inline">
-                        <button class="form-control btn-primary form-control-sm mr-sm-2" style="width: 70px" onclick="history.go(-1)"> 취 소 </button>
-                        <button class="form-control btn-primary form-control-sm" style="width: 70px"> 등 록 </button>
+                        <button class="form-control btn-primary form-control-sm mr-sm-2" style="width: 70px"> 등 록 </button>
+                        <button class="form-control btn-primary form-control-sm" style="width: 70px" onclick="history.go(-1)"> 취 소 </button>
                     </div>
                 </div>   
             </div>

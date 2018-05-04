@@ -57,18 +57,18 @@
 
                                 <fieldset class="form-horizontal">
                                     <div class="form-group" style="margin-bottom: 5px">
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">품목</label>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 품목</label>
                                         <div class="col-sm-5">
                                             <select class="form-control input-sm m-b" name="account" style="padding-bottom: 2px; margin-bottom: 0px; padding-top: 0px; padding-left: 5px;">
                                                 <option value='36'>교재</option>
                                                 <option value='34' selected>템플릿</option>
                                             </select>
                                         </div>
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">품명</label>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 품명</label>
                                         <div class="col-sm-5"><input type="text" class="form-control input-sm" value="10 템플릿이용 곡선피싱"></div>
                                     </div>
                                     <div class="form-group" style="margin-bottom: 5px">                                        
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">상품이미지</label>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 상품이미지</label>
                                         <div class="col-sm-5">                                        
                                             <div class="fileinput fileinput-new input-group" data-provides="fileinput" style="margin: 0px">
                                                 <div class="form-control input-sm" data-trigger="fileinput">
@@ -88,7 +88,7 @@
                                     </div>
 
                                     <div class="form-group" style="margin-bottom: 5px">
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">소비자가 / 회원가</label>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 소비자가 / 회원가</label>
                                         <div class="col-sm-5">
                                             
                                             <div class="col-sm-6" style="padding-left: 0px; padding-right: 2px;">
@@ -105,7 +105,7 @@
                                     <div class="form-group" style="margin-bottom: 5px">
                                         <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">요약설명</label>
                                         <div class="col-sm-5"><input type="text" class="form-control input-sm" value=""></div>
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">상태</label>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 상태</label>
                                         <div class="col-sm-5">
                                             <label class="radio-inline"><input type="radio" value="option1" id="inlineCheckbox1" checked=""> 판매중 </label>
                                             <label class="radio-inline"><input type="radio" value="option1" id="inlineCheckbox1"> 일시판매중지 </label>
@@ -114,7 +114,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group" style="margin-bottom: 5px">
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">교재설명</label>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 교재설명</label>
                                         <div class="col-sm-11">
                                             <div class="summernote"></div>                                            
                                         </div>

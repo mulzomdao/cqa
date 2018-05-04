@@ -60,20 +60,20 @@
 
                                 <fieldset class="form-horizontal">
                                     <div class="form-group" style="margin-bottom: 5px">
-                                        <label class="col-sm-1 control-label text-success" style="padding-left: 0px; padding-right: 0px">교육명</label>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 교육명</label>
                                         <div class="col-sm-5"><input type="text" class="form-control input-sm" placeholder=""></div>
-                                        <label class="col-sm-1 control-label text-success" style="padding-left: 0px; padding-right: 0px">교육장소</label>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 교육장소</label>
                                         <div class="col-sm-5"><input type="text" class="form-control input-sm" placeholder=""></div>
                                     </div>
                                     <div class="form-group" style="margin-bottom: 5px">
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">교육일</label>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 교육일</label>
                                         <div class="col-sm-5">
                                             <div class="input-group date">
                                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                                 <input id="date_modified" type="text" class="form-control input-sm" value="">
                                             </div>                                                
                                         </div>
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">접수기간</label>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 접수기간</label>
                                         <div class="col-sm-5">
                                             <div class="col-sm-6" style="padding: 0px; padding-right: 2px">
                                                 <div class="input-group date">
@@ -91,7 +91,7 @@
                                     </div>
 
                                     <div class="form-group" style="margin-bottom: 5px">
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">교육안내</label>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 교육안내</label>
                                         <div class="col-sm-11">
                                             <div class="summernote"></div>                                            
                                         </div>

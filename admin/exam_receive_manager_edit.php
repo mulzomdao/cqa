@@ -60,7 +60,7 @@
 
                                 <fieldset class="form-horizontal">
                                     <div class="form-group" style="margin-bottom: 5px">
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">자격검정</label>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 자격검정</label>
                                         <div class="col-sm-5">
                                             <select class="form-control input-sm m-b" name="account" style="padding-bottom: 2px; margin-bottom: 0px; padding-top: 0px; padding-left: 5px;">
                                                 <option value='36' selected>2018년 2급 자격검정 면제및 시험</option>
@@ -86,28 +86,33 @@
                                                 <option value='7' >2009, 2급 자격시험</option>
                                             </select>
                                         </div>
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">수험번호 / 아이디</label>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 수험번호 / 아이디</label>
                                         <div class="col-sm-5">
                                             
                                             <div class="col-sm-6" style="padding-left: 0px; padding-right: 2px;">
-                                                <input type="text" class="form-control input-sm" value="181326">
+                                                <input type="text" class="form-control input-sm" value="181326" readonly>
                                             </div>
                                             <div class="col-sm-6" style="padding-left: 2px; padding-right: 0px;">
-                                                <input type="text" class="form-control input-sm" value="yaabam">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control input-sm" value="yaabam" placeholder="아이디검색">
+                                                    <span class="input-group-btn">
+                                                        <a type="button" class="btn btn-sm btn-primary" style="margin-bottom: 0px"><i class="fa fa-search"></i></a> 
+                                                    </span>
+                                                </div>
                                             </div>
                                         </div>
 
                                     </div>
                                     <div class="form-group" style="margin-bottom: 5px">
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">성명(한글)</label>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 성명(한글)</label>
                                         <div class="col-sm-5"><input type="text" class="form-control input-sm" value="김미애"></div>
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">성명(영문)</label>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 성명(영문)</label>
                                         <div class="col-sm-5"><input type="text" class="form-control input-sm" value="kim mi ae"></div>
                                     </div>
                                     <div class="form-group" style="margin-bottom: 5px">
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">주민번호</label>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 주민번호</label>
                                         <div class="col-sm-5"><input type="text" class="form-control input-sm" value=""></div>
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">생년월일</label>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 생년월일</label>
                                         <div class="col-sm-5">       
                                             <div class="col-sm-4" style="padding-left: 0px; padding-right: 2px;">                                                
                                                 <select class="form-control input-sm m-b" name="account" style="padding-bottom: 2px; margin-bottom: 0px; padding-top: 0px; padding-left: 5px;">
@@ -157,13 +162,13 @@
                                     <div class="form-group" style="margin-bottom: 0px">     
                                         
                                         <div class="col-sm-6" style="padding: 0px">                          
-                                            <label class="col-sm-2 control-label" style="padding-left: 0px; padding-right: 0px;">핸드폰</label>
+                                            <label class="col-sm-2 control-label" style="padding-left: 0px; padding-right: 0px;"><i class="fa fa-check"></i> 핸드폰</label>
                                             <div class="col-sm-10" style="margin-bottom: 5px;"><input type="text" class="form-control input-sm" value="010-4752-0491"></div>
                                             <label class="col-sm-2 control-label" style="padding-left: 0px; padding-right: 0px">전화</label>
                                             <div class="col-sm-10"><input type="text" class="form-control input-sm" value=""></div>  
                                         </div>                                  
 
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px; padding-top: 24px;">주소</label>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px; padding-top: 24px;"><i class="fa fa-check"></i> 주소</label>
                                         <div class="col-sm-5">
                                             <div class="col-sm-3" style="padding: 0px;">
                                                 <div class="input-group"><input type="text" class="form-control input-sm" value="03936">
@@ -181,7 +186,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group" style="margin-bottom: 5px">
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">응시과목</label>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 응시과목</label>
                                         <div class="col-sm-5">
                                             <select class="form-control input-sm m-b" name="account" style="padding-bottom: 2px; margin-bottom: 0px; padding-top: 0px; padding-left: 5px;">
                                                 <option value="">핸드면제</option>
@@ -190,7 +195,7 @@
                                                 <option value="10">머신퀼트</option>
                                             </select>              
                                         </div>
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">응시유형</label>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 응시유형</label>
                                         <div class="col-sm-5">                                            
                                             <label class="radio-inline"><input type="radio" value="option1" id="inlineCheckbox1" checked> 검정시험 </label>
                                             <label class="radio-inline"><input type="radio" value="option1" id="inlineCheckbox1"> 시험면제 </label>
@@ -198,9 +203,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group" style="margin-bottom: 5px">
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">이메일</label>
-                                        <div class="col-sm-5"><input type="text" class="form-control input-sm" value="yaabam@naver.com"></div>
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">상태</label>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 상태</label>
                                         <div class="col-sm-5">
                                             <select class="form-control input-sm m-b" name="account" style="padding-bottom: 2px; margin-bottom: 0px; padding-top: 0px; padding-left: 5px;">
                                                 <option value="0">미입금</option>
@@ -209,15 +212,17 @@
                                                 <option value="20" selected>합격</option>
                                             </select>                                         
                                         </div>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">이메일</label>
+                                        <div class="col-sm-5"><input type="text" class="form-control input-sm" value="yaabam@naver.com"></div>
                                     </div>
 
                                     <div class="form-group" style="margin-bottom: 5px">
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">고사장</label>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"<i class="fa fa-check"></i> >고사장</label>
                                         <div class="col-sm-5">
                                             <select class="form-control input-sm m-b" name="account" style="padding-bottom: 2px; margin-bottom: 0px; padding-top: 0px; padding-left: 5px;">
                                                 <option value="0">서울 양재동 한국퀼트센터</option>
                                             </select>                   
-                                        </div><label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">사진</label>
+                                        </div><label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 사진</label>
                                         <div class="col-sm-5">                                        
                                             <div class="fileinput fileinput-new input-group" data-provides="fileinput" style="margin: 0px">
                                                 <div class="form-control input-sm" data-trigger="fileinput">

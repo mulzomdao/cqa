@@ -51,8 +51,8 @@
                                 <fieldset class="form-horizontal">
 
                                     <div class="form-group" style="margin-bottom: 5px">
-                                        <label class="col-sm-2 control-label" style="padding-left: 0px; padding-right: 0px">회원번호</label>
-                                        <div class="col-sm-10"><input type="text" class="form-control input-sm" value="18--1613"></div>
+                                        <label class="col-sm-2 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 회원번호</label>
+                                        <div class="col-sm-10"><input type="text" class="form-control input-sm" value="18--1613" readonly></div>
                                     </div>
                                     <div class="form-group" style="margin-bottom: 5px">
                                         <label class="col-sm-2 control-label" style="padding-left: 0px; padding-right: 0px">추천인</label>
@@ -93,7 +93,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group" style="margin-bottom: 5px">
-                                        <label class="col-sm-2 control-label" style="padding-left: 0px; padding-right: 0px">자격선택</label>
+                                        <label class="col-sm-2 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 자격선택</label>
                                         <div class="col-sm-10">
                                             <select class="form-control input-sm m-b" name="account" style="padding-bottom: 2px; margin-bottom: 0px; padding-top: 0px; padding-left: 5px;">
                                                 <option>자격선택</option>
@@ -106,11 +106,11 @@
                                         </div>
                                     </div>
                                     <div class="form-group" style="margin-bottom: 5px">
-                                        <label class="col-sm-2 control-label" style="padding-left: 0px; padding-right: 0px">아이디</label>
-                                        <div class="col-sm-10"><input type="text" class="form-control input-sm" value="ksch805"></div>
+                                        <label class="col-sm-2 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 아이디</label>
+                                        <div class="col-sm-10"><input type="text" class="form-control input-sm" value="ksch805" readonly></div>
                                     </div>
                                     <div class="form-group" style="margin-bottom: 5px">
-                                        <label class="col-sm-2 control-label" style="padding-left: 0px; padding-right: 0px">레벨</label>
+                                        <label class="col-sm-2 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 레벨</label>
                                         <div class="col-sm-10">
                                             <select class="form-control input-sm m-b" name="account" style="padding-bottom: 2px; margin-bottom: 0px; padding-top: 0px; padding-left: 5px;">
                                                 <option>레벨선택</option>
@@ -128,15 +128,15 @@
                                         </div>
                                     </div>
                                     <div class="form-group" style="margin-bottom: 5px">
-                                        <label class="col-sm-2 control-label" style="padding-left: 0px; padding-right: 0px">비밀번호</label>
+                                        <label class="col-sm-2 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 비밀번호</label>
                                         <div class="col-sm-10"><input type="text" class="form-control input-sm" value=""></div>
                                     </div>
                                     <div class="form-group" style="margin-bottom: 5px">
-                                        <label class="col-sm-2 control-label" style="padding-left: 0px; padding-right: 0px">비밀번호확인</label>
+                                        <label class="col-sm-2 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 비밀번호확인</label>
                                         <div class="col-sm-10"><input type="text" class="form-control input-sm" value=""></div>
                                     </div>
                                     <div class="form-group" style="margin-bottom: 5px">
-                                        <label class="col-sm-2 control-label" style="padding-left: 0px; padding-right: 0px">한글성명</label>
+                                        <label class="col-sm-2 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 한글성명</label>
                                         <div class="col-sm-10"><input type="text" class="form-control input-sm" value="김선천"></div>
                                     </div>
                                     <div class="form-group" style="margin-bottom: 5px">
@@ -156,14 +156,14 @@
                                         <div class="col-sm-10"><input type="text" class="form-control input-sm" value=""></div>
                                     </div>
                                     <div class="form-group" style="margin-bottom: 5px">
-                                        <label class="col-sm-2 control-label" style="padding-left: 0px; padding-right: 0px">핸드폰</label>
+                                        <label class="col-sm-2 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 핸드폰</label>
                                         <div class="col-sm-10"><input type="text" class="form-control input-sm" value=""></div>
                                     </div>
                                     <div class="form-group" style="margin-bottom: 0px">
                                         <label class="col-sm-2 control-label" style="padding-left: 0px; padding-right: 0px; padding-top: 24px;">주소</label>
                                         <div class="col-sm-10">
                                             <div class="col-sm-3" style="padding: 0px;">
-                                                <div class="input-group"><input type="text" class="form-control input-sm" value="63303">
+                                                <div class="input-group"><input type="text" class="form-control input-sm" placeholder="우편번호" value="63303">
                                                     <span class="input-group-btn">
                                                         <a type="button" class="btn btn-sm btn-primary"><i class="fa fa-search"></i></a> 
                                                     </span>

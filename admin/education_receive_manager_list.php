@@ -90,8 +90,8 @@
                                             <option value="">상태</option>
                                             <option value="0">미입금</option>
                                             <option value="5">입금완료</option>
-                                            <option value="10">미이수</option>
-                                            <option value="20">이수</option>
+                                            <option value="10">미이수완료</option>
+                                            <option value="20">이수완료</option>
                                         </select>
                                         <span class="input-group-btn">
                                             <a type="button" class="btn btn-sm btn-white"><i class="fa fa-search"></i></a> 
@@ -122,7 +122,7 @@
                                 <td>김미애</td>
                                 <td>010-4752-0491</td>
                                 <td>서울 양재동 한국퀼트센터</td>
-                                <td>이수</td>
+                                <td>이수완료</td>
                                 <td class="text-right">
                                     <div class="btn-group">
                                         <a type="button" class="btn btn-xs btn-white" href="education_receive_manager_edit.php">View</a>
@@ -137,7 +137,7 @@
                                 <td>유수연</td>
                                 <td>010-3639-4859</td>
                                 <td>서울 양재동 한국퀼트센터</td>
-                                <td>이수</td>
+                                <td>이수완료</td>
                                 <td class="text-right">
                                     <div class="btn-group">
                                         <a type="button" class="btn btn-xs btn-white" href="education_receive_manager_edit.php">View</a>
@@ -152,7 +152,7 @@
                                 <td>박미림</td>
                                 <td>010-6375-0210</td>
                                 <td>서울 양재동 한국퀼트센터</td>
-                                <td>이수</td>
+                                <td>이수완료</td>
                                 <td class="text-right">
                                     <div class="btn-group">
                                         <a type="button" class="btn btn-xs btn-white" href="education_receive_manager_edit.php">View</a>

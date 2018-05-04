@@ -35,7 +35,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group row" style="margin-bottom: 5px">
-                    <label for="example-text-input" class="col-1 col-form-label text-right" style="padding-right: 0px">교육</label>
+                    <label for="example-text-input" class="col-1 col-form-label text-right" style="padding-right: 0px"><i class="ti-check"></i> 교육</label>
                     <div class="col-5">                                
                         <select class="form-control form-control-sm" name="account">
                             <option value='36' >2018년 2급 자격검정 면제및 교육</option>
@@ -61,7 +61,7 @@
                             <option value='7' >2009, 2급 자격교육</option>
                         </select>
                     </div>
-                    <label for="example-text-input" class="col-1 col-form-label text-right" style="padding-right: 0px">성명</label>
+                    <label for="example-text-input" class="col-1 col-form-label text-right" style="padding-right: 0px"><i class="ti-check"></i> 성명</label>
                     <div class="col-5">          
                         <input class="form-control form-control-sm" type="search" value="" id="example-search-input">
                     </div>
@@ -69,14 +69,14 @@
                 <div class="form-group row" style="margin-bottom: 5px">                    
                     <div class="col-sm-6" style="">  
                         <div class="form-group row" style="margin-bottom: 5px">
-                            <label for="example-text-input" class="col-2 col-form-label text-right" style="padding-right: 0px">전화</label>
+                            <label for="example-text-input" class="col-2 col-form-label text-right" style="padding-right: 0px"><i class="ti-check"></i> 핸드폰</label>
                             
                             <div class="col-10">
                                 <input class="form-control form-control-sm" type="email" value="" id="example-email-input">
                             </div>
                         </div>                        
                         <div class="form-group row" style="margin-bottom: 0px">
-                        <label for="example-text-input" class="col-2 col-form-label text-right" style="padding-right: 0px">핸드폰전화</label>
+                        <label for="example-text-input" class="col-2 col-form-label text-right" style="padding-right: 0px">전화</label>
                             
                             <div class="col-10">
                                 <input class="form-control form-control-sm" type="email" value="" id="example-email-input">
@@ -126,8 +126,8 @@
 
                 <div class="form-group pull-right" style="margin-top: 5px; margin-bottom: 0px;">
                     <form class="form-inline">
-                        <button class="form-control btn-primary form-control-sm mr-sm-2" style="width: 70px"> 취 소 </button>
-                        <button class="form-control btn-primary form-control-sm" style="width: 70px"> 등 록 </button>
+                        <button class="form-control btn-primary form-control-sm mr-sm-2" style="width: 70px"> 등 록 </button>
+                        <button class="form-control btn-primary form-control-sm" style="width: 70px"> 취 소 </button>
                     </form>
                 </div>            
             </div>

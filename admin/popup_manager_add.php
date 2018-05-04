@@ -59,20 +59,18 @@
                             <div class="ibox-content" style="padding-bottom: 10px">
                                 <fieldset class="form-horizontal">
                                     <div class="form-group" style="margin-bottom: 5px">
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">제목</label>
-                                        <div class="col-sm-5"><input type="text" class="form-control input-sm" placeholder=""></div>
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">등록자</label>
-                                        <div class="col-sm-5"><input type="text" class="form-control input-sm" placeholder=""></div>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 제목</label>
+                                        <div class="col-sm-11"><input type="text" class="form-control input-sm" placeholder=""></div>
                                     </div>
                                     <div class="form-group" style="margin-bottom: 5px">
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">시작일</label>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 시작일</label>
                                         <div class="col-sm-5">
                                             <div class="input-group date">
                                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                                 <input id="date_added" type="text" class="form-control input-sm" value="">
                                             </div>                                                
                                         </div>
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">종료일</label>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 종료일</label>
                                         <div class="col-sm-5">
                                             <div class="input-group date">
                                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
@@ -82,7 +80,7 @@
                                     </div>
 
                                     <div class="form-group" style="margin-bottom: 5px">
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">내용</label>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 내용</label>
                                         <div class="col-sm-11">
                                             <div class="summernote"></div>                                            
                                         </div>

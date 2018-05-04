@@ -52,15 +52,15 @@
                             <div class="ibox-content" style="padding-bottom: 10px">
                                 <fieldset class="form-horizontal">
                                     <div class="form-group" style="margin-bottom: 5px">
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">게시판ID</label>
-                                        <div class="col-sm-5"><input type="text" class="form-control input-sm" value="free"></div>
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">관리자</label>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 게시판ID</label>
+                                        <div class="col-sm-5"><input type="text" class="form-control input-sm" value="free" readonly></div>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 관리자</label>
                                         <div class="col-sm-5"><input type="text" class="form-control input-sm" value="admin"></div>
                                     </div>
                                     <div class="form-group" style="margin-bottom: 5px">
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">게시판명</label>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 게시판명</label>
                                         <div class="col-sm-5"><input type="text" class="form-control input-sm" value="자유게시판"></div>
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">등록자 / 등록일</label>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 등록정보</label>
                                         <div class="col-sm-5"><input type="text" class="form-control input-sm" value="admin / 2018-03-06 11:22:33" readonly></div>
                                     </div>
                                     <div class="form-group" style="margin-bottom: 5px">

@@ -93,6 +93,15 @@
                         <li><a href="company_contact.php" class="dropdown-item">찾아오시는길</a></li>
                     </ul>
                 </li>
+                <li class="nav-item dropdown <?if ($menu_active == "40") {echo "active";}?>">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">지회/지부</a>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        <li><a href="office_main.php" class="dropdown-item">지회</a></li>
+                        <li><a href="office_sub.php" class="dropdown-item">지부</a></li>
+                        <li><a href="office_art_quilt.php" class="dropdown-item">분과-한국아트퀼트</a></li>
+                        <li><a href="office_traditional_quilt.php" class="dropdown-item">분과-실용전통퀼트</a></li>
+                    </ul>
+                </li>
                 <li class="nav-item dropdown <?if ($menu_active == "20") {echo "active";}?>">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">협회가입</a>
                     <ul class="dropdown-menu dropdown-menu-right">
@@ -107,15 +116,6 @@
                         <li><a href="license_get_infomation.php" class="dropdown-item">CQA자격취득안내</a></li>
                         <li><a href="license_receive.php" class="dropdown-item">시험공지/접수</a></li>
                         <li><a href="license_pass_check.php" class="dropdown-item">합격자조회</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item dropdown <?if ($menu_active == "40") {echo "active";}?>">
-                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">지회/지부</a>
-                    <ul class="dropdown-menu dropdown-menu-right">
-                        <li><a href="office_main.php" class="dropdown-item">지회</a></li>
-                        <li><a href="office_sub.php" class="dropdown-item">지부</a></li>
-                        <li><a href="office_art_quilt.php" class="dropdown-item">분과-한국아트퀼트</a></li>
-                        <li><a href="office_traditional_quilt.php" class="dropdown-item">분과-실용전통퀼트</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown <?if ($menu_active == "50") {echo "active";}?>">
