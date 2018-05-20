@@ -1,0 +1,24 @@
+A:link, A:active, A:visited { font-family: "돋움", "굴림"; font-size: 9pt; color: #777777; text-decoration: none; }
+A:hover {	font-size: 9pt;	color:#333333; text-decoration: none;}
+
+body 
+{scrollbar-face-color: cfcfcf;
+scrollbar-shadow-color:595959; 
+scrollbar-highlight-color: ffffff;
+scrollbar-3dlight-color: 595959; 
+scrollbar-darkshadow-color: #FFFFFF;      
+scrollbar-arrow-color: FFFFFF}
+.txt   {  font-family: "", "u", "", "u"; font-size: 12px; line-height: 18px}
+body,td {font-size: 9pt;font-family:;text-decoration: none;line-height:150%}
+.graybox {border-width:0; border-style:solid; border-color:#A8A8A8; color:#424242; background-color:#EDE9E6;}
+.style1 {color: #777777}
+.style2 {color: #697f37}
+.mfont { font-family: "돋움", "굴림"; font-size: 10pt;}
+
+.form1 { font-family: "돋움", "굴림"; FONT-SIZE: 9pt; COLOR: #000000; Background: #F3F3F3; BORDER-BOTTOM: #929292 1px solid; BORDER-LEFT: #929292 1px solid; BORDER-RIGHT: #929292 1px solid; BORDER-TOP: #929292 1px solid;}
+.form2 { font-family: "돋움", "굴림"; FONT-SIZE: 9pt; Background: #FFFFFF; BORDER-BOTTOM: #666666 1px solid; BORDER-LEFT: #666666 1px solid; BORDER-RIGHT: #666666 1px solid; BORDER-TOP: #666666 1px solid;}
+.form3 { font-family: "돋움", "굴림"; FONT-SIZE: 10pt; Background: #FFFFFF; BORDER-BOTTOM: #666666 1px solid; BORDER-LEFT: #666666 1px solid; BORDER-RIGHT: #666666 1px solid; BORDER-TOP: #666666 1px solid;}
+
+.button { font-family: "돋움", "굴림"; font-size: 9pt; color: #FFFFFF; background-color: #797979; border: 1px #000000 solid; height: 20px; cursor:hand}
+.button1 { font-family: "돋움", "굴림"; font-size: 9pt; color: #333333; background-color: #eeeeee; border: 1px #000000 solid; height: 20px; cursor:hand}
+.button2 { font-family: "돋움", "굴림"; font-size: 8pt; color: #000000; background-color: #dddddd; border: 1px #000000 solid; height: 18px; cursor:hand}

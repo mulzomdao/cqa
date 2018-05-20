@@ -1,0 +1,18 @@
+<?
+require_once 'Excel/reader.php';
+$data = new Spreadsheet_Excel_Reader();
+
+// 여기 이부분에서 euc-kr 을 넣어 주면 한글을 이용할 수 있다.
+$data->setOutputEncoding('euc-kr');
+$data->read('test.xls');
+error_reporting(E_ALL ^ E_NOTICE);
+
+for ($i = 1; $i <= $data->sheets[0]['numRows']; $i++) {
+    for ($j = 1; $j <= $data->sheets[0]['numCols']; $j++) {
+        echo "\"".$data->sheets[0]['cells'][$i][$j]."\",";
+    }
+    //echo "\n";
+    echo "<br>";
+
+}
+?>

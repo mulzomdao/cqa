@@ -1,0 +1,147 @@
+<?
+	session_start();
+	include "../inc/connect.html";
+	include "../inc/function.html";
+	include "../inc/variable.html";
+	include "../inc/session.html";
+
+	if($_SESSION[user_level]<30){
+		close("권한이 없습니다.");
+	}
+
+	$select = "select lpad(max(agent_id)+1, 4, '0') agent_id from np_agent";
+
+	$result = mysql_query($select);
+	$row = @mysql_fetch_array($result);
+?>
+
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+	<title>NetPlus</title>
+	<link href="/css/style2.css" rel="stylesheet" type="text/css">
+	<script language="javascript" src="/js/script.js"></script>
+</head>
+
+<script>
+
+	function agent_add_check(){
+
+		if(agent_add.agent_nm.value==""){
+			alert("상호명을 입력해 주세요!");
+			agent_add.agent_nm.focus();
+		}else if(agent_add.agent_boss_nm.value==""){
+			alert("대표자명을 입력해 주세요!");
+			agent_add.agent_boss_nm.focus();
+		}else if(agent_add.agent_id.value==""){
+			alert("대리점코드를 입력해 주세요!");
+			agent_add.agent_id.focus();
+		}else{
+			if(confirm('등록 하시겠습니까?')){
+				agent_add.submit();
+			}
+		}
+
+	}
+
+</script>
+
+<BODY BGCOLOR=#FFFFFF LEFTMARGIN=0 TOPMARGIN=0 MARGINWIDTH=0 MARGINHEIGHT=0 height=100% align="left" >
+
+<table width="760" border="0" cellpadding="0" cellspacing="0" align=center>
+	<tr>
+		<td width="760" valign="bottom" class="tlt1" height="30"><img src="/images/icon02.gif">
+			<b>대리점관리 등록</b> <font style="font-size:11"></font>
+		</td>
+	</tr>
+</table>
+
+
+<table width="760" border="1" cellpadding="2" cellspacing="0" bordercolor="#CCCCCC" bgcolor="#ffffff" align=center>
+
+<form method=post name="agent_add" action="a04_02_edit.html" ENCTYPE='multipart/form-data'>
+<input type = 'hidden' name = 'flag' value = 'agent_add'>
+<input type = 'hidden' name = 'agent_id' value = '<?echo $row[agent_id]?>'>
+
+	<tr>
+		<td>
+			<table border=1 cellpadding=1 cellspacing=0 width=100% style="border-collapse:collapse" bordercolor=#CCCCCC>
+				<tr>
+					<td class="bold">대리점코드</td>
+					<td class="center"><?echo $row[agent_id]?></td>
+					<td class="bold">사업자등록번호</td>
+					<td class="center"><input type="text" style="width:244" value="<?echo $row[agent_busi_num]?>" name="agent_busi_num"></td>
+				</tr>
+				<tr>
+					<td width="18%" class="bold">*상호명</td>
+					<td width="32%" class="center"><input type="text" style="width:244" value="<?echo $row[agent_nm]?>" name="agent_nm"></td>
+					<td width="18%" class="bold">*대표자명</td>
+					<td width="32%" class="center"><input type="text" style="width:244" value="<?echo $row[agent_boss_nm]?>" name="agent_boss_nm"></td>
+				</tr>
+				<tr>
+					<td class="bold">업태</td>
+					<td class="center"><input type="text" style="width:244" value="<?echo $row[agent_status]?>" name="agent_status"></td>
+					<td class="bold">업종</td>
+					<td class="center"><input type="text" style="width:244" value="<?echo $row[agent_type]?>" name="agent_type"></td>
+				</tr>
+				<tr>
+					<td class="bold">전화번호</td>
+					<td class="center"><input type="text" style="width:244" value="<?echo $row[agent_tel]?>" name="agent_tel"></td>
+					<td class="bold">팩스</td>
+					<td class="center"><input type="text" style="width:244" value="<?echo $row[agent_fax]?>" name="agent_fax"></td>
+				</tr>
+
+				<tr>
+					<td class="bold">주소</td>
+					<td class="center" colspan=3>
+						<table width="100%" border="0" cellpadding="0" cellspacing="0">
+							<tr align=left>
+								<td width=66><input type="text" name="agent_zipcode" style="width:65;" readonly  value="<?echo $row[agent_zipcode]?>"></td>
+								<td width=82><a href="javascript:zipopen('agent_add', 'agent_zipcode', 'agent_addr1', 'agent_addr2')"><img src="/images/bt_post_01.gif" border=0 height=19 width=81></a></td>
+								<td width=237><input type="text" name="agent_addr1" style="width:236;" readonly value="<?echo $row[agent_addr1]?>"></td>
+								<td width="*"><input type="text" name="agent_addr2" style="width:244; ime-mode:active" value="<?echo $row[agent_addr2]?>"></td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+
+				<tr>
+					<td class="bold">사업자사본</td>
+					<td class="center"><input type="file" name="saup_sabon" value=""></td>
+					<td class="bold">신분증사본</td>
+					<td class="center"><input type="file" name="shinbun_sabon" value=""></td>
+				</tr>
+
+				<tr>
+					<td class="bold">통장사본</td>
+					<td class="center"><input type="file" name="tongjang_sabon" value=""></td>
+					<td class="bold">사용여부</td>
+					<td class="center">
+						<select name="agent_use_yn" size="1">
+							<?code_combo("use_yn", "Y")?>
+						</select>
+					</td>
+				</tr>
+
+				<tr>
+					<td class="bold">참고사항</td>
+					<td class="center" colspan=3><textarea style="width:629;height=100" name="agent_refer"><?echo $row[agent_refer]?></textarea></td>
+				</tr>
+			</table>
+
+		</td>
+	</tr>
+</form>
+</table>
+
+<table width="760" border="0" cellpadding="0" cellspacing="0" border=1 align=center>
+	<tr>
+		<td width="100%" align=right height="30">
+			<img src="/images/bt_regi.gif" border=0 onclick="agent_add_check();" style="cursor:hand">
+			<img src="/images/bt_close.gif" border=0 onclick="self.close();" style="cursor:hand">
+		</td>
+	</tr>
+</table>
+
+</body>
+</html>

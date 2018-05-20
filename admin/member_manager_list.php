@@ -1,9 +1,70 @@
-<!--
-*
-*  INSPINIA - Responsive Admin Theme
-*  version 2.7.1
-*
--->
+<?
+    session_start();
+    include "lib/session.php";
+    include "lib/connect.php";
+    include "lib/variable.php";
+    include "lib/function.php";
+
+    if ($_GET[id_name_no] != "") {
+        $filter .= "and (member_id like '%$_GET[id_name_no]%' or member_name like '%$_GET[id_name_no]%' or member_no like '%$_GET[id_name_no]%') ";
+    }
+    if ($_GET[member_right] != "") {
+        $filter .= "and member_right = '$_GET[member_right]'";
+    }
+    if ($_GET[member_level] != "") {
+        $filter .= "and member_level = '$_GET[member_level]'";
+    }
+    if ($_GET[recommend_id] != "") {
+        $filter .= "and recommend_id = '$_GET[recommend_id]'";
+    }
+
+    $query = "
+        select count(*) total 
+          from cqa_member
+         where use_flag = 'Y' $filter
+    ";
+	$result = mysqli_query($connect, $query);
+    $row = mysqli_fetch_array($result);
+    $total = $row['total'];
+
+    $query = "
+        SELECT member_id
+             , member_no
+             , recommend_id
+             , member_name
+             , member_eng_name
+             , member_password
+             , member_level
+             , member_right
+             , case when member_right != 0 THEN DATE_FORMAT(a.right_start_date, '%Y-%m-%d')
+               end right_start_date
+             , case when member_right != 0 THEN DATE_FORMAT(a.right_end_date, '%Y-%m-%d')
+               end right_end_date
+             , CASE when member_right = 0 THEN 'TEMP' 
+                    WHEN right_start_date < NOW() and now() <= right_end_date then 'ACTIVE'
+                    else 'END'
+               end right_flag
+             , DATE_FORMAT(a.birthday, '%Y-%m-%d') birthday
+             , sex
+             , mobile
+             , email
+             , phone
+             , zip_code
+             , zip_address
+             , detail_address
+             , member_memo
+             , use_flag
+             , reg_id
+             , DATE_FORMAT(a.reg_date, '%Y-%m-%d') reg_date
+             , modify_id
+             , DATE_FORMAT(a.modify_date, '%Y-%m-%d') modify_date
+          FROM cqa_member a
+         where use_flag = 'Y' $filter
+         order by reg_date desc
+    ";    
+    // var_dump($query);
+    $result = mysqli_query($connect, $query);
+?>
 
 <!DOCTYPE html>
 <html>
@@ -45,87 +106,93 @@
                     </div>
                     <div class="ibox-content" style="padding: 15px">
                         <div class="row">
-                            <div class="col-sm-3" style="padding-left: 15px; padding-right: 5px">
-                                <div class="form-group">
-                                    <div class="input-group">                                        
-                                        <input type="text" class="form-control input-sm" placeholder="아이디/성명/회원번호">
-                                        <span class="input-group-btn">
-                                            <a type="button" class="btn btn-sm btn-white"><i class="fa fa-search"></i></a> 
-                                        </span>
+
+
+                            
+                            <form role="form" id="member_manager_list" action="member_manager_list.php" method="get">
+                                <div class="col-sm-3" style="padding-left: 15px; padding-right: 5px">
+                                    <div class="form-group">
+                                        <div class="input-group">                                        
+                                            <input type="text" class="form-control input-sm" name="id_name_no" id="id_name_no" value="<?echo $_GET[id_name_no]?>" placeholder="아이디/성명/회원번호">
+                                            <span class="input-group-btn" style="vertical-align: top">
+                                                <button type="submit" class="btn btn-sm btn-white"><i class="fa fa-search"></i></button> 
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-3" style="padding-left: 5px; padding-right: 5px">
-                                <div class="form-group">                        
-                                    <div class="input-group">
-                                        <select class="form-control input-sm m-b" name="account" style="padding-bottom: 2px; margin-bottom: 0px; padding-top: 0px; padding-left: 5px;">
-                                            <option value=''>자격선택</option>
-                                            <option>준회원 (cqa웹사이트 열람만 가능)</option>
-                                            <option>정회원 1년 (30,000원)</option>
-                                            <option>정회원 2년 (50,000원)</option>
-                                            <option>정회원 3년 (70,000원)</option>
-                                            <option>정회원 평생 (300,000원)</option>
-                                        </select>
+                                <div class="col-sm-3" style="padding-left: 5px; padding-right: 5px">
+                                    <div class="form-group">                        
+                                        <div class="input-group">
+                                            <select class="form-control input-sm m-b" name="member_right" id="member_right" style="padding-bottom: 2px; margin-bottom: 0px; padding-top: 0px; padding-left: 5px;">
+                                                <option value=''>자격선택</option>
+                                                <option value="0" <?if ($_GET[member_right] == "0") {echo "selected";}?>>준회원 (cqa웹사이트 열람만 가능)</option>
+                                                <option value="1" <?if ($_GET[member_right] == "1") {echo "selected";}?>>정회원 1년 (30,000원)</option>
+                                                <option value="2" <?if ($_GET[member_right] == "2") {echo "selected";}?>>정회원 2년 (50,000원)</option>
+                                                <option value="3" <?if ($_GET[member_right] == "3") {echo "selected";}?>>정회원 3년 (70,000원)</option>
+                                                <option value="100" <?if ($_GET[member_right] == "100") {echo "selected";}?>>정회원 평생 (300,000원)</option>
+                                            </select>
 
-                                        <span class="input-group-btn">
-                                            <a type="button" class="btn btn-sm btn-white"><i class="fa fa-search"></i></a> 
-                                        </span>
-                                    </div>       
-                                </div>
-                            </div>
-                            <div class="col-sm-3" style="padding-left: 5px; padding-right: 5px">
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        
-                                        <select class="form-control input-sm m-b" name="account" style="padding-bottom: 2px; margin-bottom: 0px; padding-top: 0px; padding-left: 5px;">
-                                            <option value=''>레벨선택</option>
-                                            <option value="9" >레벨9 (준회원)</option>
-                                            <option value="8" >레벨8 (상실회원)</option>
-                                            <option value="7" >레벨7 (정회원)</option>
-                                            <option value="6" >레벨6 (지부장)</option>
-                                            <option value="5" >레벨5 (지회장)</option>
-                                            <option value="4" >레벨4 </option>
-                                            <option value="3" >레벨3 (관리자)</option>
-                                            <option value="2" >레벨2 </option>
-                                            <option value="1" >레벨1 (최고관리자)</option>
-                                        </select>
-
-                                        <span class="input-group-btn">
-                                            <a type="button" class="btn btn-sm btn-white"><i class="fa fa-search"></i></a> 
-                                        </span>
+                                            <span class="input-group-btn">
+                                                <button type="submit" class="btn btn-sm btn-white"><i class="fa fa-search"></i></button> 
+                                            </span>
+                                        </div>       
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-3" style="padding-left: 5px; padding-right: 15px">
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <select class="form-control input-sm m-b" name="account" style="padding-bottom: 2px; margin-bottom: 0px; padding-top: 0px; padding-left: 5px;">
-                                            <option value=''>추천인선택</option>
-                                            <option value='10'>[LYDIA 30] 장흥숙 (10-00)</option>
-                                            <option value='07' >[S퀼트] 송재란 (07-00)</option>
-                                            <option value='09' >[그린퀼트] 김경주 (09-00)</option>
-                                            <option value='04-01' >[생활의향기] 이현정 (04-01)</option>
-                                            <option value='07-07' >[소소공방] 현미경 (07-07)</option>
-                                            <option value='08' >[아원퀼트] 최은영 (08-00)</option>
-                                            <option value='03-05' >[요술나라 요술 손] 유미숙 (03-05)</option>
-                                            <option value='01-04' >[퀼트 수작] 변성혜 (01-04)</option>
-                                            <option value='08-03' >[퀼트 조] 조현화 (08-03)</option>
-                                            <option value='11-03' >[퀼트&돌] 오승미 (11-03)</option>
-                                            <option value='07-04' >[퀼트&미] 김미정 (07-04)</option>
-                                            <option value='09-05' >[퀼트나들이] 박정애 (09-05)</option>
-                                            <option value='07-06' >[퀼트바람] 이수연 (07-06)</option>
-                                            <option value='01' >[퀼트지음] 엄재영/오선희 (01-00)</option>
-                                            <option value='03' >[한혜경퀼트] 한혜경 (03-00)</option>
-                                            <option value='03-04' >[허니비퀼트] 김정미 (03-04)</option>
-                                            <option value="00-00" >추천인 없음 (00-00)</option>
-                                        </select>
+                                <div class="col-sm-3" style="padding-left: 5px; padding-right: 5px">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            
+                                            <select class="form-control input-sm m-b" name="member_level" id="member_level" style="padding-bottom: 2px; margin-bottom: 0px; padding-top: 0px; padding-left: 5px;">
+                                                <option value=''>레벨선택</option>                                                
+                                                <option value="9" <?if ($_GET[member_level] == "9") {echo "selected";}?>>레벨9 (준회원)</option>
+                                                <option value="8" <?if ($_GET[member_level] == "8") {echo "selected";}?>>레벨8 (상실회원)</option>
+                                                <option value="7" <?if ($_GET[member_level] == "7") {echo "selected";}?>>레벨7 (정회원)</option>
+                                                <option value="6" <?if ($_GET[member_level] == "6") {echo "selected";}?>>레벨6 (지부장)</option>
+                                                <option value="5" <?if ($_GET[member_level] == "5") {echo "selected";}?>>레벨5 (지회장)</option>
+                                                <option value="4" <?if ($_GET[member_level] == "4") {echo "selected";}?>>레벨4 </option>
+                                                <option value="3" <?if ($_GET[member_level] == "3") {echo "selected";}?>>레벨3 (관리자)</option>
+                                                <option value="2" <?if ($_GET[member_level] == "2") {echo "selected";}?>>레벨2 </option>
+                                                <option value="1" <?if ($_GET[member_level] == "1") {echo "selected";}?>>레벨1 (최고관리자)</option>
+                                            </select>
 
-                                        <span class="input-group-btn">
-                                            <a type="button" class="btn btn-sm btn-white"><i class="fa fa-search"></i></a> 
-                                        </span>
+                                            <span class="input-group-btn">
+                                                <button type="submit" class="btn btn-sm btn-white"><i class="fa fa-search"></i></button> 
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                                <div class="col-sm-3" style="padding-left: 5px; padding-right: 15px">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <select class="form-control input-sm m-b" name="recommend_id" id="recommend_id" style="padding-bottom: 2px; margin-bottom: 0px; padding-top: 0px; padding-left: 5px;">
+                                                <option value=''>추천인선택</option>
+                                                <option value='10' <?if ($_GET[recommend_id] == "10") {echo "selected";}?>>[LYDIA 30] 장흥숙 (10-00)</option>
+                                                <option value='07' <?if ($_GET[recommend_id] == "07") {echo "selected";}?>>[S퀼트] 송재란 (07-00)</option>
+                                                <option value='09' <?if ($_GET[recommend_id] == "09") {echo "selected";}?>>[그린퀼트] 김경주 (09-00)</option>
+                                                <option value='04-01' <?if ($_GET[recommend_id] == "04-10") {echo "selected";}?>>[생활의향기] 이현정 (04-01)</option>
+                                                <option value='07-07' <?if ($_GET[recommend_id] == "07-07") {echo "selected";}?>>[소소공방] 현미경 (07-07)</option>
+                                                <option value='08' <?if ($_GET[recommend_id] == "08") {echo "selected";}?>>[아원퀼트] 최은영 (08-00)</option>
+                                                <option value='03-05' <?if ($_GET[recommend_id] == "03-05") {echo "selected";}?>>[요술나라 요술 손] 유미숙 (03-05)</option>
+                                                <option value='01-04' <?if ($_GET[recommend_id] == "01-04") {echo "selected";}?>>[퀼트 수작] 변성혜 (01-04)</option>
+                                                <option value='08-03' <?if ($_GET[recommend_id] == "08-03") {echo "selected";}?>>[퀼트 조] 조현화 (08-03)</option>
+                                                <option value='11-03' <?if ($_GET[recommend_id] == "11-03") {echo "selected";}?>>[퀼트&돌] 오승미 (11-03)</option>
+                                                <option value='07-04' <?if ($_GET[recommend_id] == "07-04") {echo "selected";}?>>[퀼트&미] 김미정 (07-04)</option>
+                                                <option value='09-05' <?if ($_GET[recommend_id] == "09-05") {echo "selected";}?>>[퀼트나들이] 박정애 (09-05)</option>
+                                                <option value='07-06' <?if ($_GET[recommend_id] == "07-06") {echo "selected";}?>>[퀼트바람] 이수연 (07-06)</option>
+                                                <option value='01' <?if ($_GET[recommend_id] == "01") {echo "selected";}?>>[퀼트지음] 엄재영/오선희 (01-00)</option>
+                                                <option value='03' <?if ($_GET[recommend_id] == "03") {echo "selected";}?>>[한혜경퀼트] 한혜경 (03-00)</option>
+                                                <option value='03-04' <?if ($_GET[recommend_id] == "03-04") {echo "selected";}?>>[허니비퀼트] 김정미 (03-04)</option>
+                                                <option value="00-00" <?if ($_GET[recommend_id] == "00-00") {echo "selected";}?>>추천인 없음 (00-00)</option>
+                                            </select>
+
+                                            <span class="input-group-btn">
+                                                <button type="submit" class="btn btn-sm btn-white"><i class="fa fa-search"></i></button> 
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
                         </div>
                         
                         <table class="footable table table-stripped" style="margin-bottom: 0px">
@@ -139,62 +206,40 @@
                                 <th data-hide="phone" class="text-center">추천인</th>
                                 <th data-hide="phone" class="text-center">자격상태</th>
                                 <th data-hide="phone" class="text-center">최종자격기간</th>
+                                <th data-hide="phone" class="text-center">등록일</th>
                                 <th class="text-right">Action</th>
                             </tr>
                             </thead>
                             <tbody>
+
+<?
+    while ($rows = mysqli_fetch_array($result)) {
+?>
                             <tr class="text-center">
-                                <td class="text-center">3</td>
-                                <td><a href="member_manager_edit.php">ohriely</a></td>
-                                <td>오영란</td>
-                                <td>010-7422-3461</td>
-                                <td>18--1620</td>
-                                <td>변성혜(01-04)</td>
-                                <td>유효</td>
-                                <td>2018-03-20 ~ 2019-03-19</td>
+                                <td class="text-center"><?echo $total?></td>
+                                <td><a href="member_manager_edit.php?member_id=<?echo $rows[member_id]?>"><?echo $rows[member_id]?></a></td>
+                                <td><?echo $rows[member_name]?></td>
+                                <td><?echo $rows[mobile]?></td>
+                                <td><?echo $rows[member_no]?></td>
+                                <td><?echo $_recommend_id[$rows[recommend_id]]?></td>
+                                <td><?echo $_right_flag[$rows[right_flag]]?></td>
+                                <td><?echo $rows[right_start_date]?> ~ <?echo $rows[right_end_date]?></td>
+                                <td><?echo $rows[reg_date]?></td>
                                 <td class="text-right">
                                     <div class="btn-group">
-                                        <a type="button" class="btn btn-xs btn-white" href="member_manager_edit.php">View</a>
+                                        <a type="button" class="btn btn-xs btn-white" href="member_manager_edit.php?member_id=<?echo $rows[member_id]?>">View</a>
                                         <a type="button" class="btn btn-xs btn-white" href="#">Delete</a>
                                     </div>
                                 </td>
                             </tr>
-                            <tr class="text-center">
-                                <td>2</td>
-                                <td><a href="member_manager_edit.php">moonhwi</a></td>
-                                <td>김문휘</td>
-                                <td>010-9213-1170</td>
-                                <td>18--1623</td>
-                                <td>오승미(11-03)</td>
-                                <td>유효</td>
-                                <td>2018-03-21 ~ 2021-03-20</td>
-                                <td class="text-right">
-                                    <div class="btn-group">
-                                        <a type="button" class="btn btn-xs btn-white" href="member_manager_edit.php">View</a>
-                                        <a type="button" class="btn btn-xs btn-white" href="#">Delete</a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr class="text-center">
-                                <td>1</td>
-                                <td><a href="member_manager_edit.php">smilemomo</a></td>
-                                <td>홍진경</td>
-                                <td>010-4124-7014</td>
-                                <td>17--1602</td>
-                                <td>변성혜(01-04)</td>
-                                <td>유효</td>
-                                <td>2017-11-21 ~ 2018-11-20</td>
-                                <td class="text-right">
-                                    <div class="btn-group">
-                                        <a type="button" class="btn btn-xs btn-white" href="member_manager_edit.php">View</a>
-                                        <a type="button" class="btn btn-xs btn-white" href="#">Delete</a>
-                                    </div>
-                                </td>
-                            </tr>
+<?
+        $total--;
+    }
+?>                  
                             </tbody>
                             <tfoot>
                             <tr>
-                                <td colspan="9" style="padding-right: 0px; padding-left: 0px; padding-bottom: 0px;">
+                                <td colspan="10" style="padding-right: 0px; padding-left: 0px; padding-bottom: 0px;">
                                     
                                     <a type="button" class="btn btn-sm btn-success" href="member_manager_add.php">Add</a>
                                     <a type="button" class="btn btn-sm btn-success">Excel Down</a>
@@ -237,24 +282,15 @@
 
             $('.footable').footable();
 
-            $('#date_added').datepicker({
-                format: "yyyy-mm-dd",
-                language: "kr",
-                todayBtn: "linked",
-                keyboardNavigation: false,
-                forceParse: false,
-                calendarWeeks: true,
-                autoclose: true
-            });
-
-            $('#date_modified').datepicker({
-                format: "yyyy-mm-dd",
-                language: "kr",
-                todayBtn: "linked",
-                keyboardNavigation: false,
-                forceParse: false,
-                calendarWeeks: true,
-                autoclose: true
+            $("#member_manager_list").validate({
+                rules: {
+                    id_name_no: {
+                        minlength: 2,
+                        maxlength: 20
+                    }
+                }, submitHandler: function (form) {
+                    form.submit();
+                }
             });
 
         });

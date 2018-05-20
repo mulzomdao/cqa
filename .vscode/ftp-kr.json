@@ -7,10 +7,11 @@
     "port": 0,
     "fileNameEncoding": "utf8",
     "autoUpload": true,
-    "autoDelete": false,
+    "autoDelete": true,
     "autoDownload": false,
     "ignore": [
         ".git",
         "/.vscode"
-    ]
+    ],
+    "ignoreWrongFileEncoding": true
 }

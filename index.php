@@ -11,7 +11,7 @@
         <div class="container">
             <div class="row">
                 <div class=" col-md-8 ml-auto mr-auto">
-                    <h1 class="text-uppercase text-dark">Corea Quilt Associate</h1>
+                    <h1 class="text-uppercase text-dark"></h1>
                 </div>
             </div>
         </div>

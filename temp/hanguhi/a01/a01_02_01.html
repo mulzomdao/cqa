@@ -1,0 +1,315 @@
+<?
+    session_start();
+    include "../inc/connect.html";
+    include "../inc/function.html";
+    include "../inc/variable.html";
+    include "../inc/session.html";
+
+	if($_GET[find_flag] != ""){
+		$cont_user_id = $_GET[user_id];
+		$cont_agent_seq = $_GET[agent_seq];
+	}else{
+
+		if($_SESSION[user_level] < 20){
+			$cont_user_id = $_SESSION[user_id];
+			$cont_agent_seq = $_SESSION[agent_seq];
+		}else if($_SESSION[user_level] >= 20 && $_SESSION[user_level] < 30){
+			$cont_user_id = "";
+			$cont_agent_seq = $_SESSION[agent_seq];
+		}else{
+			$cont_user_id = "";
+			$cont_agent_seq = "";
+		}
+	}
+
+	if($cont_user_id != ""){
+		$where .= "and b.cont_user_id  = '$cont_user_id' ";
+	}
+
+	if($cont_agent_seq != ""){
+		$where .= "and b.cont_agent_seq  = '$cont_agent_seq' ";
+	}
+
+	if($_GET[search_dt] == "open_dt" || $_GET[search_dt] == "close_dt"){
+		$start_dt = $_GET[s_year]."-".$_GET[s_month]."-".$_GET[s_day];
+		$end_dt = $_GET[e_year]."-".$_GET[e_month]."-".$_GET[e_day];
+
+		$where = "and a.open_dt >= '$start_dt 00:00:00' and a.open_dt <= '$end_dt 23:59:59' ";
+
+        if($_GET[search_dt] == "close_dt") {
+            $where .= "and a.line_stat  = '해지' ";
+        }
+	}
+
+	if($_GET[cont_gubun] != ""){
+		$where .= "and b.cont_gubun = '$_GET[cont_gubun]' ";
+	}
+
+	if($_GET[cont_stat] != ""){
+		$where .= "and b.cont_stat = '$_GET[cont_stat]' ";
+	}
+
+    if($_GET[col] != "" && $_GET[search]){
+		$where .= "and $_GET[col] = '$_GET[search]' ";
+	}
+
+	if($_SESSION[page_num] == ""){
+		$_SESSION[page_num] = "20";
+	}
+
+    $select = "select count(a.cont_seq) cnt
+               from   np_line a, np_contract b
+               where  a.cont_seq = b.cont_seq
+               $where" ;
+
+	//echo $select."<br><br>";
+
+    $result=@mysql_query($select);
+    $row = @mysql_fetch_array($result);
+
+    $total = $row[cnt];
+
+    if(!$_GET[page]) $page = 1;
+    $start_num=($page-1)*$_SESSION[page_num];
+
+    $select = "
+        select
+			a.*
+			, b.cont_gubun
+			, b.cont_stat
+			, b.cust_nm
+			, c.agent_nm
+        from   np_line a, np_contract b, np_agent c
+        where  a.cont_seq = b.cont_seq
+		and	   b.cont_agent_seq = c.agent_seq
+        $where
+        order  by a.cont_seq desc, a.line_seq desc
+        limit $start_num, $_SESSION[page_num]";
+
+	//echo $select;
+    $result=@mysql_query($select);
+	$pages=ceil($total/$_SESSION[page_num]);
+
+?>
+
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+    <title>NetPlus</title>
+    <link href="/css/style2.css" rel="stylesheet" type="text/css">
+    <script language="javascript" src="/js/kcmsScript.js"></script>
+</head>
+
+<BODY BGCOLOR=#FFFFFF LEFTMARGIN=0 TOPMARGIN=0 MARGINWIDTH=0 MARGINHEIGHT=0 height=100% align="left">
+
+<table width="1200" border="0" bordercolor="">
+    <tr height=20>
+        <td valign="bottom">현재위치 : HOME &gt; 청약서관리 &gt; 회선관리 목록</td>
+    </tr>
+</table>
+
+<script>
+
+	function userChange(){
+
+		var agent_seq=eval("document.find.agent_seq.options[document.find.agent_seq.selectedIndex].value");
+		document.frames["userframe"].location.replace("/include/user_combo.html?agent_seq="+agent_seq+"&user_id=&form_nm=find");
+		document.find.user_id.value="";
+
+	}
+
+	function goExcel(){
+		find.action = "a01_02_01_excel.html";
+		find.submit();
+	}
+
+</script>
+
+<table width="1200" border="1" cellpadding="2" cellspacing="0" bordercolor="#CCCCCC" bgcolor="#ffffff">
+
+<form name=find method=get action="<?echo $_this_page?>">
+<input type='hidden' name='user_id' value='<?echo $cont_user_id?>'>
+<input type='hidden' name='find_flag' value='find'>
+
+    <tr>
+        <td>
+            <table border=1 cellpadding=1 cellspacing=0 width=100% style="border-collapse:collapse" bordercolor=#CCCCCC>
+                <tr>
+                    <td width="8%" class="bold">검색기간</td>
+                    <td width="43%" class="center" colspan=3>
+
+                        <select name='search_dt'>
+							<option value=''>전체</option>
+							<option value='open_dt' <?if($_GET[search_dt] == "open_dt"){echo "selected";}?>>개통일</option>
+                            <option value='close_dt' <?if($_GET[search_dt] == "close_dt"){echo "selected";}?>>해지일</option>
+						</select>
+						<?start_end_combo("month", $start_dt, $end_dt);?>
+                    </td>
+                    <td width="8%" class="bold">대리점</td>
+                    <td width="17%" class="center">
+						<select name="agent_seq" onchange="userChange()" style="width:120">
+							<?agent_combo($_SESSION[user_level], $cont_agent_seq)?>
+						</select>
+                    </td>
+					<td width="8%" class="bold">영업사원</td>
+					<td width="17%" class="center">
+						<iframe src="/include/user_combo.html?user_id=<?echo $cont_user_id?>&agent_seq=<?echo $cont_agent_seq?>&form_nm=find" name="userframe" width="100%" height="19" scrolling="No" frameborder="0" align="left3" allowTransparency ="true"marginwidth="0" marginheight="0" frameborder="0" vspace="0" hspace="0" style="z-index:99;"></iframe>
+					</td>
+<!--
+                    <td width="8%" class="bold">전화번호</td>
+                    <td width="17%" class="center">
+                        <input type="text" name="ConfirmNum" size="15" value="<?echo $_GET[ConfirmNum]?>" onFocus="this.value=''" style="width:176">
+                    </td>
+-->
+                </tr>
+                <tr>
+					<td width="8%" class="bold">구분</td>
+					<td width="17%" class="center">
+						<select name="cont_gubun" style="width:120">
+							<option value="">선택해주세요</option>
+							<?code_combo("cont_gubun", $_GET[cont_gubun])?>
+						</select>
+					</td>
+					<td width="8%" class="bold">상태</td>
+					<td width="17%" class="center">
+						<select name="cont_stat" style="width:120">
+							<option value="">선택해주세요</option>
+							<?code_combo("cont_stat", $_GET[cont_stat])?>
+						</select>
+					</td>
+                    <td width="8%" class="bold">검색조건</td>
+                    <td width="17%" class="center" >
+
+						<table width="100%" border="0" bordercolor="DDECFC" cellpadding=0 cellspacing=0>
+							<tr>
+								<td align="left" width=81>
+									<select name="col" style="width:80">
+										<option value="">전체</option>
+										<option value="a.cont_seq" <?if($_GET[col] == "a.cont_seq"){echo "selected";}?>>청약서번호</option>
+										<option value="b.cust_nm" <?if($_GET[col] == "b.cust_nm"){echo "selected";}?>>고객명</option>
+										<!--<option value="b.line_num" <?if($_GET[col] == "b.line_num"){echo "selected";}?>>회선번호</option>-->
+										<option value="a.sangho" <?if($_GET[col] == "a.sangho"){echo "selected";}?>>상호</option>
+										<option value="a.gaip_num" <?if($_GET[col] == "a.gaip_num"){echo "selected";}?>>가입번호</option>
+										<option value="a.confirm_num" <?if($_GET[col] == "a.confirm_num"){echo "selected";}?>>전화번호</option>
+									</select>
+								</td>
+								<td>
+									<input type="text" name="search" size="15" value="<?echo $_GET[search]?>" onFocus="this.value=''" style="width:118">
+								</td>
+							</tr>
+						</table>
+                    </td>
+
+					<td width="8%" class="bold">목록수</td>
+					<td class="center">
+						<select name="page_num" style="width:50">
+							<option value="20" <?if($_SESSION[page_num] == "20"){echo "selected";}?>>20</option>
+							<option value="40" <?if($_SESSION[page_num] == "40"){echo "selected";}?>>40</option>
+							<option value="60" <?if($_SESSION[page_num] == "60"){echo "selected";}?>>60</option>
+							<option value="80" <?if($_SESSION[page_num] == "80"){echo "selected";}?>>80</option>
+							<option value="100" <?if($_SESSION[page_num] == "100"){echo "selected";}?>>100</option>
+						</select>
+					</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</form>
+</table>
+
+<table width="1200" border="0" bordercolor="DDECFC" cellpadding=0 cellspacing=0>
+    <tr>
+        <td align="right" height=27>
+            <img src="/images/bt_inquiry.gif"  value="조회" style="cursor:hand" onclick="find.submit();">
+            <img src="/images/bt_excel.gif" style="cursor:hand" onclick="goExcel();">
+        </td>
+    </tr>
+</table>
+
+<table width="1200" border="1" cellpadding="2" cellspacing="0" bordercolor="#CCCCCC" bgcolor="#ffffff">
+    <tr>
+        <td>
+            <table border=1 cellpadding=1 cellspacing=0 width=100% style="border-collapse:collapse" bordercolor=#CCCCCC>
+                <tr height=20>
+                    <td width="35" class="bold">번호</td>
+                    <td width="55" class="bold">청약번호</td>
+                    <td width="*" class="bold">대리점</td>
+                    <td width="90" class="bold">전화번호</td>
+                    <td width="55" class="bold">구분</td>
+                    <td width="55" class="bold">상태</td>
+                    <td width="55" class="bold">고객명</td>
+                    <td width="*" class="bold">상호(안내명)</td>
+                    <td width="*" class="bold">업종</td>
+                    <td width="*" class="bold">안내동</td>
+                    <td width="*" class="bold">착신번호</td>
+                    <td width="80" class="bold">가입번호</td>
+                    <td width="70" class="bold">개통일</td>
+                </tr>
+
+<?
+    if($total>0){
+		$cont_num = $total-(($page-1)*$_SESSION[page_num]);
+
+		$height = "450";
+
+		if($_tail_yn == "Y"){
+			$height = "500";
+		}
+
+        while($rows = @mysql_fetch_array($result)){
+            $cont_refer = short_str(stripslashes(htmlspecialchars($rows[cont_refer])), 20);
+            $cont_file = short_str(stripslashes($rows[cont_file]), 16);
+
+            $cont_reg_dt = explode(" ", $rows[cont_reg_dt]);
+?>
+
+                <tr align=center height=20 style="vertical-align:bottom;" OnMouseOver=style.background='F3F3F3' OnMouseOut=style.background='FFFFFF'>
+                    <td class="center"><?echo $cont_num?></td>
+                    <td class="center"><?echo $rows[cont_seq]?></td>
+                    <td class="center"><?echo $rows[agent_nm]?></td>
+                    <td class="center"><?echo $rows[confirm_num]?></td>
+                    <td class="center"><?echo $rows[cont_gubun]?></td>
+                    <td class="center"><font color="<?echo $_stat_color[$rows[cont_stat]]?>"><?echo $rows[cont_stat]?></font></td>
+                    <td class="center"><?echo $rows[cust_nm]?></td>
+                    <td class="left"><?echo $rows[sangho]?><?if($rows[change_sangho]){echo " → $rows[change_sangho]";}?></td><!--상호-->
+                    <td class="left"><?echo $rows[upjong]?><?if($rows[change_upjong]){echo " → $rows[change_upjong]";}?></td><!--업종-->
+                    <td class="left"><?echo $rows[line_addr]?><?if($rows[change_addr]){echo " → $rows[change_addr]";}?></td><!--주소-->
+                    <td class="left"><?echo $rows[chacksin]?><?if($rows[change_chacksin]){echo " → $rows[change_chacksin]";}?></td><!--착신번호-->
+                    <td class="center"><?echo $rows[gaip_num]?></td>
+                    <td class="center"><?echo $rows[open_dt]?></td>
+                </tr>
+<?
+            $cont_num--;
+        }
+    }else{
+		echo "<tr><td colspan=15 align=center height=60><b>검색 내용이나 등록된 글이 없습니다.</b></td></tr>";
+	}
+?>
+
+            </table>
+        </td>
+    </tr>
+</table>
+
+
+
+<table width="1200" border="0" bordercolor="DDECFC" cellpadding=0 cellspacing=0>
+	<tr height=30 style="vertical-align:middle;">
+	  <td align="left" width="200"></td>
+	  <td align="center" width="*">
+<?
+	$url = $_SERVER["REQUEST_URI"];
+
+	pager($total,$pages,$_max_page,$url,$tail);
+?>
+	  </td>
+	  <td align="right" width="200">Total <?echo $total?> 건, &nbsp;<font color="red"><?echo $page?></font>/<?echo $pages?> Pages
+	  </td>
+	</tr>
+</table>
+
+
+<?include "../include/bottom.html";?>
+
+</body>
+</html>

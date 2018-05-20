@@ -1,0 +1,119 @@
+<?
+	include "Admin/connect.html";
+	
+	if($_GET[flag]!=""){$flag=$_GET[flag];}
+	elseif($_POST[flag]!=""){$flag=$_POST[flag];}
+
+	$line = "#000000";		// 라인
+	$top = "#ffffff";		// 제목 바탕색
+	$title = "#ffffff";		// 목록 바탕색
+	$content = "#ffffff";		// 내용 바탕색
+	
+	//$style = "'color:#8B7A40; background-color:#FBE7C4; border-width:1; border-color:#FBB63E; border-style:solid; height:19px;'";
+?>
+
+<html>
+<head>
+<link href="include/main.css" rel="stylesheet" type="text/css">
+<script>
+	function insert(in1,in2)
+	{
+		opener.document.memberAdd.zipcode.value = in1;
+		opener.document.memberAdd.addr1.value = in2;
+		opener.document.memberAdd.addr2.focus();
+		self.close();
+	}
+	function insert1(in1,in2)
+	{
+		opener.document.order.oZipcode.value = in1;
+		opener.document.order.oAddr1.value = in2;
+		opener.document.order.oAddr2.focus();
+		self.close();
+	}
+	function insert2(in1,in2)
+	{
+		opener.document.order.dZipcode.value = in1;
+		opener.document.order.dAddr1.value = in2;
+		opener.document.order.dAddr2.focus();
+		self.close();
+	}
+
+	function check_str(){
+		if(post_form.find.value==""){
+			alert("동이름을 적어주세요");
+			post_form.find.focus();
+			return false;
+		}
+		post_form.submit();
+	}
+	
+	function closing(){
+		self.close();
+	}
+
+</script>
+</head>
+
+<body onload="post_form.find.focus()">
+<table border=0 cellpadding=0 cellspacing=1 bgcolor="<? echo $line; ?>" width=360 align=center>
+	<form action="search_post.html" method=post name=post_form>
+		<input type=hidden name=postin value=a>
+		<input type=hidden name=flag value=<?echo $flag?>>
+		<tr height=30>
+			<td width=80 align=right bgcolor=<? echo $title; ?>>동 이름&nbsp;</td>
+			<td bgcolor=<? echo $content; ?>>&nbsp;
+			<input type=text name=find size=15 maxlength=20 style="ime-mode:active" class=form3>&nbsp
+			<input type=button value=우편번호찾기 onclick="check_str()" style="cursor=hand" class=button1>
+			</td>
+		</tr>
+	</form>
+</table>
+<table>
+	<tr>
+		<td>&nbsp;</td>
+	</tr>
+</table>
+
+<?
+	if ($postin)
+	{
+		
+		$result = @mysql_query("select * from zipcode where dong like '%$find%' ");
+		$rows = @mysql_num_rows($result);
+
+		echo "<table border=1 cellpading=0 cellspacing=0 align=center width=360><tr><td width=100%><table width=100%><tr><td>";
+		
+		if ($rows)
+		{
+			while ($row = @mysql_fetch_array($result)){
+				$in2 = "$row[sido] $row[gugun] $row[dong]";
+?>
+			<tr onmouseover="this.style.backgroundColor='#f7f7f7'" onmouseout="this.style.backgroundColor=''">
+				<td width=55 valign=top>
+					<?echo "[".$row[zipcode]."] ";?>
+				</td>
+				<td valign=top>
+<?if($flag==""){?>			
+					<a href="javascript:insert('<? echo $row[zipcode]; ?>','<? echo $in2; ?>');">
+<?}elseif($flag=="o"){?>
+					<a href="javascript:insert1('<? echo $row[zipcode]; ?>','<? echo $in2; ?>');">
+<?}elseif($flag=="d"){?>
+					<a href="javascript:insert2('<? echo $row[zipcode]; ?>','<? echo $in2; ?>');">
+<?}?>
+
+				<?echo $row[sido]." "; echo $row[gugun]." "; echo $row[dong]." "; echo $row[bunji]; ?>
+					</a>
+				</td>
+			</tr>
+			<?
+			}
+		}else{
+		echo "검색결과가 없습니다.";
+	}
+	echo "</td></tr></table></td></tr></table>";
+}
+?> 
+	<center> [ <a href=# onclick="closing()">닫기</a> ] </center>
+                                                                                                                                                                                                                            
+</body>
+</html>

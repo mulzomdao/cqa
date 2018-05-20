@@ -1,16 +1,16 @@
-<footer class="footer footer-dark pt30 pb0">
+<footer class="footer footer-dark pt20 pb0">
     <div class="container">
         <div class="row">
-            <div class="col-lg-4 col-md-6 mb40">
+            <div class="col-lg-4 col-md-6 mb10">
                 <h3>입금계좌안내</h3>                
                 <div class="col-lg-12" style="color: rgba(255, 255, 255, 0.6); padding: 0px; padding-bottom: 10px;">
                     가입/시험/교육 : 농협 178932-51-011306</br>사단법인 한국퀼트연합
                 </div>           
                 <div class="col-lg-12" style="color: rgba(255, 255, 255, 0.6); padding: 0px; padding-bottom: 10px;">
-                    페스티벌 : 국민은행 008601-04-126291</br>사단법인 한국퀼트연합
+                    페스티벌 : 국민 008601-04-126291</br>사단법인 한국퀼트연합
                 </div>           
                 <div class="col-lg-12" style="color: rgba(255, 255, 255, 0.6); padding: 0px;">
-                    교재 : 하나은행 481-910165-28207 송재란
+                    교재 : 하나 481-910165-28207 송재란
                 </div>
             </div>
             <!-- <div class="col-lg-3 col-md-6 mb40">
@@ -30,7 +30,7 @@
                     </li>
                 </ul>
             </div> -->
-            <div class="col-lg-4 col-md-6 mb40">
+            <div class="col-lg-4 col-md-6 mb10">
                 <h3>지회/지부</h3>
                 <div class="clearfix">
                     <a href="#" class="thumb-hover-icon">
@@ -59,16 +59,16 @@
                     </a><!--/.hover-->
                 </div><!--/.clearfix-->
             </div>
-            <div class="col-lg-4 col-md-6 mb40">
+            <div class="col-lg-4 col-md-6 mb10">
                 <h3>연락처</h3>
                 <ul class="list-unstyled contact-list-item">
                     <li>
                         <i class="ti-home"></i>
-                        서울시 서초구 양재천로 19길 34 서림빌딩 4층 (사)한국퀼트연합
+                        서울시 서초구 양재천로 19길 34 서림빌딩 4층 (사)한국퀼트센터
                     </li>
                     <li>
                         <i class="ti-email"></i>
-                        support@assan.com
+                        <a href="mailto:cqa2008@naver.com">cqa2008@naver.com</a>
                     </li>
                     <li>
                         <i class="ti-mobile"></i>

@@ -1,0 +1,269 @@
+<table>
+	<tr>
+		<td height=30><b>게시판 등록</b></td>
+	</tr>
+</table>
+
+<table border=1 width=100% cellpadding=0 cellspacing=0>
+	<tr>
+		<td>
+			<table width=100% cellpadding=0 cellspacing=0 border=0>
+				<form method=post>
+				<input type=hidden name=flag value=add>
+				<input type=hidden name=category value=<?echo $category?>>
+				<tr>
+					<td width=50% valign=top>
+						<table width=100% cellpadding=1 cellspacing=0 border=0>
+
+							<tr>
+								<td width=40% align=right>게시판 Table명 &nbsp;</td>
+								<td width=60% colspan=3 valign=bottom>
+									<input type=text class=form2 name=board value="b_" style="ime-mode:disabled"> (영문필수)
+								</td>
+							</tr>
+							<tr>
+								<td align=right>게시판 관리자 선택 &nbsp;</td>
+								<td>
+									<select name=adminId class=form2>
+<?
+	$admin_select=mysql_query("select no, id, name from member where level > 7");
+
+	while($admin_object = mysql_fetch_object($admin_select)){
+		echo "<option value='$admin_object->id'>$admin_object->name</option>";
+	}
+?>	
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td align=right>게시판 이름 &nbsp;</td>
+								<td>
+									<input type=text class=form2 name=boardName style="ime-mode:active">
+								</td>
+							</tr>
+							<tr>
+								<td align=right>쓰기레벨 &nbsp;</td>
+								<td>
+									<input type=text class=form2 name=writeLevel value=0 size=2 maxlength=1>
+								</td>
+							</tr>
+							<tr>
+								<td align=right>읽기레벨 &nbsp;</td>
+								<td>
+									<input type=text class=form2 name=readLevel value=0 size=2 maxlength=1>
+								</td>
+							</tr>
+							<tr>
+								<td align=right>게시판스킨 &nbsp;</td>
+								<td>
+									<input type=text class=form2 name=skin value="default">
+								</td>
+							</tr>
+							<tr>
+								<td align=right>배경색깔 &nbsp;</td>
+								<td>
+									<input type=text class=form2 name=bgColor value=#FFFFFF>
+								</td>
+							</tr>
+							<tr>
+								<td align=right>페이지당글수 &nbsp;</td>
+								<td>
+									<input type=text class=form2 name=maxNum value=10 size=2 maxlength=2 onkeyPress="if ((event.keyCode<48) || (event.keyCode>57)) event.returnValue=false;" style="ime-mode:disabled">
+								</td>
+							</tr>
+							<tr>
+								<td align=right>블록당페이지수 &nbsp;</td>
+								<td>
+									<input type=text class=form2 name=maxPage value=10 size=2 maxlength=2 onkeyPress="if ((event.keyCode<48) || (event.keyCode>57)) event.returnValue=false;" style="ime-mode:disabled">
+								</td>
+							</tr>
+							<tr>
+								<td align=right>게시판넓이 &nbsp;</td>
+								<td>
+									<input type=text class=form2 name=width value=780 size=5 maxlength=4 onkeyPress="if ((event.keyCode<48) || (event.keyCode>57)) event.returnValue=false;" style="ime-mode:disabled">
+								</td>
+							</tr>
+							<tr>
+								<td align=right>Top &nbsp;</td>
+								<td>
+									<input type=text class=form2 name=top style="ime-mode:disabled">
+								</td>
+							</tr>
+							<tr>
+								<td align=right>Bottom &nbsp;</td>
+								<td>
+									<input type=text class=form2 name=bottom style="ime-mode:disabled" value="">
+								</td>
+							</tr>
+							
+							<tr>
+								<td align=right>게시판종류 &nbsp;</td>
+								<td>
+									<select name=style class=form2>
+										<option value="1">일반게시판</option>
+										<option value="2">방명록</option>
+										<option value="3">갤러리</option>
+										<option value="4">공지사항</option>
+										<!--<option value="5">제품게시판</option>-->
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td align=right>업로드 제한용량 &nbsp;</td>
+								<td>
+									<input type=text class=form2 name=fileSize value=2 size=1 maxlength=1 onkeyPress="if ((event.keyCode<48) || (event.keyCode>57)) event.returnValue=false;" style="ime-mode:disabled">M
+								</td>
+							</tr>
+							<tr>
+								<td align=right>보기페이지하단 &nbsp;</td>
+								<td>
+									<select name=showTail class=form2>
+										<option value="0">없음</option>
+										<option value="1">관련글</option>
+										<option value="2">리스트</option>
+									</select>
+								</td>
+							</tr>
+							
+						</table>
+					</td>
+					<td width=50% valign=top>
+						<table width=100% cellpadding=1 cellspacing=0 border=0>
+							<tr>
+								<td align=right width=40%>꼬리글사용여부 &nbsp;</td>
+								<td width=60%>
+									<input type=checkbox name=tail value=1 checked>
+								</td>
+							</tr>
+							<tr>
+								<td align=right>파일업로드1 &nbsp;</td>
+								<td>
+									<input type=checkbox name=fileYes value=1>
+								</td>
+							</tr>
+							<tr>
+								<td align=right>파일업로드2 &nbsp;</td>
+								<td>
+									<input type=checkbox name=fileYes2 value=1>
+								</td>
+							</tr>
+							<tr>
+								<td align=right>파일업로드3 &nbsp;</td>
+								<td>
+									<input type=checkbox name=fileYes3 value=1>
+								</td>
+							</tr>
+							<tr>
+								<td align=right>이미지업로드1 &nbsp;</td>
+								<td>
+									<input type=checkbox name=imageYes value=1>
+								</td>
+							</tr>
+							<tr>
+								<td align=right>이미지업로드2 &nbsp;</td>
+								<td>
+									<input type=checkbox name=imageYes2 value=1>
+								</td>
+							</tr>
+							<tr>
+								<td align=right>이미지업로드3 &nbsp;</td>
+								<td>
+									<input type=checkbox name=imageYes3 value=1>
+								</td>
+							</tr>
+			<!--
+							<tr>
+								<td align=right>제품게시판여부 &nbsp;</td>
+								<td>
+									<input type=checkbox name=prodBoard value=1>
+								</td>
+							</tr>
+			-->
+							<tr>
+								<td align=right>HTML &nbsp;</td>
+								<td>
+									<input type=checkbox name=html value=1>
+								</td>
+							</tr>
+							<tr>
+								<td align=right>Link Page &nbsp;</td>
+								<td>
+									<input type=checkbox name=linkpage value=1>
+								</td>
+							</tr>
+							<tr>
+								<td align=right>잠금여부 &nbsp;</td>
+								<td>
+									<input type=checkbox name=open value=1>
+								</td>
+							</tr>
+							<tr>
+								<td align=right>추천 &nbsp;</td>
+								<td>
+									<input type=checkbox name=o value=1>
+								</td>
+							</tr>
+							<tr>
+								<td align=right>반대 &nbsp;</td>
+								<td>
+									<input type=checkbox name=x value=1>
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+
+				<tr>
+					<td colspan=2 width=100%>
+						<table width=100% cellpadding=1 cellspacing=0 border=0>
+							<tr>
+								<td align=right>분류 &nbsp;</td>
+								<td>
+									<input type=text class=form2 name=section style="width:620"><br>
+									('|' 로 구분. 대소문자구별안함. 필요없을시 공백)
+								</td>
+							</tr>
+							<tr>
+								<td align=right width=20%>불량단어색출 &nbsp;</td>
+								<td width=80%>
+									<textarea  name=noFuck cols=100 rows=3 class=form2>씨발|조까|개새끼|씹새끼|씨발놈|씨발년|씨팔|씨팔놈|씨팔년|18놈|좆까|니기미|추천인|10억</textarea>
+									<br>('|' 로 구분. 대소문자구별안함. 필요없을시 공백)
+								</td>
+							</tr>
+							<tr>
+								<td align=right>특정스크립트막기 &nbsp;</td>
+								<td>
+									<textarea  name=noScript cols=100 rows=3 class=form2>xmp|iframe</textarea>
+									<br>('|' 로 구분. 대소문자구별안함. 필요없을시 공백)
+								</td>
+							</tr>
+							<tr>
+								<td align=right>업로드확장자막기 &nbsp;</td>
+								<td>
+									<textarea  name=noFile cols=100 rows=3 class=form2>htm|html|php|php3|php4</textarea>
+									<br>('|' 로 구분. 대소문자구별안함. 필요없을시 공백)
+								</td>
+							</tr>
+							<tr height=30>
+								<td colspan=4 align=center>
+									<input type=button class=button class=form2 onclick="boardAdd(this.form);" value="  확인  ">
+									<input type=reset value="  취소  " class=button>
+								</td>
+							</tr>
+
+						</table>
+					</td>
+				</tr>
+				
+				
+				
+				</form>
+			</table>
+		</td>
+	</tr>
+</table>
+
+<br>
+<?
+	//phpinfo();
+?>

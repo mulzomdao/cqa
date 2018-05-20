@@ -1,0 +1,15 @@
+<?
+
+	if(!$_SESSION[user_id]){
+?>
+<script>
+	top.location.href="/login_check.html?flag=logout";
+</script>
+<?
+		exit;
+	}
+
+	if($_GET[page_num]){
+		$_SESSION[page_num] = $_GET[page_num];
+	}
+?>

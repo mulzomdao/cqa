@@ -1,0 +1,213 @@
+<?
+	session_start();
+	include "../inc/connect.html";
+	include "../inc/function.html";
+	include "../inc/variable.html";
+	include "../inc/session.html";
+
+	bod_opt($_GET[section]);
+
+	if($_section=="") {
+		alert("관련 게시판이 없습니다.");
+	}
+
+	if($_GET[search_dt] == "reg_dt"){
+		$start_dt = $_GET[s_year]."-".$_GET[s_month]."-".$_GET[s_day];
+		$end_dt = $_GET[e_year]."-".$_GET[e_month]."-".$_GET[e_day];
+
+		$where = "and a.reg_dt >= '$start_dt 00:00:00' and a.reg_dt <= '$end_dt 23:59:59' ";
+	}
+
+	if($_GET[col] == "a.title" && $_GET[search] != ""){
+		$where .= "and a.title like '%$_GET[search]%' ";
+	}
+
+	if($_GET[col] == "a.user_nm" && $_GET[search] != ""){
+		$where .= "and a.user_nm like '$_GET[search]%' ";
+	}
+
+	$select = "select count(*) cnt from np_bod a where section = '$_GET[section]' $where" ;
+
+	//echo $select;
+
+	$result=@mysql_query($select);
+	$row = @mysql_fetch_array($result);
+
+	$total = $row[cnt];
+
+	//echo $total."<br>";
+
+	if(!$_GET[page]) $page = 1;
+	$start_num=($page-1)*$_max_num;
+
+	$select = sprintf("
+		select
+			a.bod_seq,
+			max(a.title) title,
+			max(a.user_nm) user_nm,
+			max(a.reg_dt) reg_dt,
+			max(a.cnt) cnt,
+			count(b.tail_seq) tail_cnt
+		from np_bod a left join np_bod_tail b on a.bod_seq = b.bod_seq
+		where a.section = '%s' %s
+		group by a.bod_seq
+		order by 1 desc
+		limit %d, %d
+	", $_section, $where, $start_num, $_max_num);
+
+	//echo2($select);
+	$result=@mysql_query($select);
+	$pages=ceil($total/$_max_num);
+
+	if($_GET[section]=="notice"){
+		$select1 = "select * from np_popup where use_yn = 'Y' order by 1 desc limit 1 ";
+		$result1=mysql_query($select1);
+
+		$pop_row=mysql_fetch_array($result1);
+	}
+
+?>
+
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+	<title>NetPlus</title>
+	<link href="/css/style2.css" rel="stylesheet" type="text/css">
+	<script language="javascript" src="/js/script.js"></script>
+</head>
+
+<BODY BGCOLOR=#FFFFFF LEFTMARGIN=0 TOPMARGIN=0 MARGINWIDTH=0 MARGINHEIGHT=0 height=100% align="left">
+
+<table width="1200" border="0" bordercolor="">
+	<tr height=20>
+		<td valign="bottom">현재위치 : HOME &gt; 게시판 &gt; <?echo $_bod_nm?> 목록</td>
+	</tr>
+</table>
+
+<table width="1200" border="1" cellpadding="2" cellspacing="0" bordercolor="#CCCCCC" bgcolor="#ffffff">
+
+<form name=find method=get action="<?echo $_this_page?>">
+<input type=hidden name=section value="<?echo $_GET[section]?>">
+
+	<tr>
+		<td>
+			<table border=1 cellpadding=1 cellspacing=0 width=100% style="border-collapse:collapse" bordercolor=#CCCCCC>
+				<tr>
+					<td width="8%" class="bold">검색기간</td>
+					<td width="43%" class="center" colspan=3>
+						<select name='search_dt'>
+							<option value=''>전체</option>
+							<option value='reg_dt' <?if($_GET[search_dt] == "reg_dt"){echo "selected";}?>>등록일</option>
+						</select>
+						<?start_end_combo("month", $start_dt, $end_dt);?>
+					</td>
+
+          <td width="8%" class="bold">검색조건</td>
+          <td width="*" class="center" >
+
+						<table width="100%" border="0" bordercolor="DDECFC" cellpadding=0 cellspacing=0>
+							<tr>
+								<td align="left" width=81>
+									<select name="col" style="width:80">
+										<option value="">전체</option>
+										<option value="a.title" <?if($_GET[col] == "a.title"){echo "selected";}?>>제목</option>
+										<option value="a.user_nm" <?if($_GET[col] == "a.user_nm"){echo "selected";}?>>성명</option>
+									</select>
+								</td>
+								<td>
+									<input type="text" name="search" size="15" value="<?echo $_GET[search]?>" onFocus="this.value=''" style="width:118">
+								</td>
+							</tr>
+						</table>
+
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</form>
+</table>
+
+<table width="1200" border="0" cellpadding=0 cellspacing=0>
+	<tr>
+		<td align="right" height=27>
+			<img src="/images/bt_inquiry.gif"  value="조회" style="cursor:hand" onclick="find.submit();">
+			<a style="cursor:hand" onclick="window.open('a03_01_01_02.html?section=<?echo $_GET[section]?>', '_change', 'width=830, height=450,scrollbars=no, status=no, location=no');"><img src="/images/bt_regi.gif" border=0></a>
+		</td>
+	</tr>
+</table>
+
+<table width="1200" border="1" cellpadding="2" cellspacing="0" bordercolor="#CCCCCC" bgcolor="#ffffff">
+	<tr>
+		<td>
+			<div id="bottomright" style="position: RELATIVE; z-index: 1; overflow:hidden; width: 1193; height:422px; left: 0px; top: 0px; visibility: visible;" align="left">
+			<table border=1 cellpadding=1 cellspacing=0 width=100% style="border-collapse:collapse" bordercolor=#CCCCCC>
+				<tr height=20>
+					<td width="40" class="bold">번호</td>
+					<td width="*" class="bold">제목</td>
+					<td width="100" class="bold">성명</td>
+					<td width="100" class="bold">등록일</td>
+					<td width="80" class="bold">조회수</td>
+				</tr>
+
+<?
+	if($total>0){
+		$bod_num = $total-(($page-1)*$_max_num);
+
+		$height = "450";
+
+		if($_tail_yn == "Y"){
+			$height = "500";
+		}
+
+		while($rows = @mysql_fetch_array($result)){
+			$title = short_str(stripslashes(htmlspecialchars($rows[title])), 60);
+			$reg_dt = explode(" ", $rows[reg_dt]);
+
+?>
+				<tr align=center height=20 style="vertical-align:bottom;" OnMouseOver=style.background='F3F3F3' OnMouseOut=style.background='FFFFFF'>
+					<td class="center"><?echo $bod_num?></td>
+					<td class="left">
+						<a style="cursor:hand" onclick="window.open('a03_01_01_01.html?section=<?echo $_GET[section]?>&bod_seq=<?echo $rows[bod_seq]?>', '_change', 'width=850, height=<?echo $height?>,scrollbars=yes, status=no, location=no');"><?echo $title?></a><?if($rows[tail_cnt]>0){echo " [$rows[tail_cnt]]";}?>
+						<?if($rows[bod_seq] == $pop_row[bod_seq]){echo "[팝업]";}?>
+					</td>
+					<td class="center"><?echo $rows[user_nm]?></td>
+					<td class="center"><?echo $reg_dt[0]?></td>
+					<td class="center"><?echo $rows[cnt]?></td>
+				</tr>
+
+
+<?
+			$bod_num--;
+		}
+	}else{
+		echo "<tr><td colspan=5 align=center height=60><b>검색 내용이나 등록된 글이 없습니다.</b></td></tr>";
+	}
+?>
+
+			</table>
+			<div>
+		</td>
+	</tr>
+</table>
+
+
+<table width="1200" border="0" bordercolor="DDECFC" cellpadding=0 cellspacing=0>
+	<tr height=30 style="vertical-align:middle;">
+	  <td align="left" width="200"></td>
+	  <td align="center" width="*">
+<?
+	$url = $_SERVER["REQUEST_URI"];
+	pager($total,$pages,$_max_page,$url,$tail);
+?>
+	  </td>
+	  <td align="right" width="200">Total <?echo $total?> 건, &nbsp;<font color="red"><?echo $page?></font>/<?echo $pages?> Pages
+	  </td>
+	</tr>
+</table>
+
+
+<?include "../include/bottom.html";?>
+
+</body>
+</html>

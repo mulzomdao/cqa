@@ -1,0 +1,267 @@
+<?
+	session_start();
+	include "../inc/connect.html";
+	include "../inc/function.html";
+	include "../inc/variable.html";
+	include "../inc/session.html";
+
+	if($_GET[search_yn] == "Y" || $_GET[user_id] != ""){
+
+		/*권한 관련...*/
+		if($_SESSION[user_level] < 20){
+			$cont_user_id = $_SESSION[user_id];
+			$cont_agent_seq = $_SESSION[agent_seq];
+		}else if($_SESSION[user_level] >= 20 && $_SESSION[user_level] < 30){
+			$cont_user_id = "";
+			$cont_agent_seq = $_SESSION[agent_seq];
+		}else{
+			$cont_user_id = $_GET[user_id];
+			$cont_agent_seq = "";
+		}
+
+		if($cont_user_id != ""){
+			$where .= "and c.user_id  = '$cont_user_id' ";
+		}
+
+		if($cont_agent_seq != ""){
+			$where .= "and c.agent_seq  = '$cont_agent_seq' ";
+		}
+		/*권한관련*/
+
+
+		if($_GET[cust_nm] != ""){
+			$where .= "and a.cust_nm like '%$_GET[cust_nm]%' ";
+		}
+
+		if($_GET[cust_jumin] != ""){
+			$where .= "and a.cust_jumin = '$_GET[cust_jumin]' ";
+		}
+
+		$select = "
+			select
+				a.*,
+				b.*
+			from
+				np_cust a,
+				np_account b,
+				np_user c
+			where
+				a.cust_seq = b.cust_seq
+				and a.cust_reg_id = c.user_id
+				and a.cust_use_yn = 'Y'
+				$where
+			order by 1 desc";
+
+		//echo2($select);
+		$result=@mysql_query($select);
+		$num = mysql_num_rows($result);
+
+	}
+?>
+
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+	<title>NetPlus</title>
+	<link href="/css/style2.css" rel="stylesheet" type="text/css">
+	<script language="javascript" src="/js/script.js"></script>
+</head>
+
+<script type="text/JavaScript">
+<!--
+	function openerInsert(num)
+	{
+		opener.document.cont_add.cust_seq.value = eval("document.cust_list.cust_seq_"+num+".value");
+		opener.document.cont_add.cust_nm.value = eval("document.cust_list.cust_nm_"+num+".value");
+		opener.document.cont_add.cust_jumin1.value = eval("document.cust_list.cust_jumin1_"+num+".value");
+		opener.document.cont_add.cust_jumin2.value = eval("document.cust_list.cust_jumin2_"+num+".value");
+		opener.document.cont_add.cust_gubun.value = eval("document.cust_list.cust_gubun_"+num+".value");
+		opener.document.cont_add.cust_tel.value = eval("document.cust_list.cust_tel_"+num+".value");
+		opener.document.cont_add.cust_hp.value = eval("document.cust_list.cust_hp_"+num+".value");
+		opener.document.cont_add.cust_zipcode.value = eval("document.cust_list.cust_zipcode_"+num+".value");
+		opener.document.cont_add.cust_addr1.value = eval("document.cust_list.cust_addr1_"+num+".value");
+		opener.document.cont_add.cust_addr2.value = eval("document.cust_list.cust_addr2_"+num+".value");
+
+		var acc_gubun = eval("document.cust_list.acc_gubun_"+num+".value");
+		var acc_nm = eval("document.cust_list.acc_nm_"+num+".value");
+		opener.document.frames["comboframe"].location.replace("/include/acc_combo.html?acc_gubun="+acc_gubun+"&acc_nm="+acc_nm+"&form_nm=cont_add");
+
+		opener.document.cont_add.acc_gubun.value = eval("document.cust_list.acc_gubun_"+num+".value");
+		opener.document.cont_add.acc_nm.value = eval("document.cust_list.acc_nm_"+num+".value");
+		opener.document.cont_add.acc_num.value = eval("document.cust_list.acc_num_"+num+".value");
+		opener.document.cont_add.acc_cust_nm.value = eval("document.cust_list.acc_cust_nm_"+num+".value");
+		opener.document.cont_add.year.value = eval("document.cust_list.card_year_"+num+".value");
+		opener.document.cont_add.month.value = eval("document.cust_list.card_month_"+num+".value");
+		opener.document.cont_add.acc_zipcode.value = eval("document.cust_list.acc_zipcode_"+num+".value");
+		opener.document.cont_add.acc_addr1.value = eval("document.cust_list.acc_addr1_"+num+".value");
+		opener.document.cont_add.acc_addr2.value = eval("document.cust_list.acc_addr2_"+num+".value");
+		//opener.document.cont_add.acc_refer.value = eval("document.cust_list.acc_refer_"+num+".value");
+		opener.document.cont_add.acc_seq.value = eval("document.cust_list.acc_seq_"+num+".value");
+
+		if(acc_gubun=="신용카드"){
+			opener.document.cont_add.acc_num.disabled=false;
+			opener.document.cont_add.acc_cust_nm.disabled=false;
+			opener.document.cont_add.year.disabled=false;
+			opener.document.cont_add.month.disabled=false;
+			opener.document.cont_add.sangdong.disabled=true;
+			opener.document.cont_add.acc_zipcode.disabled=true;
+			opener.document.cont_add.acc_addr1.disabled=true;
+			opener.document.cont_add.acc_addr2.disabled=true;
+			//opener.document.cont_add.acc_refer.disabled=false;
+		}else if(acc_gubun=="계좌이체"){
+			opener.document.cont_add.acc_num.disabled=false;
+			opener.document.cont_add.acc_cust_nm.disabled=false;
+			opener.document.cont_add.year.disabled=true;
+			opener.document.cont_add.month.disabled=true;
+			opener.document.cont_add.sangdong.disabled=true;
+			opener.document.cont_add.acc_zipcode.disabled=true;
+			opener.document.cont_add.acc_addr1.disabled=true;
+			opener.document.cont_add.acc_addr2.disabled=true;
+			//opener.document.cont_add.acc_refer.disabled=false;
+		}else if(acc_gubun=="지로"){
+			opener.document.cont_add.acc_num.disabled=true;
+			opener.document.cont_add.acc_cust_nm.disabled=true;
+			opener.document.cont_add.year.disabled=true;
+			opener.document.cont_add.month.disabled=true;
+			opener.document.cont_add.sangdong.disabled=false;
+			opener.document.cont_add.acc_zipcode.disabled=false;
+			opener.document.cont_add.acc_addr1.disabled=false;
+			opener.document.cont_add.acc_addr2.disabled=false;
+			//opener.document.cont_add.acc_refer.disabled=false;
+		}
+
+		//opener.document.user_add.pwd.focus();
+		self.close();
+	}
+
+//-->
+</script>
+
+<BODY BGCOLOR=#FFFFFF LEFTMARGIN=0 TOPMARGIN=0 MARGINWIDTH=0 MARGINHEIGHT=0 height=100% align="left" onload="find.cust_nm.focus()">
+
+<table width="680" border="0" cellpadding="0" cellspacing="0" align=center>
+	<tr>
+		<td width="100%" valign="bottom" height="30"><img src="/images/icon02.gif">
+			<b>고객조회</b>
+		</td>
+	</tr>
+</table>
+
+<table width="680" border="1" cellpadding="2" cellspacing="0" bordercolor="#CCCCCC" bgcolor="#ffffff" align=center>
+
+<form name=find method=get action="a01_01_03_01.html">
+<input type="hidden" name="search_yn" value="Y">
+<input type="hidden" name="user_id" value="<?echo $_GET[user_id]?>">
+
+	<tr>
+		<td>
+			<table border=1 cellpadding=1 cellspacing=0 width=100% style="border-collapse:collapse" bordercolor=#CCCCCC>
+				<tr>
+					<td width="20%" class="bold">성명</td>
+					<td width="30%" class="center">
+						<input type="text" name="cust_nm" value="<?echo $_GET[cust_nm]?>" onFocus="this.value=''" style="width:200; ime-mode:active" onKeyDown="if(event.keyCode==13){find.submit();}">
+					</td>
+					<td width="20%" class="bold">주민번호</td>
+					<td width="30%" class="center">
+						<input type="text" name="cust_jumin" value="<?echo $_GET[cust_jumin]?>" onFocus="this.value=''" style="width:200; ime-mode:disabled" onKeyDown="if(event.keyCode==13){find.submit();}">
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+
+</form>
+</table>
+
+<table width="680" border="0" bordercolor="DDECFC" cellpadding=0 cellspacing=0 align=center>
+	<tr>
+		<td align="right" height=27>
+			<img src="/images/bt_inquiry.gif"  value="조회" style="cursor:hand" onclick="find.submit();">
+			<img src="/images/bt_close.gif" style="cursor:hand" onclick="self.close();">
+		</td>
+	</tr>
+</table>
+
+<table width="680" border="1" cellpadding="2" cellspacing="0" bordercolor="#CCCCCC" bgcolor="#ffffff" align=center>
+	<tr>
+		<td>
+
+			<div id="bottomright" style="position: RELATIVE; z-index: 1; overflow:scroll; overflow-x:hidden; width: 673; height:222px; left: 0px; top: 0px; visibility: visible;" align="left">
+			<table border=1 cellpadding=1 cellspacing=0 width=100% style="border-collapse:collapse" bordercolor=#CCCCCC>
+
+			<form name=cust_list>
+
+				<tr height=20 class="bold">
+					<td width="40">번호</td>
+					<td width="60">고객명</td>
+					<td width="100">주민번호</td>
+					<td width="100">연락처</td>
+					<td width="*">주소지</td>
+					<td width="80">등록일</td>
+				</tr>
+
+
+<?
+	if($num>0){
+		$cust_num = $num;
+
+		while($rows = @mysql_fetch_array($result)){
+
+			$cust_addr1 = htmlspecialchars(short_str(stripslashes($rows[cust_addr1]), 30));
+			$cust_jumin = explode("-", $rows[cust_jumin]);
+
+			if($rows[cust_hp]!=""){
+				$hp = $rows[cust_hp];
+			}else{
+				$hp = $rows[cust_tel];
+			}
+?>
+				<input type="hidden" name="cust_seq_<?echo $cust_num?>" value="<?echo $rows[cust_seq]?>">
+				<input type="hidden" name="cust_nm_<?echo $cust_num?>" value="<?echo $rows[cust_nm]?>">
+				<input type="hidden" name="cust_jumin1_<?echo $cust_num?>" value="<?echo $cust_jumin[0]?>">
+				<input type="hidden" name="cust_jumin2_<?echo $cust_num?>" value="<?echo $cust_jumin[1]?>">
+				<input type="hidden" name="cust_gubun_<?echo $cust_num?>" value="<?echo $rows[cust_gubun]?>">
+				<input type="hidden" name="cust_tel_<?echo $cust_num?>" value="<?echo $rows[cust_tel]?>">
+				<input type="hidden" name="cust_hp_<?echo $cust_num?>" value="<?echo $rows[cust_hp]?>">
+				<input type="hidden" name="cust_zipcode_<?echo $cust_num?>" value="<?echo $rows[cust_zipcode]?>">
+				<input type="hidden" name="cust_addr1_<?echo $cust_num?>" value="<?echo $rows[cust_addr1]?>">
+				<input type="hidden" name="cust_addr2_<?echo $cust_num?>" value="<?echo $rows[cust_addr2]?>">
+
+				<input type="hidden" name="acc_gubun_<?echo $cust_num?>" value="<?echo $rows[acc_gubun]?>">
+				<input type="hidden" name="acc_nm_<?echo $cust_num?>" value="<?echo $rows[acc_nm]?>">
+				<input type="hidden" name="acc_num_<?echo $cust_num?>" value="<?echo $rows[acc_num]?>">
+				<input type="hidden" name="acc_cust_nm_<?echo $cust_num?>" value="<?echo $rows[acc_cust_nm]?>">
+				<input type="hidden" name="card_year_<?echo $cust_num?>" value="<?echo $rows[card_year]?>">
+				<input type="hidden" name="card_month_<?echo $cust_num?>" value="<?echo $rows[card_month]?>">
+				<input type="hidden" name="acc_zipcode_<?echo $cust_num?>" value="<?echo $rows[acc_zipcode]?>">
+				<input type="hidden" name="acc_addr1_<?echo $cust_num?>" value="<?echo $rows[acc_addr1]?>">
+				<input type="hidden" name="acc_addr2_<?echo $cust_num?>" value="<?echo $rows[acc_addr2]?>">
+				<input type="hidden" name="acc_refer_<?echo $cust_num?>" value="<?echo $rows[acc_refer]?>">
+				<input type="hidden" name="acc_seq_<?echo $cust_num?>" value="<?echo $rows[acc_seq]?>">
+
+				<tr align=center height=20 style="vertical-align:bottom;" class="center">
+					<td><?echo $cust_num?></td>
+					<td onclick="openerInsert('<?echo $cust_num?>')" style="cursor:hand"><?echo $rows[cust_nm]?></a></td>
+					<td><?echo $rows[cust_jumin]?></td>
+					<td><?echo $hp?></td>
+					<td class="left"><?echo $cust_addr1?></td>
+					<td><?echo substr($rows[cust_reg_dt], 0, 10)?></td>
+				</tr>
+
+<?
+			$cust_num--;
+		}
+	}else{
+		echo "<tr><td colspan=20 align=center height=20 class=top>검색 내용이나 등록된 글이 없습니다.</td></tr>";
+	}
+?>
+			</form>
+			</table>
+			</div>
+		</td>
+	</tr>
+</table>
+
+
+</body>
+</html>

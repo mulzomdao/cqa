@@ -1,0 +1,169 @@
+<?
+	if($_SESSION[s_id]==""){echo "<script>alert('회원로그인 해주세요.'); history.go(-1);</script>";}
+
+	if($_GET[searchKey]!="" && $_GET[searchStr]!=""){
+		$where=" and $_GET[searchKey] like '%$_GET[searchStr]%' ";
+	}
+
+	$width=780;
+	$skin="default";
+
+	$select1="select no from scrap where id='$_SESSION[s_id]' $where ";
+	$result1=mysql_query($select1);
+	$row1=mysql_num_rows($result1);
+	$total=$row1;
+
+	$maxNum=20;
+	
+	if(!$_GET[page]) $page = 1;
+	$startNum=($page-1)*$maxNum;
+	$pages=ceil($total/$maxNum);
+	$maxPage=10;
+
+	//no, id, board, boardNo, title, category, regDate, etc
+	$select="select no, id, board, boardName, section, boardNo, title, regDate from scrap where id='$_SESSION[s_id]' $where order by no desc limit $startNum, $maxNum";
+	//echo $selectT;
+	$result=mysql_query($select);
+	//$num=mysql_num_rows($result);
+
+?>
+
+<table width="100%" cellspacing=0 cellpadding=0 align=center height=300 border=0>
+	<tr>
+		<td align=center valign=top>
+			<table width="<?echo $width?>" cellspacing=0 cellpadding=0 align=center>
+				<tr height=40>
+					<td>
+						<img src="boardImg/<?echo $skin?>/icon01.gif" border="0" align=absmiddle> 
+                        <font color="#666666"><b>스크랩보기</b>
+					</td>
+				</tr>
+			</table>
+<script>
+	function searchBoard(form){
+		if(form.searchStr.value==""){
+			alert("검색할 내용을 입력해주세요");
+			form.searchStr.focus();
+			return false;
+		}
+		form.submit();
+	}
+</script>
+			<table width="<?echo $width?>" cellspacing=0 cellpadding=0 align=center height=25>
+				<tr>
+					<td class=sfont align=left valign=bottom>Total <?echo $total?>개 &nbsp;page <?echo $page?>/<?echo $pages?></td>
+
+
+				
+				<form name=searchItem method=get>
+				<input type=hidden name=main value="<?echo $main?>">
+				<input type=hidden name=category value="<?echo $category?>">
+								
+					<td align=right valign=bottom>
+						<select class=black name=searchKey>
+							<option value="title" <?if($_GET[searchKey]=="title"){echo "selected";}?>>제목</option>
+							<option value="boardName" <?if($_GET[searchKey]=="boardName"){echo "selected";}?>>게시판</option>
+							<option value="section" <?if($_GET[searchKey]=="section"){echo "selected";}?>>분류</option>
+						</select>
+						<input type=text name=searchStr class=black size=10 value=<?echo $_GET[searchStr]?>>
+						<!--<a href="javascript:searchBoard(this.form)"><img src="boardImg/<?echo $skin?>/submit_icon.gif" border=0></a>-->
+						<input type=button value="검색" class=button1 onclick=searchBoard(this.form)>
+					</td>
+				
+				</form>
+				</tr>
+				<!--<tr><td height=3></td></tr>-->
+			</table>
+			
+			<table width="<?echo $width?>" cellspacing=0 cellpadding=0 align=center class=black>
+				<tr>
+					<td height=1 bgcolor=#000000 colspan=7></td>
+				</tr>
+				<tr>
+					<td height=4 bgcolor=#eeeeee colspan=7></td>
+				</tr>
+				<tr>
+					<td height=1 bgcolor=#000000 colspan=7></td>
+				</tr>
+				<tr><td height=2></td></tr>
+
+				<form name=deleteForm method=post action="boardEdit.html">
+				<input type=hidden name=flag value="scrapDel">
+				<input type=hidden name=main value="<?echo $main?>">
+
+				<tr align=center height=20>
+					<td class="ssfont" width=30>번호</td>
+					<td class="ssfont" width=18%>게시판</td>
+					<td class="ssfont" width="*">제목</td>
+					<td class="ssfont" width=40>날짜</td>
+					<td class="ssfont" width=40 style="cursor:hand"><font color=#333333 onclick="checkAll(deleteForm['del[]']);">선택</font></td>
+				</tr>
+				<tr>
+					<td height=1 bgcolor=#000000 colspan=7></td>
+				</tr>
+
+<?
+	if($total>0){
+		$boardNum=$total-(($page-1)*$maxNum);
+		while($rows=@mysql_fetch_array($result)){
+			$title=short_str(stripslashes($rows[title]), 80);
+			$title=htmlspecialchars($title);
+			//$regDate=explode(" ", $rows[regDate]);		
+?>
+				<tr><td height=2></td></tr>
+				<tr align=center height=24 onmouseover="this.style.backgroundColor='#f7f7f7'" onmouseout="this.style.backgroundColor=''">
+					<td><?echo $boardNum;?></td>
+					<td><a href="index.html?main=boardList.html&category=<?echo $rows[category]?>&board=<?echo $rows[board]?>"><?echo $rows[boardName]?></a></td>
+					<td align=left><?if($rows[section]!=""){echo "[".$rows[section]."]";}?> <a href="index.html?main=boardView.html&category=<?echo $rows[category]?>&board=<?echo $rows[board]?>&boardNo=<?echo $rows[boardNo]?>"><?echo $title?></a></td>
+					<td><?echo substr($rows[regDate], 5, 5)?></td>
+					<td><input type=checkbox name="del[]" value="<?echo $rows[no];?>"></td>
+				</tr>
+				<tr>
+					<td colspan=7 background="boardImg/<?echo $skin?>/icon02.gif" height=1></td>
+				</tr>
+<?
+			$boardNum--;
+		}	
+	}else{
+?>
+				<tr align=center height=50>
+					<td colspan=7 align=center><b>저장된 글이 없습니다.</b></td>
+				</tr>
+				<tr>
+					<td colspan=7 background="boardImg/<?echo $skin?>/icon02.gif" height=1></td>
+				</tr>
+<?
+	}
+?>
+			</table>
+
+			<table>
+				<tr>
+					<td valign=bottom>
+<?
+	$query="searchKey=$_GET[searchKey]&searchStr=$_GET[searchStr]";
+	$url="index.html?main=$main&category=$category";
+
+	pager($total,$pages,$maxPage,$url,$query);					
+?>					
+					</td>
+				</tr>
+			</table>
+
+			<table width=<?echo $width?>>
+				<tr>
+					<td>
+						<a href="index.html?main=<?echo $main?>&category=<?echo $category?>"><img src="boardImg/<?echo $skin?>/list_icon.gif" border=0 align=absmiddle></a>
+					</td>
+					<td align=right>
+						<a href="javascript:var bool = confirm('정말 삭제하시겠습니까 ?'); if(bool) onclick=deleteForm.submit();"><img src="boardImg/<?echo $skin?>/del_icon.gif" border=0 align=absmiddle></a>
+					</td>
+				</tr>
+				</form>
+				<tr>
+					<td height=20></td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>

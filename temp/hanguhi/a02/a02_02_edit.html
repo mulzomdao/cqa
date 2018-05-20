@@ -1,0 +1,108 @@
+<?
+	session_start();
+	include "../inc/session.html";
+	include "../inc/connect.html";
+	include "../inc/variable.html";
+	include "../inc/function.html";
+
+	if($_POST[flag] == "comp_add"){
+
+		$ip = getenv("REMOTE_ADDR");
+
+		$file=$_FILES['comp_sabon'];
+
+		if($file[name]!=""){
+			$reFileName=upload_file_Check($file, $_file_size, $_ok_file, "../file_upload/sabon/", "file");
+		}
+
+		$sin_file=$_FILES['sinbun_sabon'];
+
+		if($sin_file[name]!=""){
+			$sin_file_name=upload_file_Check($sin_file, $_file_size, $_ok_file, "../file_upload/sabon/", "file");
+		}
+
+		$insert1 = "
+			insert into np_company (
+				comp_seq, comp_nm, comp_num, comp_num_flag, comp_boss_nm, comp_corpor_num, comp_status, comp_type, comp_tel, comp_fax, comp_hp, comp_zipcode, comp_addr1, comp_addr2, comp_sabon, comp_use_yn, comp_reg_id, comp_reg_dt, comp_reg_ip, comp_refer, sinbun_sabon
+			) values (
+				'', '$_POST[comp_nm]', '$_POST[comp_num]', '$_POST[comp_num_flag]', '$_POST[comp_boss_nm]', '$_POST[comp_corpor_num]', '$_POST[comp_status]', '$_POST[comp_type]', '$_POST[comp_tel]', '$_POST[comp_fax]', '$_POST[comp_hp]', '$_POST[comp_zipcode]', '$_POST[comp_addr1]', '$_POST[comp_addr2]', '$reFileName', 'Y', '$_SESSION[user_id]', now(), '$ip', '$_POST[comp_refer]', '$sin_file_name'
+			)
+		";
+
+		mysql_query($insert1);
+		history(-2);
+	}
+
+	if($_POST[flag] == "comp_mod"){
+
+		if($_POST[comp_reg_id] != $_SESSION[user_id]){
+			alert("권한이 없습니다.");
+			exit;
+		}
+
+		$file=$_FILES['comp_sabon'];
+
+		if($file[name]!=""){
+
+			$select = "select comp_sabon from np_company where comp_seq = '$_POST[comp_seq]' ";
+			$result = mysql_query($select);
+			$row = @mysql_fetch_array($result);
+
+			if($row[comp_sabon]!=""){
+				unlink("../file_upload/sabon/".$row[comp_sabon]);
+			}
+
+			$reFileName=upload_file_Check($file, $_file_size, $_ok_file, "../file_upload/sabon/", "file");
+
+			$update = "update np_company set comp_sabon = '$reFileName' where comp_seq = '$_POST[comp_seq]' ";
+			mysql_query($update);
+		}
+
+		$update1 = "
+			update np_company set
+				comp_nm = '$_POST[comp_nm]',
+				comp_num = '$_POST[comp_num]',
+				comp_num_flag = '$_POST[comp_num_flag]',
+				comp_boss_nm = '$_POST[comp_boss_nm]',
+				comp_corpor_num = '$_POST[comp_corpor_num]',
+				comp_status = '$_POST[comp_status]',
+				comp_type = '$_POST[comp_type]',
+				comp_tel = '$_POST[comp_tel]',
+				comp_fax = '$_POST[comp_fax]',
+				comp_hp = '$_POST[comp_hp]',
+				comp_zipcode = '$_POST[comp_zipcode]',
+				comp_addr1 = '$_POST[comp_addr1]',
+				comp_addr2 = '$_POST[comp_addr2]',
+				comp_use_yn = '$_POST[comp_use_yn]',
+				comp_refer = '$_POST[comp_refer]'
+			where
+				comp_seq = '$_POST[comp_seq]'
+				and comp_reg_id = '$_SESSION[user_id]'
+		";
+
+		mysql_query($update1);
+		history(-1);
+	}
+
+	if($_POST[flag] == "comp_del"){
+
+		if($_POST[comp_reg_id] != $_SESSION[user_id]){
+			alert("권한이 없습니다.");
+			exit;
+		}
+
+		$select = "select comp_sabon from np_company where comp_seq = '$_POST[comp_seq]' ";
+		$result = mysql_query($select);
+		$row = @mysql_fetch_array($result);
+
+		if($row[comp_sabon]!=""){
+			unlink("../file_upload/comp_sabon/".$row[comp_sabon]);
+		}
+
+		$delete1 = "delete from np_company where comp_seq = '$_POST[comp_seq]' and comp_reg_id = '$_SESSION[user_id]' ";
+
+		mysql_query($delete1);
+		history(-2);
+	}
+
+?>

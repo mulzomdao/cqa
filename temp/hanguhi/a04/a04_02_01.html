@@ -1,0 +1,204 @@
+<?
+	session_start();
+	include "../inc/connect.html";
+	include "../inc/function.html";
+	include "../inc/variable.html";
+	include "../inc/session.html";
+
+	if($_SESSION[user_level]<30){
+		alert("권한이 없습니다.");
+	}
+
+    if($_GET[col] != "" && $_GET[search]){
+		$where .= "and $_GET[col] = '$_GET[search]' ";
+	}
+
+	if($_GET[use_yn] != ""){
+		$where .= "and a.agent_use_yn = '$_GET[agent_use_yn]' ";
+	}
+
+	if($_GET[agent_seq] != ""){
+		$where .= "and a.agent_seq = '$_GET[agent_seq]' ";
+	}
+
+	$select = "select count(*) cnt from np_agent a where 1=1 $where" ;
+
+	//echo $select;
+	$result=@mysql_query($select);
+	$row = @mysql_fetch_array($result);
+
+	$total = $row[cnt];
+
+	if(!$_GET[page]) $page = 1;
+	$start_num=($page-1)*$_max_num;
+
+	$select = "
+		select
+			a.*
+		from
+			np_agent a
+		where
+			1=1
+			$where
+		order by 1 desc
+		limit $start_num, $_max_num";
+
+	//echo2($select);
+	$result=@mysql_query($select);
+	$pages=ceil($total/$_max_num);
+
+?>
+
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+	<title>NetPlus</title>
+	<link href="/css/style2.css" rel="stylesheet" type="text/css">
+	<script language="javascript" src="/js/script.js"></script>
+</head>
+
+<BODY BGCOLOR=#FFFFFF LEFTMARGIN=0 TOPMARGIN=0 MARGINWIDTH=0 MARGINHEIGHT=0 height=100% align="left">
+
+<table width="1200" border="0" bordercolor="">
+	<tr height=20>
+		<td valign="bottom">현재위치 : HOME &gt; 사용자관리 &gt; 대리점관리 목록</td>
+	</tr>
+</table>
+
+<table width="1200" border="1" cellpadding="2" cellspacing="0" bordercolor="#CCCCCC" bgcolor="#ffffff">
+
+<form name=find method=get action="a04_02_01.html">
+
+	<tr>
+		<td>
+			<table border=1 cellpadding=1 cellspacing=0 width=100% style="border-collapse:collapse" bordercolor=#CCCCCC>
+				<tr>
+					<td width="8%" class="bold">대리점</td>
+					<td width="17%" class="center">
+						<select name="agent_seq">
+							<?agent_combo($_SESSION[user_level], $_GET[agent_seq])?>
+						</select>
+					</td>
+					<td width="8%" class="bold">사용여부</td>
+					<td width="17%" class="center">
+						<select name="agent_use_yn" size="1">
+							<option value=''>전체</option>
+							<?code_combo("use_yn", $_GET[agent_use_yn])?>
+						</select>
+					</td>
+
+                    <td width="8%" class="bold">검색조건</td>
+                    <td width="*" class="center" >
+
+						<table width="100%" border="0" bordercolor="DDECFC" cellpadding=0 cellspacing=0>
+							<tr>
+								<td align="left" width=81>
+									<select name="col" style="width:80">
+										<option value="">전체</option>
+										<option value="a.agent_boss_nm" <?if($_GET[col] == "a.agent_boss_nm"){echo "selected";}?>>대표자명</option>
+										<option value="a.agent_busi_num" <?if($_GET[col] == "a.agent_busi_num"){echo "selected";}?>>사업자등록번호</option>
+									</select>
+								</td>
+								<td>
+									<input type="text" name="search" size="15" value="<?echo $_GET[search]?>" onFocus="this.value=''" style="width:118">
+								</td>
+							</tr>
+						</table>
+                    </td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+
+</form>
+</table>
+
+<table width="1200" border="0" bordercolor="DDECFC" cellpadding=0 cellspacing=0>
+	<tr>
+		<td align="right" height=27>
+			<img src="/images/bt_inquiry.gif"  value="조회" style="cursor:hand" onclick="find.submit();">
+			<a style="cursor:hand" onclick="window.open('a04_02_01_02.html', '_change', 'width=830, height=360,scrollbars=no, status=no, location=no');"><img src="/images/bt_regi.gif" border=0></a>
+		</td>
+	</tr>
+</table>
+
+<table width="1200" border="1" cellpadding="2" cellspacing="0" bordercolor="#CCCCCC" bgcolor="#ffffff">
+	<tr>
+		<td>
+			<div id="bottomright" style="position: RELATIVE; z-index: 1; overflow:hidden; width: 1193; height:422px; left: 0px; top: 0px; visibility: visible;" align="left">
+			<table border=1 cellpadding=1 cellspacing=0 width=100% style="border-collapse:collapse" bordercolor=#CCCCCC>
+				<tr height=20>
+					<td width="40" class="bold">번호</td>
+					<td width="80" class="bold">대리점코드</td>
+					<td width="140" class="bold">상호명</td>
+					<td width="60" class="bold">대표자명</td>
+					<td width="100" class="bold">사업자등록번호</td>
+					<td width="100" class="bold">전화번호</td>
+					<td width="*" class="bold">주소</td>
+					<td width="60" class="bold">사용여부</td>
+					<td width="80" class="bold">등록일</td>
+					<td width="220" class="bold">참고사항</td>
+				</tr>
+
+
+<?
+	if($total>0){
+		$agent_num = $total-(($page-1)*$_max_num);
+
+		$height = "450";
+
+		if($_tail_yn == "Y"){
+			$height = "500";
+		}
+
+		while($rows = @mysql_fetch_array($result)){
+			$agent_refer = htmlspecialchars(short_str(stripslashes($rows[agent_refer]), 40));
+			//$agent_refer = htmlspecialchars($agent_refer);
+			$agent_reg_dt = explode(" ", $rows[agent_reg_dt]);
+
+?>
+				<tr align=center height=20 style="vertical-align:bottom;" OnMouseOver=style.background='F3F3F3' OnMouseOut=style.background='FFFFFF'>
+					<td class="center"><?echo $agent_num?></td>
+					<td class="center"><a style="cursor:hand" onclick="window.open('a04_02_01_01.html?agent_seq=<?echo $rows[agent_seq]?>', '_change', 'width=830, height=360,scrollbars=no, status=no, location=no');"><?echo $rows[agent_id]?></a></td>
+					<td class="center"><?echo $rows[agent_nm]?></td>
+					<td class="center"><?echo $rows[agent_boss_nm]?></td>
+					<td class="center"><?echo $rows[agent_busi_num]?></td>
+					<td class="center"><?echo $rows[agent_tel]?></td>
+					<td class="left"><?echo $rows[agent_addr1]?></td>
+					<td class="center"><?echo $rows[agent_use_yn]?></td>
+					<td class="center"><?echo $agent_reg_dt[0]?></td>
+					<td class="left"><a title="<?echo stripslashes($rows[agent_refer])?>"><?echo $agent_refer?></a></td>
+				</tr>
+
+<?
+			$agent_num--;
+		}
+	}else{
+		echo "<tr><td colspan=20 align=center height=60><b>검색 내용이나 등록된 글이 없습니다.</b></td></tr>";
+	}
+?>
+
+			</table>
+			</div>
+		</td>
+	</tr>
+</table>
+
+<table width="1200" border="0" bordercolor="DDECFC" cellpadding=0 cellspaicng=0>
+	<tr height=30 style="vertical-align:middle;">
+		<td align="left" width="200"></td>
+		<td align="center" width="*">
+<?
+	$url = $_SERVER["REQUEST_URI"];
+	pager($total,$pages,$_max_page,$url,$tail);
+?>
+		</td>
+		<td align="right" width="200">Total <?echo $total?> 건, &nbsp;<font color="red"><?echo $page?></font>/<?echo $pages?> Pages
+	  </td>
+	</tr>
+</table>
+
+<?include "../include/bottom.html";?>
+
+</body>
+</html>

@@ -1,0 +1,64 @@
+<?
+	session_start();
+	include "../inc/session.html";
+	include "../inc/connect.html";
+	include "../inc/variable.html";
+	include "../inc/function.html";
+
+	if($_SESSION[user_level]<20){
+		alert("권한이 없습니다.");
+	}
+
+	if($_POST[flag] == "user_add"){
+
+		$ip = getenv("REMOTE_ADDR");
+
+		$user_jumin = $_POST[jumin1]."-".$_POST[jumin2];
+
+		$insert = "
+			insert into np_user(
+				user_id, pwd, agent_seq, user_nm, user_level, user_jumin, user_posit, user_tel, user_hp, user_zipcode, user_addr1, user_addr2, user_email, user_use_yn, user_refer, user_reg_id, user_reg_dt, user_reg_ip, user_comp_tel, user_stat
+			) values (
+				'$_POST[user_id]', '$_POST[pwd]', '$_POST[agent_seq]', '$_POST[user_nm]', '$_POST[user_level]', '$user_jumin', '$_POST[user_posit]', '$_POST[user_tel]', '$_POST[user_hp]', '$_POST[user_zipcode]', '$_POST[user_addr1]', '$_POST[user_addr2]', '$_POST[user_email]', '$_POST[user_use_yn]', '$_POST[user_refer]', '$_SESSION[user_id]', now(), '$ip', '$_POST[user_comp_tel]', '승인요청'
+			)
+		";
+
+		mysql_query($insert);
+		opener();
+	}
+
+	if($_POST[flag] == "user_mod"){
+
+		$update = "
+			update np_user set
+				agent_seq = '$_POST[agent_seq]',
+				user_level = '$_POST[user_level]',
+				user_posit = '$_POST[user_posit]',
+				user_tel = '$_POST[user_tel]',
+				user_hp = '$_POST[user_hp]',
+				user_zipcode = '$_POST[user_zipcode]',
+				user_addr1 = '$_POST[user_addr1]',
+				user_addr2 = '$_POST[user_addr2]',
+				user_email = '$_POST[user_email]',
+				user_use_yn = '$_POST[user_use_yn]',
+				user_comp_tel = '$_POST[user_comp_tel]',
+				user_stat = '$_POST[user_stat]',
+				user_refer = '$_POST[user_refer]'
+			where
+				user_id = '$_POST[user_id]'
+		";
+
+		mysql_query($update);
+		reload();
+		history(-1);
+	}
+
+	if($_POST[flag] == "user_del"){
+
+		$delete = "delete from np_user where user_id = '$_POST[user_id]' ";
+
+		mysql_query($delete);
+		opener();
+	}
+
+?>

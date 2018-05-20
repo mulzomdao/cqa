@@ -1,0 +1,263 @@
+<?
+	session_start();
+	include "inc/connect.html";
+	include "inc/function.html";
+	include "inc/variable.html";
+
+	$select = "select lpad(max(agent_id)+1, 4, '0') agent_id from np_agent";
+
+	$result = mysql_query($select);
+	$row = @mysql_fetch_array($result);
+?>
+
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+	<title>NetPlus</title>
+	<link href="/css/style2.css" rel="stylesheet" type="text/css">
+	<script language="javascript" src="/js/script.js"></script>
+</head>
+
+<script>
+
+	function agent_add_check(){
+
+		if(agent_add.agent_busi_num.value==""){
+			alert("사업자등록번호를 입력해 주세요!");
+			agent_add.agent_busi_num.focus();
+		}else if(agent_add.agent_nm.value==""){
+			alert("상호명을 입력해 주세요!");
+			agent_add.agent_nm.focus();
+		}else if(agent_add.agent_boss_nm.value==""){
+			alert("대표자명을 입력해 주세요!");
+			agent_add.agent_boss_nm.focus();
+		}else if(agent_add.agent_id.value==""){
+			alert("대리점코드를 입력해 주세요!");
+			agent_add.agent_id.focus();
+		}else if(user_add_check()){
+			if(confirm('등록 하시겠습니까?')){
+				agent_add.submit();
+			}
+		}
+
+	}
+
+	function user_add_check(){
+
+		var jumin1 = document.agent_add.jumin1.value;
+		var jumin2 = document.agent_add.jumin2.value;
+		var returnFlag = false;
+
+		if(agent_add.user_nm.value==""){
+			alert("성명을 입력해 주세요!");
+			agent_add.user_nm.focus();
+		}else if(agent_add.user_id.value==""){
+			alert("아이디을 입력해 주세요!");
+			agent_add.user_id.focus();
+		}else if(agent_add.pwd.value.length < 4){
+			alert("비밀번호를 4자리 이상 입력해 주세요!");
+			agent_add.pwd.focus();
+		}else if(agent_add.pwd.value!=agent_add.pwd1.value){
+			alert("비번과 비번확인이 일치 하지 않습니다.");
+			agent_add.pwd.value = "";
+			agent_add.pwd1.value = "";
+			agent_add.pwd.focus();
+		}else if(agent_add.jumin1.value==""){
+			alert("주민번호를 입력해 주세요!");
+			agent_add.jumin1.focus();
+		}else if(agent_add.jumin2.value==""){
+			alert("주민번호를 입력해 주세요!");
+			agent_add.jumin2.focus();
+		}else if(!check_ResidentNO(jumin1, jumin2)){
+			alert("올바른 주민등록번호가 아닙니다. 다시 한번 확인해 주시기 바랍니다.");
+			agent_add.jumin1.focus();
+		}else{
+			returnFlag = true;
+		}
+
+		return returnFlag;
+
+	}
+
+	function search_user_id(){
+		window.open('./common/search_user_id.html?form_name=agent_add','search_user_id','width=560,height=200,scrollbars=no');
+	}
+
+</script>
+
+<BODY BGCOLOR=#FFFFFF LEFTMARGIN=0 TOPMARGIN=0 MARGINWIDTH=0 MARGINHEIGHT=0 height=100% align="left" >
+
+<table width="760" border="0" cellpadding="0" cellspacing="0" align=center>
+	<tr>
+		<td width="760" valign="bottom" class="tlt1" height="30"><img src="/images/icon02.gif">
+			<b>대리점 등록 신청</b> <font style="font-size:11"></font>
+		</td>
+	</tr>
+</table>
+
+
+<table width="760" border="1" cellpadding="2" cellspacing="0" bordercolor="#CCCCCC" bgcolor="#ffffff" align=center>
+
+<form method=post name="agent_add" action="login_check.html" ENCTYPE='multipart/form-data'>
+<input type = 'hidden' name = 'flag' value = 'agent_add'>
+<input type = 'hidden' name = 'agent_id' value = '<?echo $row[agent_id]?>'>
+
+	<tr>
+		<td>
+			<table border=1 cellpadding=1 cellspacing=0 width=100% style="border-collapse:collapse" bordercolor=#CCCCCC>
+				<tr>
+					<td width="18%" class="bold">*상호명</td>
+					<td width="32%" class="center"><input type="text" style="width:244" value="<?echo $row[agent_nm]?>" name="agent_nm"></td>
+					<td width="18%" class="bold">*대표자명</td>
+					<td width="32%" class="center"><input type="text" style="width:244" value="<?echo $row[agent_boss_nm]?>" name="agent_boss_nm"></td>
+				</tr>
+				<tr>
+					<td class="bold">*사업자등록번호</td>
+					<td class="center"><input type="text" style="width:244" value="<?echo $row[agent_busi_num]?>" name="agent_busi_num"></td>
+					<td class="bold">업태</td>
+					<td class="center"><input type="text" style="width:244" value="<?echo $row[agent_status]?>" name="agent_status"></td>
+				</tr>
+				<tr>
+					<td class="bold">업종</td>
+					<td class="center"><input type="text" style="width:244" value="<?echo $row[agent_type]?>" name="agent_type"></td>
+					<td class="bold">전화번호</td>
+					<td class="center"><input type="text" style="width:244" value="<?echo $row[agent_tel]?>" name="agent_tel"></td>
+				</tr>
+				<tr>
+					<td class="bold">팩스</td>
+					<td class="center"><input type="text" style="width:244" value="<?echo $row[agent_fax]?>" name="agent_fax"></td>
+					<td class="bold">통장사본</td>
+					<td class="center"><input type="file" name="tongjang_sabon" value=""></td>
+				</tr>
+
+				<tr>
+					<td class="bold">주소</td>
+					<td class="center" colspan=3>
+						<table width="100%" border="0" cellpadding="0" cellspacing="0">
+							<tr align=left>
+								<td width=66><input type="text" name="agent_zipcode" style="width:65;" readonly  value="<?echo $row[agent_zipcode]?>"></td>
+								<td width=82><a href="javascript:zipopen('agent_add', 'agent_zipcode', 'agent_addr1', 'agent_addr2')"><img src="/images/bt_post_01.gif" border=0 height=19 width=81></a></td>
+								<td width=237><input type="text" name="agent_addr1" style="width:236;" readonly value="<?echo $row[agent_addr1]?>"></td>
+								<td width="*"><input type="text" name="agent_addr2" style="width:244; ime-mode:active" value="<?echo $row[agent_addr2]?>"></td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+
+				<tr>
+					<td class="bold">사업자사본</td>
+					<td class="center"><input type="file" name="saup_sabon" value=""></td>
+					<td class="bold">신분증사본</td>
+					<td class="center"><input type="file" name="shinbun_sabon" value=""></td>
+				</tr>
+			</table>
+
+		</td>
+	</tr>
+</table>
+
+
+<table width="760" border="0" cellpadding="0" cellspacing="0" align=center>
+	<tr>
+		<td width="760" valign="bottom" class="tlt1" height="30"><img src="/images/icon02.gif">
+			<b>사용자등록신청</b> <font style="font-size:11"></font>
+		</td>
+	</tr>
+</table>
+
+<table width="760" border="1" cellpadding="2" cellspacing="0" bordercolor="#CCCCCC" bgcolor="#ffffff" align=center>
+
+	<tr>
+		<td>
+			<table border=1 cellpadding=1 cellspacing=0 width=100% style="border-collapse:collapse" bordercolor=#CCCCCC>
+				<tr>
+					<td width="18%" class="bold">*아이디</td>
+					<td width="32%" class="center">
+						<table width="100%" border="0" cellpadding="0" cellspacing="0">
+							<tr align=left>
+								<td width=262><input type="text" name="user_id" style="width:161" readonly onclick="search_user_id()" onkeyup="search_user_id()"></td>
+								<td width=82><a href="javascript:search_user_id()"><img src="/images/bt_joong_01.gif" border=0 height=19 width=81></a></td>
+							</tr>
+						</table>
+					</td>
+					<td width="18%" class="bold">*비번/비번확인</td>
+					<td width="32%" class="center">
+						<table width="100%" border="0" cellpadding="0" cellspacing="0">
+							<tr align=left>
+								<td width=122><input type="password" style="width:121" value="" name="pwd"></td>
+								<td width=*><input type="password" style="width:122" value="" name="pwd1"></td>
+							</tr>
+						</table>
+
+					</td>
+				</tr>
+				<tr>
+					<td width="18%" class="bold">*성명</td>
+					<td width="32%" class="center"><input type="text" style="width:244; ime-mode:active" value="" name="user_nm"></td>
+					<td width="18%" class="bold">*주민번호</td>
+					<td width="32%" class="center">
+						<input type="text" name="jumin1" maxlength=6 onKeyDown="return onlyNum();" onkeyup="if(this.value.length==6) document.agent_add.jumin2.focus()" style="ime-mode:disabled;width:100">-<input type="text" name="jumin2" maxlength=7 onKeyDown="return onlyNum();" style="ime-mode:disabled;width:100">
+					</td>
+				</tr>
+				<tr>
+					<td class="bold">이메일</td>
+					<td class="center"><input type="text" style="width:244; ime-mode:disabled" name="user_email"></td>
+					<td class="bold">회사전화</td>
+					<td class="center"><input type="text" style="width:244" name="user_comp_tel"></td>
+				</tr>
+				<tr>
+					<td class="bold">휴대폰</td>
+					<td class="center"><input type="text" style="width:244" name="user_hp"></td>
+					<td class="bold">집전화</td>
+					<td class="center"><input type="text" style="width:244" name="user_tel"></td>
+				</tr>
+				<tr>
+					<td class="bold">자택주소</td>
+					<td class="center" colspan=3>
+						<table width="100%" border="0" cellpadding="0" cellspacing="0">
+							<tr align=left>
+								<td width=66><input type="text" name="user_zipcode" style="width:65;" readonly  value="<?echo $row[user_zipcode]?>"></td>
+								<td width=82><a href="javascript:zipopen('agent_add', 'user_zipcode', 'user_addr1', 'user_addr2')"><img src="/images/bt_post_01.gif" border=0 height=19 width=81></a></td>
+								<td width=237><input type="text" name="user_addr1" style="width:236;" readonly value="<?echo $row[user_addr1]?>"></td>
+								<td width="*"><input type="text" name="user_addr2" style="width:244; ime-mode:active" value="<?echo $row[user_addr2]?>"></td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+
+
+<!--
+				<tr>
+					<td class="bold">상태</td>
+					<td class="center">
+						<select name="posit" size="1" style="width:150px" >
+							<option value='경리'>근무</option>
+							<option value='경리주임'>퇴사</option>
+						</select>
+					</td>
+					<td class="bold">회사전화번호</td>
+					<td class="center"><input type="text" style="width:244"></td>
+				</tr>
+
+-->
+			</table>
+
+		</td>
+	</tr>
+</form>
+</table>
+
+<table width="760" border="0" cellpadding="0" cellspacing="0" border=1 align=center>
+	<tr>
+		<td width="100%" align=right height="30">
+			<img src="/images/bt_regi.gif" border=0 onclick="agent_add_check();" style="cursor:hand">
+			<img src="/images/bt_close.gif" border=0 onclick="self.close();" style="cursor:hand">
+		</td>
+	</tr>
+</table>
+
+</body>
+</html>
+
+
+

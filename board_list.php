@@ -31,10 +31,8 @@
                 <div class="pull-right">
                     <div class="form-inline">
 
-                        <label class="sr-only" for="exampleSelect1">Preference</label>
 
                         <div class="input-group mr-sm-2">
-
                             <select class="form-control form-control-sm" id="exampleSelect1" style="width: 100px; padding-top: 4px; padding-bottom: 8px;">
                                 <option>제목</option>
                                 <option>이름</option>
@@ -53,7 +51,7 @@
         <hr style="margin-top: 0px; margin-bottom: 0px;">
         <div class="row">
             <div class="col-lg-12">
-                <table class="table" style="margin-bottom: 0px">
+                <table class="table table-responsive" style="margin-bottom: 0px">
                     <thead>
                         <tr class="text-center">
                             <th width="5%">No</th>
@@ -108,6 +106,21 @@
             
         </div>
     </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <?include "include/bottom.php"?>
 

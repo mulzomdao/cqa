@@ -1,0 +1,338 @@
+<?
+	session_start();
+	include "../inc/connect.html";
+	include "../inc/function.html";
+	include "../inc/variable.html";
+	include "../inc/session.html";
+
+	$select = "
+		select
+			a.*,
+			b.*,
+			c.user_nm
+		from
+			np_cust a,
+			np_account b,
+			np_user c
+		where
+			a.cust_seq = b.cust_seq
+			and a.cust_reg_id = c.user_id
+			and a.cust_seq = '$_GET[cust_seq]' ";
+
+	//echo2($select);
+	$result=@mysql_query($select);
+	$row=@mysql_fetch_array($result);
+
+	if($row[cust_seq]==""){
+		alert("권한이 없습니다.");
+	}
+?>
+
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+	<title>NetPlus</title>
+	<link href="/css/style2.css" rel="stylesheet" type="text/css">
+	<script language="javascript" src="/js/script.js"></script>
+</head>
+
+<script>
+
+	function cust_edit_check(){
+
+		var cust_jumin1 = cust_edit.cust_jumin1.value;
+		var cust_jumin2 = cust_edit.cust_jumin2.value;
+
+		if(cust_edit.cust_nm.value==""){
+			alert("성명을 입력해 주세요!");
+			cust_edit.cust_nm.focus();
+		}else if(cust_edit.cust_jumin1.value==""){
+			alert("주민번호를 입력해 주세요!");
+			cust_edit.cust_jumin1.focus();
+		}else if(cust_edit.cust_jumin2.value==""){
+			alert("주민번호를 입력해 주세요!");
+			cust_edit.cust_jumin2.focus();
+		}else if(!check_ResidentNO(cust_jumin1, cust_jumin2)){
+			alert("올바른 주민등록번호가 아닙니다. 다시 한번 확인해 주시기 바랍니다.");
+			cust_edit.cust_jumin1.focus();
+		}else if(cust_edit.cust_tel.value=="" && cust_edit.cust_hp.value==""){
+			alert("전화번호나 휴대전화를 입력해 주세요!");
+			cust_edit.cust_tel.focus();
+		}else if(cust_edit.acc_gubun.value==""){
+			alert("결제구분을 선택해 주세요!");
+			cust_edit.acc_gubun.focus();
+		}else{
+			if(acc_check()){
+				if(confirm('수정 하시겠습니까?')){
+					cust_edit.submit();
+				}
+			}
+		}
+
+	}
+
+	function acc_check(){
+		/*
+		if(cust_edit.acc_gubun.value=="신용카드" || cust_edit.acc_gubun.value=="계좌이체"){
+			if(cust_edit.acc_nm.value==""){
+				alert("은행/카드사명을 선택해 주세요.");
+				document.frames["comboframe"].acc_nm.acc_nm.focus();
+				return false;
+			}else if(cust_edit.acc_num.value==""){
+				alert("카드/계좌번호를 입력해 주세요.");
+				cust_edit.acc_num.focus();
+				return false;
+			}else if(cust_edit.acc_cust_nm.value==""){
+				alert("결제자명을 입력해 주세요.");
+				cust_edit.acc_cust_nm.focus();
+				return false;
+			}else{
+				return true;
+			}
+		}else if(cust_edit.acc_gubun.value=="지로"){
+			if(cust_edit.acc_zipcode.value==""){
+				alert("우편번호를 입력해 주세요.");
+				zipopen('cust_edit', 'acc_zipcode', 'acc_addr1', 'acc_addr2');
+				return false;
+			}else if(cust_edit.acc_addr2.value==""){
+				alert("주소를 입력해 주세요.");
+				cust_edit.acc_addr2.focus();
+				return false;
+			}else{
+				return true;
+			}
+		}
+		*/
+		return true;
+	}
+
+	function comboChange(){
+
+		var acc_gubun = eval("document.cust_edit.acc_gubun.options[document.cust_edit.acc_gubun.selectedIndex].value");
+		document.frames["comboframe"].location.replace("/include/acc_combo.html?acc_gubun="+acc_gubun+"&acc_nm=&form_nm=cust_edit");
+		document.cust_edit.acc_nm.value="";
+
+		cust_edit.acc_num.value="";
+		cust_edit.acc_cust_nm.value="";
+		cust_edit.sangdong.checked=false;
+		cust_edit.acc_zipcode.value="";
+		cust_edit.acc_addr1.value="";
+		cust_edit.acc_addr2.value="";
+		cust_edit.acc_refer.value="";
+
+		if(acc_gubun=="신용카드"){
+			cust_edit.year.value="<?echo $_year?>";
+			cust_edit.month.value="<?echo $_month?>";
+		}else{
+			cust_edit.year.value="";
+			cust_edit.month.value="";
+		}
+		accCheck();
+
+	}
+
+	function accCheck(){
+
+		var acc_gubun=eval("document.cust_edit.acc_gubun.options[document.cust_edit.acc_gubun.selectedIndex].value");
+
+		if(acc_gubun=="신용카드"){
+			cust_edit.acc_num.disabled=false;
+			cust_edit.acc_cust_nm.disabled=false;
+			cust_edit.year.disabled=false;
+			cust_edit.month.disabled=false;
+			cust_edit.sangdong.disabled=true;
+			cust_edit.acc_zipcode.disabled=true;
+			cust_edit.acc_addr1.disabled=true;
+			cust_edit.acc_addr2.disabled=true;
+			cust_edit.acc_refer.disabled=false;
+		}else if(acc_gubun=="계좌이체"){
+			cust_edit.acc_num.disabled=false;
+			cust_edit.acc_cust_nm.disabled=false;
+			cust_edit.year.disabled=true;
+			cust_edit.month.disabled=true;
+			cust_edit.sangdong.disabled=true;
+			cust_edit.acc_zipcode.disabled=true;
+			cust_edit.acc_addr1.disabled=true;
+			cust_edit.acc_addr2.disabled=true;
+			cust_edit.acc_refer.disabled=false;
+		}else if(acc_gubun=="지로"){
+			cust_edit.acc_num.disabled=true;
+			cust_edit.acc_cust_nm.disabled=true;
+			cust_edit.year.disabled=true;
+			cust_edit.month.disabled=true;
+			cust_edit.sangdong.disabled=false;
+			cust_edit.acc_zipcode.disabled=false;
+			cust_edit.acc_addr1.disabled=false;
+			cust_edit.acc_addr2.disabled=false;
+			cust_edit.acc_refer.disabled=false;
+		}else{
+			cust_edit.acc_num.disabled=true;
+			cust_edit.acc_cust_nm.disabled=true;
+			cust_edit.year.disabled=true;
+			cust_edit.month.disabled=true;
+			cust_edit.sangdong.disabled=true;
+			cust_edit.acc_zipcode.disabled=true;
+			cust_edit.acc_addr1.disabled=true;
+			cust_edit.acc_addr2.disabled=true;
+			cust_edit.acc_refer.disabled=true;
+		}
+
+	}
+
+	function sangDong(flag){
+		if(flag=="Y"){
+			cust_edit.acc_zipcode.value = cust_edit.cust_zipcode.value;
+			cust_edit.acc_addr1.value = cust_edit.cust_addr1.value;
+			cust_edit.acc_addr2.value = cust_edit.cust_addr2.value;
+		}else{
+			cust_edit.acc_zipcode.value = "";
+			cust_edit.acc_addr1.value = "";
+			cust_edit.acc_addr2.value = "";
+		}
+	}
+
+</script>
+
+
+<BODY BGCOLOR=#FFFFFF LEFTMARGIN=0 TOPMARGIN=0 MARGINWIDTH=0 MARGINHEIGHT=0 height=100% align="left" onload="accCheck();">
+
+<table width="980" border="0" cellpadding="0" cellspacing="0" align=center>
+	<tr>
+		<td width="100%" valign="bottom" height="30"><img src="/images/icon02.gif">
+			<b>고객정보수정</b> <font style="font-size:11">(전화번호는 '-' 없이 입력해 주세요!)</font>
+		</td>
+	</tr>
+</table>
+
+<table width="980" border="1" cellpadding="2" cellspacing="0" bordercolor="#CCCCCC" bgcolor="#ffffff" align=center>
+
+<form method=post name="cust_edit" action="a01_01_edit.html" ENCTYPE='multipart/form-data'>
+<input type = 'hidden' name = 'flag' value = 'cust_edit'>
+<input type = 'hidden' name = 'acc_nm' value = '<?echo $row[acc_nm]?>'>
+<input type = 'hidden' name = 'cust_seq' value = '<?echo $_GET[cust_seq]?>'>
+<input type = 'hidden' name = 'acc_seq' value = '<?echo $row[acc_seq]?>'>
+
+	<tr>
+		<td>
+			<table border=1 cellpadding=1 cellspacing=0 width=100% style="border-collapse:collapse" bordercolor=#CCCCCC>
+				<tr height=20>
+					<td width="13%" class="bold">고객구분</td>
+					<td width="*" class="left" colspan=5>
+						<input type=radio name="cust_gubun" value="최우수" class="checkbox" <?if($row[cust_gubun]=="최우수"){echo "checked";}?>>최우수
+						<input type=radio name="cust_gubun" value="우수" class="checkbox" <?if($row[cust_gubun]=="우수"){echo "checked";}?>>우수
+						<input type=radio name="cust_gubun" value="일반" class="checkbox" <?if($row[cust_gubun]=="일반"){echo "checked";}?>>일반
+						<input type=radio name="cust_gubun" value="휴면" class="checkbox" <?if($row[cust_gubun]=="휴면"){echo "checked";}?>>휴면
+						<input type=radio name="cust_gubun" value="일탈" class="checkbox" <?if($row[cust_gubun]=="일탈"){echo "checked";}?>>일탈
+						<input type=radio name="cust_gubun" value="잠재" class="checkbox" <?if($row[cust_gubun]=="잠재"){echo "checked";}?>>잠재
+					</td>
+				</tr>
+				<tr height=20>
+					<td width="13%" class="bold">성명</td>
+					<td width="20%" class="center"><input type="text" name="cust_nm" value="<?echo $row[cust_nm]?>" style="width:191; ime-mode:active"></td>
+					<td width="13%" class="bold">주민번호</td>
+					<td width="20%" class="center">
+						<input type="text" name="cust_jumin1" maxlength=6 onKeyDown="return onlyNum();" onkeyup="if(this.value.length==6) document.cust_edit.cust_jumin2.focus()" style="ime-mode:disabled;width:92" value="<?echo substr($row[cust_jumin], 0, 6)?>">-<input type="text" name="cust_jumin2" maxlength=7 onKeyDown="return onlyNum();" style="ime-mode:disabled;width:93" value="<?echo substr($row[cust_jumin], 7, 7)?>">
+					</td>
+					<td width="14%" class="bold">전화번호</td>
+					<td width="20%" class="center"><input type="text" name="cust_tel" value="<?echo $row[cust_tel]?>" style="width:192" style="ime-mode:disabled" maxlength="11" onKeyDown="return onlyNum();" onBlur="chkTelNumber(this,1)" onFocus="chkTelNumber(this,2)"></td>
+				</tr>
+				<tr height=20>
+					<td class="bold">휴대전화</td>
+					<td class="center"><input type="text" name="cust_hp" value="<?echo $row[cust_hp]?>" style="width:191" style="ime-mode:disabled" maxlength="11" onKeyDown="return onlyNum();" onBlur="chkTelNumber(this,1)" onFocus="chkTelNumber(this,2)"></td>
+					<td class="bold">이메일</td>
+					<td class="center"><input type="text" name="cust_email" value="<?echo $row[cust_email]?>" style="width:191; ime-mode:disabled"></td>
+					<td class="bold">등록일</td>
+					<td class="left3"><?echo $row[cust_reg_dt]?></td>
+				</tr>
+				<tr height=20>
+					<td class="bold">신분증사본</td>
+					<td class="center">
+						<input type="file" name="cust_sabon" value="" style="width:160">
+						<?if($row[cust_sabon]){?><a href="javascript:sabon_down('<?echo $row[cust_sabon]?>')">보기</a><?}?>
+					</td>
+					<td class="bold">예금주통장사본</td>
+					<td class="center">
+						<input type="file" name="cust_tongjang" value="" style="width:160">
+						<?if($row[cust_tongjang]){?><a href="javascript:sabon_down('<?echo $row[cust_tongjang]?>')">보기</a><?}?>
+					</td>
+					<td class="bold">고객과의관계</td>
+					<td class="center"><input type="text" name="cust_relation" value="<?echo $row[cust_relation]?>" style="width:192; ime-mode:active"></td>
+				</tr>
+				<tr height=20>
+					<td width="10%" class="bold">주소지</td>
+					<td width="*" class="center" colspan=5>
+						<table width="100%" border="0" cellpadding="0" cellspacing="0">
+							<tr align=left>
+								<td width=66><input type="text" name="cust_zipcode" style="width:65;" readonly  value="<?echo $row[cust_zipcode]?>"></td>
+								<td width=82><a href="javascript:zipopen('cust_edit', 'cust_zipcode', 'cust_addr1', 'cust_addr2')"><img src="/images/bt_post_01.gif" border=0 height=19 width=81></a></td>
+								<td width=331><input type="text" name="cust_addr1" style="width:330;" value="<?echo $row[cust_addr1]?>" readonly></td>
+								<td width="*"><input type="text" name="cust_addr2" style="width:363; ime-mode:active" value="<?echo $row[cust_addr2]?>"></td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+				<!--
+				<tr height=20>
+					<td width="10%" class="bold">메모</td>
+					<td width="*" class="center" colspan=5><textarea style="width:842; height:40; ime-mode:active" name=cust_memo></textarea></td>
+				</tr>
+				-->
+				<tr height=20>
+					<td width="13%" class="bold">결제구분</td>
+					<td width="20%" class="center">
+						<select name="acc_gubun" onChange="comboChange();" style="width:120">
+							<option value="">선택해주세요</option>
+							<?code_combo("acc_gubun", $row[acc_gubun])?>
+						</select>
+					</td>
+					<td width="13%" class="bold">은행/카드사명</td>
+					<td width="20%" class="center">
+						<iframe src="/include/acc_combo.html?acc_gubun=<?echo $row[acc_gubun]?>&acc_nm=<?echo $row[acc_nm]?>&form_nm=cust_mod" name="comboframe" width="100%" height="19" scrolling="No" frameborder="0" align="left" allowTransparency ="true"marginwidth="0" marginheight="0" frameborder="0" vspace="0" hspace="0" style="z-index:99;"></iframe>
+					</td>
+					<td width="14%" class="bold">카드/계좌번호</td>
+					<td width="20%" class="center"><input type="text" name="acc_num" value="<?echo $row[acc_num]?>" style="width:192"></td>
+				</tr>
+
+				<tr height=20>
+					<td width="13%" class="bold">결제자명</td>
+					<td width="20%" class="center"><input type="text" name="acc_cust_nm" value="<?echo $row[acc_cust_nm]?>" style="width:191; ime-mode:active"></td>
+					<td class="bold">카드유효기간</td>
+					<td class="center" colspan=3><?month_combo($row[card_year]."-".$row[card_month])?></td>
+				</tr>
+
+				<tr height=20>
+					<td class="bold">청구지주소</td>
+					<td class="center" colspan=5>
+						<table width="100%" border="0" cellpadding="0" cellspacing="0">
+							<tr align=left>
+								<td width=44>상동<input type="checkbox" name="sangdong" value="Y" class="checkbox" onclick="if(this.checked){sangDong('Y');}else{sangDong('N');}"></td>
+								<td width=66><input type="text" name="acc_zipcode" style="width:65;" readonly  value="<?echo $row[acc_zipcode]?>"></td>
+								<td width=82><a href="javascript:if(cust_edit.acc_gubun.value=='지로'){zipopen('cust_edit', 'acc_zipcode', 'acc_addr1', 'acc_addr2')}else{alert('결제구분이 \'지로\' 일때만 가능합니다.')}"><img src="/images/bt_post_01.gif" border=0 height=19 width=81></a></td>
+								<td width=311><input type="text" name="acc_addr1" style="width:310;" value="<?echo $row[acc_addr1]?>" readonly></td>
+								<td width="*"><input type="text" name="acc_addr2" style="width:339; ime-mode:active" value="<?echo $row[acc_addr2]?>"></td>
+							</tr>
+						</table>
+
+					</td>
+				</tr>
+				<tr height=20>
+					<td width="10%" class="bold">참고사항</td>
+					<td width="*" class="center" colspan=5><textarea style="width:842; height:60; ime-mode:active" name="acc_refer"><?echo $row[acc_refer]?></textarea></td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+
+
+<table width="980" border="0" bordercolor="DDECFC" cellpadding=0 cellspacing=0 align=center>
+	<tr>
+		<td align="right" height=27>
+			<img src="/images/bt_modify.gif" border=0 onclick="cust_edit_check();" style="cursor:hand">
+			<img src="/images/bt_close.gif" style="cursor:hand" onclick="self.close();">
+		</td>
+	</tr>
+</table>
+
+</body>
+</html>

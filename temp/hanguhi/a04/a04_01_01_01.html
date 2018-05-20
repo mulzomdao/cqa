@@ -1,0 +1,199 @@
+<?
+	session_start();
+	include "../inc/connect.html";
+	include "../inc/function.html";
+	include "../inc/variable.html";
+	include "../inc/session.html";
+
+	if($_SESSION[user_level]<20){
+		close("권한이 없습니다.");
+	}
+
+	if($_SESSION[user_level]<30){
+		$disabled = "disabled";
+	}
+
+	if($_SESSION[user_level]<30){
+		$_GET[agent_seq] = $_SESSION[agent_seq];
+		$where .= "and (a.user_level < $_SESSION[user_level] or a.user_id = '$_SESSION[user_id]') ";
+	}else if($_SESSION[user_level]>=90){
+		$where .= "and (a.user_level <= $_SESSION[user_level] or a.user_id = '$_SESSION[user_id]') ";
+	}else{
+		$where .= "and (a.user_level < $_SESSION[user_level] or a.user_id = '$_SESSION[user_id]') ";
+	}
+
+
+	$select = "select a.* from np_user a where user_id = '$_GET[user_id]' $where";
+
+	$result=@mysql_query($select);
+	$row=@mysql_fetch_array($result);
+
+	if($row[user_id]==""){
+		close("권한이 없습니다.");
+	}
+?>
+
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+	<title>NetPlus</title>
+	<link href="/css/style2.css" rel="stylesheet" type="text/css">
+	<script language="javascript" src="/js/script.js"></script>
+</head>
+
+<script>
+
+	function user_mod_check(){
+
+		if(user_mod.user_posit.value==""){
+			alert("직급을 선택해 주세요!");
+			user_mod.user_posit.focus();
+		}else if(user_mod.agent_seq.value==""){
+			alert("대리점을 선택해 주세요!");
+			user_mod.agent_seq.focus();
+		}else if(user_mod.pwd.value.length < 4){
+			alert("비밀번호를 4자리 이상 입력해 주세요!");
+			user_mod.pwd.focus();
+		}else{
+			if(confirm('수정 하시겠습니까?')){
+				user_mod.submit();
+			}
+		}
+
+	}
+
+	function user_del(){
+
+		if(confirm('삭제 하시겠습니까?')){
+			user_mod.flag.value="user_del";
+			user_mod.submit();
+		}
+
+	}
+
+</script>
+
+<BODY BGCOLOR=#FFFFFF LEFTMARGIN=0 TOPMARGIN=0 MARGINWIDTH=0 MARGINHEIGHT=0 height=100% align="left" >
+
+<table width="780" border="0" cellpadding="0" cellspacing="0" align=center>
+	<tr>
+		<td width="780" valign="bottom" class="tlt1" height="30"><img src="/images/icon02.gif">
+			<b>사용자관리 상세</b> <font style="font-size:11"></font>
+		</td>
+	</tr>
+</table>
+
+
+<table width="760" border="1" cellpadding="2" cellspacing="0" bordercolor="#CCCCCC" bgcolor="#ffffff" align=center>
+
+<form method=post name="user_mod" action="a04_01_edit.html" ENCTYPE='multipart/form-data'>
+<input type = 'hidden' name = 'flag' value = 'user_mod'>
+<input type = 'hidden' name = 'user_id' value = '<?echo $row[user_id]?>'>
+
+	<tr>
+		<td>
+			<table border=1 cellpadding=1 cellspacing=0 width=100% style="border-collapse:collapse" bordercolor=#CCCCCC>
+				<tr>
+					<td width="18%" class="bold">대리점</td>
+					<td width="*" class="center">
+						<select name="agent_seq">
+							<?agent_combo($_SESSION[user_level], $row[agent_seq])?>
+						</select>
+					</td>
+					<td class="bold">사용여부/상태</td>
+					<td class="center">
+						<select name="user_use_yn" size="1">
+							<?code_combo("use_yn", $row[user_use_yn])?>
+						</select>
+						<select name="user_stat" <?echo $disabled?>>
+							<?code_combo("user_stat", $row[user_stat])?>
+						</select>
+
+					</td>
+				</tr>
+				<tr>
+					<td width="18%" class="bold">아이디</td>
+					<td width="32%" class="left3"><?echo $row[user_id]?></td>
+					<td width="18%" class="bold">비번</td>
+					<td width="32%" class="center"><input type="text" style="width:244" value="<?echo $row[pwd]?>" name="pwd"></td>
+				</tr>
+				<tr>
+					<td width="18%" class="bold">성명</td>
+					<td width="32%" class="left3"><?echo $row[user_nm]?></td>
+					<td width="18%" class="bold">주민번호</td>
+					<td width="32%" class="left3"><?echo $row[user_jumin]?></td>
+				</tr>
+				<tr>
+					<td class="bold">직급</td>
+					<td class="center">
+						<select name="user_posit" size="1">
+							<option value=''>선택해주세요</option>
+							<?code_combo("posit", $row[user_posit])?>
+						</select>
+					</td>
+					<td class="bold">권한</td>
+					<td class="center">
+						<select name="user_level" size="1">
+							<?level_combo("user_level", $_SESSION[user_level], $row[user_level])?>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td class="bold">이메일</td>
+					<td class="center"><input type="text" style="width:244" value="<?echo $row[user_email]?>" name="user_email"></td>
+					<td class="bold">회사전화</td>
+					<td class="center"><input type="text" name="user_comp_tel" style="width:244" value="<?echo $row[user_comp_tel]?>"></td>
+				</tr>
+				<tr>
+					<td class="bold">휴대폰</td>
+					<td class="center"><input type="text" name="user_hp" style="width:244" value="<?echo $row[user_hp]?>"></td>
+					<td class="bold">집전화</td>
+					<td class="center"><input type="text" name="user_tel" style="width:244" value="<?echo $row[user_tel]?>"></td>
+				</tr>
+
+				<tr>
+					<td class="bold">자택주소</td>
+					<td class="center" colspan=3>
+						<table width="100%" border="0" cellpadding="0" cellspacing="0">
+							<tr align=left>
+								<td width=66><input type="text" name="user_zipcode" style="width:65;" readonly  value="<?echo $row[user_zipcode]?>"></td>
+								<td width=82><a href="javascript:zipopen('user_mod', 'user_zipcode', 'user_addr1', 'user_addr2')"><img src="/images/bt_post_01.gif" border=0 height=19 width=81></a></td>
+								<td width=237><input type="text" name="user_addr1" style="width:236;" readonly value="<?echo $row[user_addr1]?>"></td>
+								<td width="*"><input type="text" name="user_addr2" style="width:244; ime-mode:active" value="<?echo $row[user_addr2]?>"></td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+<!--
+				<tr>
+					<td class="bold">이메일</td>
+					<td class="center"><input type="text" style="width:243" value="<?echo $row[user_email]?>"></td>
+					<td class="bold">회사전화번호</td>
+					<td class="center"><input type="text" style="width:244" value="<?echo $row[user_]?>"></td>
+				</tr>
+-->
+				<tr>
+					<td class="bold">참고사항</td>
+					<td class="center" colspan=3><textarea style="width:629;height=100" name="user_refer"><?echo $row[user_refer]?></textarea></td>
+				</tr>
+			</table>
+
+		</td>
+	</tr>
+</form>
+</table>
+
+<table width="760" border="0" cellpadding="0" cellspacing="0" border=1 align=center>
+	<tr>
+		<td width="100%" align=right height="30">
+			<img src="/images/bt_modify.gif" border=0 onclick="user_mod_check();" style="cursor:hand">
+			<img src="/images/bt_del.gif" border=0 onclick="user_del();" style="cursor:hand">
+			<img src="/images/bt_close.gif" border=0 onclick="self.close();" style="cursor:hand">
+		</td>
+	</tr>
+</table>
+
+
+
+</body>
+</html>

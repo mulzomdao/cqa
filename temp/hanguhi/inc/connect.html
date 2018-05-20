@@ -1,0 +1,12 @@
+<?
+//$host_name = '192.168.2.154';		//사설 아이피 192.168.2.154 공인 아이피 211.40.221.154  Database 가 있는 HOST 를 적어주세요. (기본: localhost)
+$host_name = 'localhost';		//사설 아이피 192.168.2.154 공인 아이피 211.40.221.154  Database 가 있는 HOST 를 적어주세요. (기본: localhost)
+$db_name = 'hanguhi01';			// Database Name 을 적어주세요.
+$user_name = 'hanguhi01';		// Mysql 에 접속가능한 User ID 를 적어주세요.
+$user_pass = 'c8c82218';		// 접속가능한 User ID 에 맞는 Password 를 적어주세요.
+
+$connect = @mysql_connect ("$host_name", "$user_name", "$user_pass") or
+		die ("디비연결실패");
+
+mysql_select_db ("$db_name", $connect);
+?>

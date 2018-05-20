@@ -10,13 +10,13 @@
         <div class="container">
             <div class="row">
                 <div class=" col-md-6">
-                    <h4>CQA교육/교재 - <span>교육접수현황</span></h4>
+                    <h4>CQA교육/교재 - <span>교육접수정보</span></h4>
                 </div>
                 <div class="col-md-6 mb0">
                     <ol class="breadcrumb text-md-right">
                         <li class="breadcrumb-item active"><a href="index.php">Home</a></li>
                         <li class="breadcrumb-item active">CQA교육/교재</li>
-                        <li class="breadcrumb-item">교육접수현황</li>
+                        <li class="breadcrumb-item">교육접수정보</li>
                     </ol>
                 </div>
             </div>
@@ -56,7 +56,7 @@
                             <td>2018년 2금 자격검정 면제 및 교육</td>
                             <td>김미애</td>
                             <td>2018-03-24</td>
-                            <td>이수</td>
+                            <td>이수완료</td>
                         </tr>
                     </tbody>
                 </table>

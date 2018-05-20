@@ -1,0 +1,234 @@
+<?
+	session_start();
+	include "../inc/connect.html";
+	include "../inc/function.html";
+	include "../inc/variable.html";
+	include "../inc/session.html";
+
+
+	/*권한 관련...*/
+	if($_SESSION[user_level] < 20){
+		$cont_user_id = $_SESSION[user_id];
+		$cont_agent_seq = $_SESSION[agent_seq];
+	}else if($_SESSION[user_level] >= 20 && $_SESSION[user_level] < 30){
+		$cont_user_id = "";
+		$cont_agent_seq = $_SESSION[agent_seq];
+	}else{
+		$cont_user_id = "";
+		$cont_agent_seq = "";
+	}
+
+	if($cont_user_id != ""){
+		$where .= "and b.user_id  = '$cont_user_id' ";
+	}
+
+	if($cont_agent_seq != ""){
+		$where .= "and b.agent_seq  = '$cont_agent_seq' ";
+	}
+	/*권한관련*/
+
+
+    if($_GET[col] != "" && $_GET[search]){
+		$where .= "and $_GET[col] = '$_GET[search]' ";
+	}
+
+	if($_GET[cust_gubun] != ""){
+		$where .= "and a.cust_gubun = '$_GET[cust_gubun]' ";
+	}
+	if($_GET[cust_use_yn] != ""){
+		$where .= "and cust_use_yn = '$_GET[cust_use_yn]'  ";
+	}
+
+	$select = "select count(*) cnt from np_cust a, np_user b where a.cust_reg_id = b.user_id $where" ;
+
+	//echo $select;
+	$result=@mysql_query($select);
+	$row = @mysql_fetch_array($result);
+
+	$total = $row[cnt];
+
+	if(!$_GET[page]) $page = 1;
+	$start_num=($page-1)*$_max_num;
+
+	$select = "
+		select
+			a.*,
+			b.user_nm
+		from
+			np_cust a,
+			np_user b
+		where
+			a.cust_reg_id = b.user_id
+			$where
+		order by 1 desc
+		limit $start_num, $_max_num";
+
+	//echo2($select);
+	$result=@mysql_query($select);
+	$pages=ceil($total/$_max_num);
+
+?>
+
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+	<title>NetPlus</title>
+	<link href="/css/style2.css" rel="stylesheet" type="text/css">
+	<script language="javascript" src="/js/script.js"></script>
+</head>
+
+<BODY BGCOLOR=#FFFFFF LEFTMARGIN=0 TOPMARGIN=0 MARGINWIDTH=0 MARGINHEIGHT=0 height=100% align="left">
+
+<table width="1200" border="0" bordercolor="">
+	<tr height=20>
+		<td valign="bottom">현재위치 : HOME &gt; 고객관리 &gt; 고객관리 목록</td>
+	</tr>
+</table>
+
+<table width="1200" border="1" cellpadding="2" cellspacing="0" bordercolor="#CCCCCC" bgcolor="#ffffff">
+
+<form name=find method=get action="a02_01_01.html">
+
+	<tr>
+		<td>
+
+			<table border=1 cellpadding=1 cellspacing=0 width=100% style="border-collapse:collapse" bordercolor=#CCCCCC>
+				<tr style="vertical-align:bottom;">
+					<td width="8%" class="bold">고객구분</td>
+					<td width="17%" class="center" colspan=3>
+						<select name="cust_gubun">
+							<option value="">전체</option>
+							<?code_combo("cust_gubun", $_GET[cust_gubun])?>
+						</select>
+					</td>
+					<td width="8%" class="bold">사용여부</td>
+					<td width="17%" class="center">
+						<select name="cust_use_yn" size="1">
+							<option value=''>전체</option>
+							<?code_combo("use_yn", $_GET[cust_use_yn])?>
+						</select>
+					</td>
+
+                    <td width="8%" class="bold">검색조건</td>
+                    <td width="*" class="center" >
+
+						<table width="100%" border="0" bordercolor="DDECFC" cellpadding=0 cellspacing=0>
+							<tr>
+								<td align="left" width=81>
+									<select name="col" style="width:80">
+										<option value="">전체</option>
+										<option value="a.cust_nm" <?if($_GET[col] == "a.cust_nm"){echo "selected";}?>>성명</option>
+										<option value="a.cust_jumin" <?if($_GET[col] == "a.cust_jumin"){echo "selected";}?>>주민번호</option>
+									</select>
+								</td>
+								<td>
+									<input type="text" name="search" size="15" value="<?echo $_GET[search]?>" onFocus="this.value=''" style="width:118">
+								</td>
+							</tr>
+						</table>
+
+					</td>
+				</tr>
+			</table>
+
+		</td>
+	</tr>
+
+</form>
+</table>
+
+<table width="1200" border="0" bordercolor="DDECFC" cellpadding=0 cellspacing=0>
+	<tr>
+		<td align="right" height=27>
+			<img src="/images/bt_inquiry.gif"  value="조회" style="cursor:hand" onclick="find.submit();">
+			<a href="a02_01_03.html"><img src="/images/bt_regi.gif" border=0></a>
+			<!--<img src="/images/bt_excel.gif" style="cursor:hand" onclick="goExcel();">-->
+		</td>
+	</tr>
+</table>
+
+
+<table width="1200" border="1" cellpadding="2" cellspacing="0" bordercolor="#CCCCCC" bgcolor="#ffffff">
+	<tr>
+		<td>
+
+			<div id="bottomright" style="position: RELATIVE; z-index: 1; overflow:hidden; width: 1193; height:422px; left: 0px; top: 0px; visibility: visible;" align="left">
+			<table border=1 cellpadding=1 cellspacing=0 width="100%" style="border-collapse:collapse" bordercolor=#CCCCCC>
+				<tr height=20 style="vertical-align:bottom;" class="bold">
+					<td width="40">번호</td>
+					<td width="70">고객구분</td>
+					<td width="70">고객명</td>
+					<td width="120">주민등록번호</td>
+					<td width="120">연락처</td>
+					<td width="70">등록자</td>
+					<td width="100">등록일</td>
+					<td width="70">사용여부</td>
+					<td width="180">신분증사본</td>
+					<td width="*">메모</td>
+				</tr>
+
+<?
+	if($total>0){
+		$cust_num = $total-(($page-1)*$_max_num);
+
+		while($rows = @mysql_fetch_array($result)){
+			$cust_memo = htmlspecialchars(short_str(stripslashes($rows[cust_memo]), 40));
+			//$cust_memo = htmlspecialchars($cust_memo);
+			$cust_reg_dt = explode(" ", $rows[cust_reg_dt]);
+			$cust_sabon = short_str(stripslashes($rows[cust_sabon]), 18);
+
+			if($rows[cust_hp]!=""){
+				$hp = $rows[cust_hp];
+			}else{
+				$hp = $rows[cust_tel];
+			}
+
+?>
+				<tr align=center height=20 class="center" style="vertical-align:bottom;" OnMouseOver=style.background='F3F3F3' OnMouseOut=style.background='FFFFFF'>
+					<td><?echo $cust_num?></td>
+					<td><?echo $rows[cust_gubun]?></td>
+					<td><a href="a02_01_02.html?cust_seq=<?echo $rows[cust_seq]?>"><?echo $rows[cust_nm]?></td>
+					<td><?echo $rows[cust_jumin]?></td>
+					<td><?echo $hp?></td>
+					<td><?echo $rows[user_nm]?></td>
+					<td><?echo $cust_reg_dt[0]?></td>
+					<td><?echo $rows[cust_use_yn]?></td>
+					<td><a href="javascript:sabon_down('<?echo $rows[cust_sabon]?>')" title="<?echo $rows[cust_sabon]?>"><?echo $cust_sabon?></a></td>
+					<td class=left><a title="<?echo stripslashes($rows[cust_memo])?>"><?echo $cust_memo?></a></td>
+				</tr>
+
+<?
+			$cust_num--;
+		}
+	}else{
+		echo "<tr><td colspan=20 align=center height=60><b>검색 내용이나 등록된 글이 없습니다.</b></td></tr>";
+	}
+?>
+
+			</table>
+			</div>
+
+		</td>
+	</tr>
+</table>
+
+
+<table width="1200" border="0" bordercolor="DDECFC" cellpadding=0 cellspacing=0>
+	<tr height=30 style="vertical-align:middle;">
+		<td align="left" width="200"></td>
+		<td align="center" width="*">
+<?
+	$url = $_SERVER["REQUEST_URI"];
+	pager($total,$pages,$_max_page,$url,$tail);
+?>
+		</td>
+		<td align="right" width="200">Total <?echo $total?> 건, &nbsp;<font color="red"><?echo $page?></font>/<?echo $pages?> Pages
+	  </td>
+	</tr>
+</table>
+
+
+<?include "../include/bottom.html";?>
+
+</body>
+</html>

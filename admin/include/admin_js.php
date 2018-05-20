@@ -3,6 +3,7 @@
 <script src="inspinia/js/bootstrap.min.js"></script>
 <script src="inspinia/js/plugins/metisMenu/jquery.metisMenu.js"></script>
 <script src="inspinia/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="inspinia/js/plugins/jquery-ui/jquery-ui.min.js"></script>
 
 <!-- Custom and plugin javascript -->
 <script src="inspinia/js/inspinia.js"></script>
@@ -17,3 +18,6 @@
 <!-- Data picker -->
 <script src="inspinia/js/plugins/datapicker/bootstrap-datepicker.js"></script>
 <script src="js/bootstrap-datepicker.kr.js"></script>
+
+<!-- Jquery Validate -->
+<script src="inspinia/js/plugins/validate/jquery.validate.min.js"></script>

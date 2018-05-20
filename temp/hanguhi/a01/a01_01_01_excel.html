@@ -1,0 +1,181 @@
+<?
+	session_start();
+
+	set_time_limit(0);
+	$filename = "청약서관리_".date("YmdHis");
+
+	Header("Cache-Control: cache, must-revalidate");				// 열기할때 잘나오게..
+	header( "Content-type: application/vnd.ms-excel" );
+	header( "Content-Disposition: attachment; filename=$filename.xls" );
+	header( "Content-Description: PHP4 Generated Data" );
+
+	include "../inc/connect.html";
+	include "../inc/function.html";
+	include "../inc/variable.html";
+	include "../inc/session.html";
+
+	if($_GET[find_flag] != ""){
+		$cont_user_id = $_GET[user_id];
+		$cont_agent_seq = $_GET[agent_seq];
+	}else{
+
+		if($_SESSION[user_level] < 30){
+			$cont_user_id = "";
+			$cont_agent_seq = $_SESSION[agent_seq];
+		}else if($_SESSION[user_level] < 20){
+			$cont_user_id = $_SESSION[user_id];
+			$cont_agent_seq = $_SESSION[agent_seq];
+		}else{
+			$cont_user_id = "";
+			$cont_agent_seq = "";
+		}
+	}
+
+	if($_GET[search_dt] == "reg_dt"){
+		$start_dt = $_GET[s_year]."-".$_GET[s_month]."-".$_GET[s_day];
+		$end_dt = $_GET[e_year]."-".$_GET[e_month]."-".$_GET[e_day];
+
+		$where = "and a.cont_reg_dt >= '$start_dt 00:00:00' and a.cont_reg_dt <= '$end_dt 23:59:59' ";
+	}
+
+	if($cont_user_id != ""){
+		$where .= "and a.cont_user_id  = '$cont_user_id' ";
+	}
+
+	if($cont_agent_seq != ""){
+		$where .= "and a.cont_agent_seq  = '$cont_agent_seq' ";
+	}
+
+	if($_GET[cont_gubun] != ""){
+		$where .= "and a.cont_gubun = '$_GET[cont_gubun]' ";
+	}
+
+	if($_GET[cont_stat] != ""){
+		$where .= "and a.cont_stat = '$_GET[cont_stat]' ";
+	}
+
+	if($_GET[col] != "" && $_GET[search] != ""){
+		$where .= "and $col = '$_GET[search]' ";
+	}
+
+
+	$select = "select count(a.cont_seq) cnt from np_contract a where 1=1 $where" ;
+
+	//echo $select;
+	$result=@mysql_query($select);
+	$row = @mysql_fetch_array($result);
+
+	$total = $row[cnt];
+
+	if(!$_GET[page]) $page = 1;
+	$start_num=($page-1)*$_max_num;
+
+	$select = "
+		select
+			a.*,
+			b.line_cnt,
+			c.user_nm,
+			d.agent_nm
+		from
+			np_contract a,
+			(select cont_seq, count(*) line_cnt from np_line group by cont_seq) b,
+			np_user c,
+			np_agent d
+		where
+			a.cont_seq = b.cont_seq
+			and a.cont_user_id = c.user_id
+			and a.cont_agent_seq = d.agent_seq
+			$where
+		order by 1 desc
+		";
+
+	//echo2($select);
+	$result=@mysql_query($select);
+	$pages=ceil($total/$_max_num);
+
+?>
+
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+	<title>NetPlus</title>
+	<link href="http://hanguhi.cafe24.com/css/style2.css" rel="stylesheet" type="text/css">
+</head>
+
+<BODY BGCOLOR=#FFFFFF LEFTMARGIN=0 TOPMARGIN=0 MARGINWIDTH=0 MARGINHEIGHT=0 height=100% align="left">
+
+<table width="1200" border="1" cellpadding="2" cellspacing="0" bordercolor="#CCCCCC" bgcolor="#ffffff">
+	<tr>
+		<td>
+			<div id="bottomright" style="position: RELATIVE; z-index: 1; overflow:hidden; width: 1193; height:422px; left: 0px; top: 0px; visibility: visible;" align="left">
+			<table border=1 cellpadding=1 cellspacing=0 width=100% style="border-collapse:collapse" bordercolor=#CCCCCC>
+				<tr height=20>
+					<!--<td width="40" class="bold">선택</td>-->
+					<td width="40" class="bold">번호</td>
+					<td width="80" class="bold">청약서번호</td>
+					<td width="100" class="bold">고객</td>
+					<td width="60" class="bold">구분</td>
+					<td width="60" class="bold">상태</td>
+					<td width="150" class="bold">상호</td>
+					<td width="80" class="bold">대표자</td>
+					<td width="60" class="bold">회선수</td>
+					<td width="120" class="bold">대리점</td>
+					<td width="80" class="bold">영업사원</td>
+					<td width="100" class="bold">등록일</td>
+					<td width="*" class="bold">첨부파일</td>
+					<!--<td width="*" class="bold">참고사항</td>-->
+				</tr>
+
+<?
+	if($total>0){
+		$cont_num = $total-(($page-1)*$_max_num);
+
+		$height = "450";
+
+		if($_tail_yn == "Y"){
+			$height = "500";
+		}
+
+		while($rows = @mysql_fetch_array($result)){
+			$cont_refer = short_str(stripslashes(htmlspecialchars($rows[cont_refer])), 20);
+			$cont_file = short_str(stripslashes($rows[cont_file]), 16);
+
+			$cont_reg_dt = explode(" ", $rows[cont_reg_dt]);
+
+?>
+				<tr align=center height=20 style="vertical-align:bottom;">
+					<!--<td class="center"><input type="checkbox" name="chkData[]" value="<?echo $i?>" disabled class="checkbox"></td>-->
+					<td class="center"><?echo $cont_num?></td>
+					<td class="center"><?echo $rows[cont_seq]?></td>
+					<td class="center"><?echo $rows[cust_nm]?></td>
+					<td class="center"><?echo $rows[cont_gubun]?></td>
+					<td class="center"><?echo $rows[cont_stat]?></a></td>
+					<td class="center"><?echo $rows[comp_nm]?></td>
+					<td class="center"><?echo $rows[comp_boss_nm]?></td>
+					<td class="center"><?echo $rows[line_cnt]?></td>
+					<td class="center"><?echo $rows[agent_nm]?></td>
+					<td class="center"><?echo $rows[user_nm]?></td>
+					<td class="center"><?echo $cont_reg_dt[0]?></td>
+					<td class="center"><?echo $cont_file?></td>
+					<!--<td class="left"><a href="" title="<?echo $rows[cont_refer]?>"><?echo $cont_refer?></a></td>-->
+				</tr>
+
+<?
+			$cont_num--;
+		}
+	}else{
+		echo "<tr><td colspan=15 align=center height=60><b>검색 내용이나 등록된 글이 없습니다.</b></td></tr>";
+	}
+?>
+
+			</table>
+			</div>
+		</td>
+	</tr>
+</table>
+
+
+
+
+</body>
+</html>

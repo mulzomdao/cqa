@@ -1,0 +1,222 @@
+<?
+	session_start();
+	include "../inc/connect.html";
+	include "../inc/function.html";
+	include "../inc/variable.html";
+	include "../inc/session.html";
+?>
+
+<html>
+<HEAD>
+    <link rel="stylesheet" href="/css/style2.css" type="text/css">
+</HEAD>
+
+<script>
+	// 이부분부터  수정할 필요 없습니다.
+	function getCookie(name) {
+		var Found = false
+		var start, end
+		var i = 0
+
+		while(i <= document.cookie.length) {
+			start = i
+			end = start + name.length
+
+			if(document.cookie.substring(start, end) == name) {
+				Found = true
+				break
+			}
+			i++
+		}
+
+		if(Found == true) {
+			start = end + 1
+			end = document.cookie.indexOf(";", start)
+			if(end < start)
+			end = document.cookie.length
+			return document.cookie.substring(start, end)
+		}
+		return ""
+	}
+
+	// 이부분 까지는 수정할 필요 없습니다.
+	function openwin_pop(mypage, myname, w, h,scroll, left, top) {
+		var noticeCookie=getCookie(myname);
+		//var noticeCookie=getCookie("notice_pop");
+
+		if (noticeCookie != "no"){
+			if(left == ''){
+				LeftPosition = (screen.width) ? (screen.width-w)/2 : 0;
+			}else{
+				LeftPosition = left;
+			}
+
+			if(top == ''){
+				TopPosition = (screen.height) ? (screen.height-h)/2 : 0;
+			}else{
+				TopPosition = top;
+			}
+			//settings = 'DialogHeight:'+h+'px ,DialogWidth:'+w+'px ,scroll:yes';
+			//window.showModalDialog(mypage, myname, settings);
+
+			 //20080826 김경수 수정
+			settings = 'height='+h+',width='+w+',top='+top+',left='+left+',scrollbars='+scroll+',resizable=yes';
+			window.open(mypage, myname, settings);
+		}
+	}
+</script>
+
+<script>
+	var level1_cnt = <?if($_SESSION[user_level]>10){echo "4";}else{echo "3";}?>;
+
+	function showLayer(x) {
+
+  		for (var i=1;i<=level1_cnt;i++) {
+			if(i==x){
+				document.getElementById('npl_'+i+'_menu').style.visibility='visible';
+				document.getElementById('npl_'+i).style.fontSize='13px';
+			}else{
+				document.getElementById('npl_'+i+'_menu').style.visibility='hidden';
+				document.getElementById('npl_'+i).style.fontSize='12px';
+			}
+		}
+
+		//changeBold(0, 0);
+
+	}
+
+	function changeBold(x, y) {
+
+  		for (var i=1;i<=level1_cnt;i++) {
+
+			for (var j=1;j<=4;j++) {
+
+				if(i==x && j==y){
+					document.getElementById('npl_'+i+'_'+j).style.fontWeight = 'bold';
+				}else{
+					document.getElementById('npl_'+i+'_'+j).style.fontWeight = '';
+				}
+			}
+
+		}
+	}
+
+</script>
+
+<BODY BGCOLOR=#FFFFFF LEFTMARGIN=0 TOPMARGIN=0 MARGINWIDTH=0 MARGINHEIGHT=0 onload="showLayer(1); changeBold('1', '1');">
+
+<TABLE border="0" cellpadding="0" cellspacing="0" width="100%">
+	<tr bgcolor="#02365E">
+		<td width=*>
+			<!--<table width=1000 border="0" cellpadding="0" cellspacing="0">-->
+			<table width=1200 border="0" cellpadding="0" cellspacing="0">
+
+				<tr>
+					<td width=*>
+						<table width=100% cellpadding=0 cellspacing=0 border=0>
+							<tr>
+								<!--<td height=38 width=150 align=center><img src="/images/npl_logo.gif" height="18" width="130"></td>-->
+								<td height=38 width=150 align=center><img src="/images/tbroad_partner.gif" height=30 width=150></td>
+								<td width=120 align=center>
+									<a href="#" onmouseover="showLayer(1);" onfocus="this.blur()"><font color="#ffffff" id="npl_1"><b>청약서관리</b></font></a>
+								</td>
+								<td width=120 align=center>
+									<a href="#" onmouseover="showLayer(2);" onfocus="this.blur()"><font color="#ffffff" id="npl_2"><b>고객관리</b></font></a>
+								</td>
+								<td width=120 align=center>
+									<a href="#" onmouseover="showLayer(3);" onfocus="this.blur()"><font color="#ffffff" id="npl_3"><b>게시판</b></font></a>
+								</td>
+<?if($_SESSION[user_level]>10){?>
+								<td width=120 align=center>
+									<a href="#" onmouseover="showLayer(4);" onfocus="this.blur()"><font color="#ffffff" id="npl_4"><b>사용자관리</b></font></a>
+								</td>
+<?}?>
+								<td width=*>&nbsp;</td>
+							</tr>
+						</table>
+					</td>
+
+					<td align="right" width=13%>
+						<table width=100% cellpadding=0 cellspacing=0 border=0>
+							<tr>
+								<td width=100% align=right height=15 style="padding-top:4">
+
+									<a style="cursor:hand" onclick="window.open('/common/mypage.html', '_mypage', 'width=830, height=220,scrollbars=no, status=no, location=no');"><img name="mypage" align="absmiddle" src="/images/login/bt_mypage_over.gif" alt="마이페이지" onmouseover="this.src='/images/login/bt_mypage.gif';" onmouseout="this.src='/images/login/bt_mypage_over.gif';" border="0"></a>
+									<a href="/login_check.html?flag=logout" target="_top"><img name="logout" align="absmiddle" src="/images/login/bt_logout_over.gif" alt="로그아웃" onmouseover="this.src='/images/login/bt_logout.gif';" onmouseout="this.src='/images/login/bt_logout_over.gif';" border="0"></a>
+								</td>
+							</tr>
+							<tr>
+								<td align=right style="padding-top:4"><font color="#ffffff"><?echo $_SESSION[user_nm]?>님 안녕하세요!</font></td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+
+				<tr>
+					<td colspan=2 align=center>
+						<div id="npl_1_menu" class="lt2" style="position:absolute; left:0px; top:45; width:416px; height:18px; z-index:4; visibility: hidden;">
+							<a onfocus="this.blur()" href="../a01/a01_01_01.html" onclick="changeBold('1', '1')" id="npl_1_1" target="main">청약서관리</a> |
+							<a onfocus="this.blur()" href="../a01/a01_02_01.html" onclick="changeBold('1', '2')" id="npl_1_2" target="main">회선관리</a>
+							<a onfocus="this.blur()" href="../a01/a01_03_01.html" onclick="changeBold('1', '3')" id="npl_1_3" target="main"></a>
+							<a onfocus="this.blur()" href="../a01/a01_04_01.html" onclick="changeBold('1', '4')" id="npl_1_4" target="main"></a>
+						</div>
+						<div id="npl_2_menu" class="lt2" style="position:absolute; left:0px; top:45; width:658px; height:18px; z-index:4; visibility: hidden;">
+							<a onfocus="this.blur()" href="../a02/a02_01_01.html" onclick="changeBold('2', '1')" id="npl_2_1" target="main">고객관리</a> |
+							<a onfocus="this.blur()" href="../a02/a02_02_01.html" onclick="changeBold('2', '2')" id="npl_2_2" target="main">사업자관리</a>
+							<a onfocus="this.blur()" href="../a02/a02_02_03.html" onclick="changeBold('2', '3')" id="npl_2_3" target="main"></a>
+							<a onfocus="this.blur()" href="../a02/a02_02_04.html" onclick="changeBold('2', '4')" id="npl_2_4" target="main"></a>
+						</div>
+<?if($_SESSION[user_level]>20){?>
+						<div id="npl_3_menu" class="lt2" style="position:absolute; left:0px; top:45; width:900px; height:18px; z-index:4; visibility: hidden;">
+							<a onfocus="this.blur()" href="../a03/a03_01_01.html?section=notice" onclick="changeBold('3', '1')" id="npl_3_1" target="main">공지사항</a> |
+							<a onfocus="this.blur()" href="../a03/a03_01_01.html?section=free" onclick="changeBold('3', '2')" id="npl_3_2" target="main">자유게시판</a> |
+							<a onfocus="this.blur()" href="../a03/a03_01_01.html?section=prog" onclick="changeBold('3', '3')" id="npl_3_3" target="main">요청게시판</a>
+							<a onfocus="this.blur()" href="../a03/a03_01_01.html" onclick="changeBold('3', '4')" id="npl_3_4" target="main"></a>
+						</div>
+						<div id="npl_4_menu" class="lt2" style="position:absolute; left:80px; top:45; width:980px; height:18px; z-index:4; visibility: hidden;">
+							<a onfocus="this.blur()" href="../a04/a04_01_01.html" onclick="changeBold('4', '1')" id="npl_4_1" target="main">사용자관리</a> |
+							<a onfocus="this.blur()" href="../a04/a04_02_01.html" onclick="changeBold('4', '2')" id="npl_4_2" target="main">대리점관리</a>
+							<a onfocus="this.blur()" href="../a04/a04_02_01.html" onclick="changeBold('4', '3')" id="npl_4_3" target="main"></a>
+							<a onfocus="this.blur()" href="../a04/a04_02_01.html" onclick="changeBold('4', '4')" id="npl_4_4" target="main"></a>
+						</div>
+<?}else{?>
+						<div id="npl_3_menu" class="lt2" style="position:absolute; left:0px; top:45; width:900px; height:18px; z-index:4; visibility: hidden;">
+							<a onfocus="this.blur()" href="../a03/a03_01_01.html?section=notice" onclick="changeBold('3', '1')" id="npl_3_1" target="main">공지사항</a> |
+							<a onfocus="this.blur()" href="../a03/a03_01_01.html?section=free" onclick="changeBold('3', '2')" id="npl_3_2" target="main">자유게시판</a>
+							<a onfocus="this.blur()" href="../a03/a03_01_01.html" onclick="changeBold('3', '3')" id="npl_3_3" target="main"></a>
+							<a onfocus="this.blur()" href="../a03/a03_01_01.html" onclick="changeBold('3', '4')" id="npl_3_4" target="main"></a>
+						</div>
+						<div id="npl_4_menu" class="lt2" style="position:absolute; left:80px; top:45; width:980px; height:18px; z-index:4; visibility: hidden;">
+							<a onfocus="this.blur()" href="../a04/a04_01_01.html" onclick="changeBold('4', '1')" id="npl_4_1" target="main">사용자관리</a>
+							<a onfocus="this.blur()" href="../a04/a04_02_01.html" onclick="changeBold('4', '2')" id="npl_4_2" target="main"></a>
+							<a onfocus="this.blur()" href="../a04/a04_02_01.html" onclick="changeBold('4', '3')" id="npl_4_3" target="main"></a>
+							<a onfocus="this.blur()" href="../a04/a04_02_01.html" onclick="changeBold('4', '4')" id="npl_4_4" target="main"></a>
+						</div>
+<?}?>
+					</td>
+				</tr>
+
+			</table>
+
+		</td>
+	</tr>
+	<tr>
+		<td height="25" bgcolor="#E6E7E8" colspan="5"></td>
+	</tr>
+</table>
+
+</body>
+<?
+	$select = "SELECT a.bod_seq FROM np_popup a, np_bod b WHERE a.bod_seq = b.bod_seq AND a.start_dt <= CURDATE() AND a.end_dt >= CURDATE() ORDER BY a.pop_seq DESC LIMIT 1";
+
+	$result=mysql_query($select);
+	$row=mysql_fetch_array($result);
+
+	if($row[bod_seq]!=""){
+?>
+<script>
+		openwin_pop('../common/popup.html?section=notice&bod_seq=<?echo $row[bod_seq]?>', 'notice<?echo $row[bod_seq]?>', '850', '400','YES', '0','0');
+</script>
+<?
+	}
+?>

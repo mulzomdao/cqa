@@ -1,0 +1,137 @@
+<?
+
+	//$_email="webmaster@babyrent.co.kr";
+	//$_domain="http://www.babyrent.co.kr";
+
+	$_datetime=date("Y-m-d H:i:s");
+	$_date=date("Y-m-d");
+	$_today=explode("-", date("Y-m-d"));
+	$_tomorrow=date("Y-m-d", mktime(date("H"), date("i"), date("s"), date("m") ,date("d")+1, date("Y")));
+	$_next_month=date("Y-m-d", mktime(date("H"), date("i"), date("s"), date("m")+1 ,date("d"), date("Y")));
+
+	$_year=date("Y");
+	$_month=date("m");
+	$_day=date("d");
+
+	$_php_self = explode("/", $_SERVER[PHP_SELF]);
+	$_url_cnt = count($_php_self) - 1;
+	$_this_page = $_php_self[$_url_cnt];
+
+	$_yesterday=date("Y-m-d H:i:s", mktime(date("H"), date("i"), date("s"), date("m") ,date("d")-1, date("Y")));
+	$_last_week=date("Y-m-d H:i:s", mktime(date("H"), date("i"), date("s"), date("m") ,date("d")-7, date("Y")));
+	$_last_month=date("Y-m-d H:i:s", mktime(date("H"), date("i"), date("s"), date("m")-1 ,date("d"), date("Y")));
+	$_last_year=date("Y-m-d H:i:s", mktime(date("H"), date("i"), date("s"), date("m") ,date("d"), date("Y")-1));
+
+	$_user_level[10] = "사원";
+	$_user_level[20] = "대리점장";
+	$_user_level[30] = "본사직원";
+	$_user_level[40] = "본사팀장";
+	$_user_level[50] = "임원";
+	$_user_level[60] = "대표";
+	$_user_level[70] = "관리자";
+	$_user_level[90] = "슈퍼관리자";
+
+	$_hire_stat[0] = "정직원";
+	$_hire_stat[1] = "계약직";
+	$_hire_stat[2] = "협력업체";
+
+	$_posit[0] ="경리";
+	$_posit[1] ="경리주임";
+	$_posit[2] ="경비원";
+	$_posit[3] ="경비원반장";
+	$_posit[4] ="경비원실장";
+	$_posit[5] ="경비원원";
+	$_posit[6] ="경비원조장";
+	$_posit[7] ="경비원지도사";
+	$_posit[8] ="골프코치";
+	$_posit[9] ="과장";
+	$_posit[10] ="관리센터장";
+	$_posit[11] ="관리팀장";
+	$_posit[12] ="기사";
+	$_posit[13] ="기전과장";
+	$_posit[14] ="기전기사";
+	$_posit[15] ="기전반장";
+	$_posit[16] ="기전실장";
+	$_posit[17] ="기전주임";
+	$_posit[18] ="기전팀장";
+	$_posit[19] ="대리";
+	$_posit[20] ="대표이사";
+	$_posit[21] ="락카(남)";
+	$_posit[22] ="락카(여)";
+	$_posit[23] ="미화";
+	$_posit[24] ="미화(남)";
+	$_posit[25] ="미화(여)";
+	$_posit[26] ="미화감독";
+	$_posit[27] ="미화반장";
+	$_posit[28] ="미화원";
+	$_posit[29] ="보안반장";
+	$_posit[30] ="보안팀장";
+	$_posit[31] ="사원";
+	$_posit[32] ="상무이사";
+	$_posit[33] ="서무";
+	$_posit[34] ="설비기사";
+	$_posit[35] ="설비주임";
+	$_posit[36] ="세탁";
+	$_posit[37] ="세흥빌딩";
+	$_posit[38] ="센터장";
+	$_posit[39] ="수영코치";
+	$_posit[40] ="스포팀장";
+	$_posit[41] ="시설과장";
+	$_posit[42] ="시설주임";
+	$_posit[43] ="시설팀장";
+	$_posit[44] ="실장";
+	$_posit[45] ="안내";
+	$_posit[46] ="여사원";
+	$_posit[47] ="영선기사";
+	$_posit[48] ="전기기사";
+	$_posit[49] ="전기주임";
+	$_posit[50] ="전무이사";
+	$_posit[51] ="조경,영선";
+	$_posit[52] ="주임";
+	$_posit[53] ="주차";
+	$_posit[54] ="주차관리";
+	$_posit[55] ="주차원";
+	$_posit[56] ="주차조장";
+	$_posit[57] ="지원센터장";
+	$_posit[58] ="지키미1팀장";
+	$_posit[59] ="컨시어즈";
+	$_posit[60] ="팀장";
+	$_posit[61] ="헬스코치";
+	$_posit[62] ="현관";
+	$_posit[63] ="간병인";
+
+
+	$_stat_color['대기'] = "red";
+	$_stat_color['접수'] = "green";
+	$_stat_color['반려'] = "brown";
+	$_stat_color['보류'] = "purple ";
+	$_stat_color['완료'] = "blue";
+	$_stat_color['삭제'] = "navy";
+	$_stat_color['접수취소'] = "gray";
+	$_stat_color['반려취소'] = "gray";
+	$_stat_color['보류취소'] = "gray";
+	$_stat_color['완료취소'] = "gray";
+	$_stat_color[''] = "black";
+	$_stat_color[''] = "orang";
+	$_stat_color[''] = "ivory";
+
+
+	$_no_fuck = "씨발|조까|개새끼|씹새끼|씨발놈|씨발년|씨팔|씨팔놈|씨팔년|18놈|좆까|니기미|추천인|10억|개새|보지|자지|니미";
+
+	//파일 업로드 확장자명
+	$_ok_file = "doc|zip|xls|ppt|jpg|jpeg|pdf|tif|bmp|txt|gif|hwp|pptx|xlsx|avi|docx";
+
+	//이미지 업로드 확장자명
+	$_ok_img_file = "jpg|jpeg|gif";
+
+	//결재자지정건수
+	$_sign_cnt = "7";
+
+	//첨부파일용량
+	$_file_size = "10";
+
+	$_max_num = "20";
+	$_max_page = "20";
+?>
+
+

@@ -1,0 +1,95 @@
+<?session_start();?>
+<link href="main.css" rel="stylesheet" type="text/css">
+<script>
+	function classCheck(form){
+
+		if(form.title.value==""){
+			alert("제목을 입력해주세요");
+			form.title.focus();
+			return false;
+		}
+
+		if(form.content.value==""){
+			alert("내용을 입력해주세요");
+			form.content.focus();
+			return false;
+		}
+
+		form.action="boardEdit.html";
+		form.submit();
+	}
+</script>
+
+<link href="include/main.css" rel="stylesheet" type="text/css">
+
+<table>
+	<tr>
+		<td height=25><b>메일 보내기</b></td>
+	</tr>
+</table>
+
+<table border=1 width=100% cellpadding=0 cellspacing=0>
+	<tr>
+		<td>
+			<table width=100% cellpadding=0 cellspacing=0 border=0>
+				<form method=post name="sendMail">
+
+				<input type=hidden name=flag value=sendMail>				
+				<tr>
+					<td colspan=2 width=100%>
+						<table width=100% cellpadding=1 cellspacing=0 border=0>
+
+							<tr>
+								<td align=right> 보내는사람&nbsp;</td>
+								<td>
+									<input type=text name=sendEmail value="<?echo $_SESSION[s_email]?>" class=form2 size=30>
+								</td>
+							</tr>
+
+							<tr>
+								<td align=right> 받는사람&nbsp;</td>
+								<td>
+									<input type=text name=email value="<?echo $_GET[email]?>" class=form2 size=30>
+								</td>
+							</tr>
+
+							<tr>
+								<td align=right> html&nbsp;</td>
+								<td>
+									<input type=checkbox name=html value="1">
+								</td>
+							</tr>
+							
+							<tr>
+								<td align=right> 제목 &nbsp;</td>
+								<td>
+									<input type=text class=form2 name=title style="ime-mode:active; width=420">
+								</td>
+							</tr>
+
+							<tr>
+								<td align=right width=20%> 내용 &nbsp;</td>
+								<td width=80%>
+									<textarea  name=content rows=15 class=form2 style="ime-mode:active; width=420"></textarea>
+								</td>
+							</tr>
+							
+							<tr height=30>
+								<td align=center width=100% colspan=2>
+									<input type=button class=button1 value=" 메일보내기 " onclick=classCheck(this.form);>&nbsp;&nbsp;
+									<input type=button value=" 닫기 " class=button1 onclick=self.close();>
+								</td>
+								
+							</tr>
+
+						</table>
+					</td>
+				</tr>
+				
+				
+				
+				</form>
+			</table>
+		</td>
+	</tr>
+</table>

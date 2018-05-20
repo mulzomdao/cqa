@@ -1,0 +1,365 @@
+<?
+	include('boardFunction.html');
+
+	if($_GET[board]){$board=$_GET[board];}
+
+	board_exist($board, $db_name);
+	if(!$board_exist) echo "<script>alert('관련테이블이 없습니다.');history.go(-1);</script>";
+	
+	if($_GET[category]!=""){include "include/path.html";}
+
+	board_option($board);
+
+	if($_GET[searchStr]!=""){
+		$where="where $_GET[searchKey] like '%$_GET[searchStr]%' ";
+	}
+	
+	if($_GET[section]!=""){
+		
+		if($_GET[searchStr]!=""){
+			$where="where $_GET[searchKey] like '%$_GET[searchStr]%' and section='$_GET[section]' ";
+		}else{
+			$where="where section='$_GET[section]' ";
+		}
+		
+	}	
+
+	if($_SESSION[s_level]<8){
+		if($where==""){
+			$where="where open!='x' ";
+		}else{
+			$where.="and open!='x' ";
+		}
+	}
+
+	if(!$_GET[page]) $page = 1;
+	$startNum=($page-1)*$maxNum;
+
+	$total=board_total($board, $where);
+
+	if($showTail=='1'){
+		$select="select no, id,  name, title, regDate, count, length(depth) depthLength, file, userImage, section, open, o, x, secret from $board $where order by sameNo desc, depth asc limit $startNum, $maxNum";
+	}else{
+		$select="select no, id, name, title, regDate, count, length(depth) depthLength, file, userImage, section, open, o, x, secret from $board $where order by sameNo desc limit $startNum, $maxNum";
+	}
+	//echo $select;
+
+	$result=@mysql_query($select);
+	$pages=ceil($total/$maxNum);
+
+	if(is_file("boardImg/boardInclude/$boardTop")){
+		include "boardImg/boardInclude/$boardTop";
+	}
+
+?>
+
+<table width="100%" cellspacing=0 cellpadding=0 align=center height=300 border=0>
+	<tr>
+		<td align=center valign=top>
+			<table width="<?echo $width?>" cellspacing=0 cellpadding=0 align=center>
+				<tr height=50>
+					<td>
+						<img src="boardImg/<?echo $skin?>/icon01.gif" border="0" align=absmiddle> 
+                        <font color="#666666"><b><?echo $boardName?></b>
+					</td>
+				</tr>
+			</table>
+			<table width="<?echo $width?>" cellspacing=0 cellpadding=0 align=center>
+				<tr>
+					<td class=sfont align=left valign=bottom>Total <?echo $total?>개 &nbsp;page <?echo $page?>/<?echo $pages?></td>
+<?
+	if($section!=""){
+		$section2=explode("|", $section)
+?>								
+					<form method=get action="index.html">
+					<input type=hidden name=main value="<?echo $main?>">
+					<input type=hidden name=category value="<?echo $category?>">
+					<input type=hidden name=board value="<?echo $board?>">
+
+					<td width=50% align=right valign=top>
+						<select name=section class=form2 onchange="submit();">
+							<option value="">전체보기</option>
+
+							<?for($i=0; $i<sizeof($section2); $i++){?>
+							<option value="<?echo $section2[$i]?>" <?if($section2[$i]==$_GET[section]){echo "selected";}?>><?echo $section2[$i]?></option>
+							<?}?>
+
+						</select>
+					</td>
+					</form>
+<?
+	}
+?>
+				</tr>
+				<!--<tr><td height=3></td></tr>-->
+			</table>
+			<table width="<?echo $width?>" cellspacing=0 cellpadding=0 align=center class=black>
+				<tr>
+					<td height=1 bgcolor=#000000 colspan=7></td>
+				</tr>
+				<tr>
+					<td height=4 bgcolor=#eeeeee colspan=7></td>
+				</tr>
+				<tr>
+					<td height=1 bgcolor=#000000 colspan=7></td>
+				</tr>
+				<tr><td height=2></td></tr>
+				<tr align=center height=20>
+					<td class="ssfont" width=40>No</td>
+					<td class="ssfont" width=*>Subject</td>
+<?if($oo=="1"){?>
+					<td class="ssfont" width=40>ㅇ／×</td>
+<?}?>
+					<td class="ssfont" width=50>Name</td>
+					<td class="ssfont" width=80>Date</td>
+
+<?if($linkpage!="1"){?>	
+					<td class="ssfont" width=25>Hit</td>
+<?}?>
+				</tr>
+				<tr>
+					<td height=1 bgcolor=#000000 colspan=7></td>
+				</tr>
+
+
+
+
+<?/********************************공지게시판***********************************/
+	$selectT="select no, title, name, regDate, count, open from b_title where section='$boardName' order by no desc limit 3";
+	//echo $selectT;
+	$resultT=mysql_query($selectT);
+	$numT=mysql_num_rows($resultT);
+
+	if($numT>0){
+		while($rowsT=mysql_fetch_array($resultT)){
+			$regDateT=explode(" ", $rowsT[regDate]);
+?>
+<script>
+	function winopen(board, i){
+		window.open('boardNotice.html?board='+board+'&boardNo='+i, 'boardNotice', 'width=<?echo $width?>, height=500, scrollbars=yes');
+	}
+</script>				
+
+				<tr bgcolor=#f7f7f7><td height=2 colspan=6></td></tr>
+				<tr align=center bgcolor=#f7f7f7>
+
+					<td align=center><b><font color=red>공지</font></b></td>
+					<td height=24 align=left colspan="<?if($oo=="1"){?>2<?}else{?>1<?}?>" align=center>
+						<b><font color=#000000 style=cursor:hand onclick="winopen('b_title', <?echo $rowsT[no]?>);"><?echo stripslashes($rowsT[title])?></font></b>
+					</td>
+					<td><?echo $rowsT[name]?></td>
+					<td><?echo substr($rowsT[regDate], 0, 10)?></td>
+					<td><?echo $rowsT[count]?></td>
+				</tr>
+				<tr>
+					<td colspan=7 background="boardImg/<?echo $skin?>/icon02.gif" height=1></td>
+				</tr>
+
+<?
+		}
+	}
+	/********************************공지게시판끝***********************************/
+?>
+
+<?
+	if($total>0){
+		$boardNum=$total-(($page-1)*$maxNum);
+		while($rows=@mysql_fetch_array($result)){
+			$title=short_str(stripslashes($rows[title]), 60);
+			$title=htmlspecialchars($title);
+			$regDate=explode(" ", $rows[regDate]);
+
+			if($linkpage=="1"){
+				$boardMain=$board."_main";
+				$select2="select bm.main from $boardMain bm where bm.boardNo=$rows[no]";
+				$result2=@mysql_query($select2);
+				$row2=@mysql_fetch_array($result2);
+			}
+?>
+				<tr><td height=2></td></tr>
+				<tr align=center height=24 onmouseover="this.style.backgroundColor='#f7f7f7'" onmouseout="this.style.backgroundColor=''">
+					<td>
+<?
+			if($linkpage=="1" && ($_SESSION[s_level]>=$writeLevel || $writeLevel==0)){
+?>
+						<a href="index.html?main=boardModify.html&board=<?echo $board?>&section=<?echo $_GET[section]?>&boardNo=<?echo $rows[no]?>"><?echo $boardNum;?></a>
+<?
+			}else{
+?>
+						<?echo $boardNum;?>
+<?
+			}	
+?>
+					</td>
+					<td align=left>
+<?
+			$select2="select no from tail where board='$board' and boardNo=$rows[no] "	;
+			$result2=@mysql_query($select2);
+			$num2=@mysql_num_rows($result2);
+
+			for($i=1;$i<$rows[depthLength];$i++){
+				echo "&nbsp;&nbsp";
+			}
+
+			if($showTail=='2'){
+				$linkTail="&page=$_GET[page]";
+
+				if($_GET[searchKey]!=""){
+					$linkTail.="&searchKey=$_GET[searchKey]&searchStr=$_GET[searchStr]";
+				}
+				if($_GET[section]!=""){
+					$linkTail.="&secton=$_GET[section]";
+				}
+			}
+?>
+						
+						
+<?
+			if($linkpage=="1"){
+?>	
+						<a href="<?echo $row2[main]?>"><?echo $title?></a>
+<?
+			}elseif($rows[secret]=="1"){
+
+				if($_SESSION[s_id]==$rows[id] || $_SESSION[s_id]==$adminId){
+?>
+						<a href="index.html?main=boardView.html&board=<?echo $board?>&section=<?echo $_GET[section]?>&boardNo=<?echo $rows[no]?><?echo $linkTail?>"><?echo $title?></a> 
+<?
+				}else{
+?>
+						<a href="javascript:alert('비밀글입니다.');"><?echo $title?></a> 
+<?			
+				}
+?>
+						<?if($rows[secret]=="1"){echo "<img src='boardImg/$skin/lock_icon.gif' align=absmiddle>";}?> 
+						<?if($rows[open]=="x"){echo "<img src='boardImg/$skin/hide_icon.gif' align=absmiddle>";}?>
+						<!--<?if($rows[userImage]!=""){echo "<img src='boardImg/$skin/isImage.gif' align=absmiddle>";}?>-->
+						<?if($rows[file]!=""){echo "<img src='boardImg/$skin/isFile.gif' align=absmiddle>";}?>
+						<?if($num2>0){echo "<font class=sfont color=navy>[".$num2."]</font>";}?>
+<?		
+			}else{	
+?>
+					<?if($_SESSION[s_level]>=$readLevel || $readLevel==0){?><!-----------------------------읽기레벨검사---------------------------->
+						<a href="index.html?main=boardView.html&board=<?echo $board?>&section=<?echo $_GET[section]?>&boardNo=<?echo $rows[no]?><?echo $linkTail?>" onFocus="this.blur();"><?echo $title?></a> 
+						<?if($rows[secret]=="1"){echo "<img src='boardImg/$skin/lock_icon.gif' align=absmiddle>";}?> 
+						<?if($rows[open]=="x"){echo "<img src='boardImg/$skin/hide_icon.gif' align=absmiddle>";}?>
+						<!--<?if($rows[userImage]!=""){echo "<img src='boardImg/$skin/isImage.gif' align=absmiddle>";}?>-->
+						<?if($rows[file]!=""){echo "<img src='boardImg/$skin/isFile.gif' align=absmiddle>";}?>
+						<?if($num2>0){echo "<font class=sfont color=navy>[".$num2."]</font>";}?>
+					<?}else{?>
+						<a href="javascript:alert('<?echo $_memberLevel[$readLevel]?> 이상 읽을 수 있습니다.');" onFocus="this.blur();"><?echo $title?></a> 
+						<?if($rows[secret]=="1"){echo "<img src='boardImg/$skin/lock_icon.gif' align=absmiddle>";}?> 
+						<?if($rows[open]=="x"){echo "<img src='boardImg/$skin/hide_icon.gif' align=absmiddle>";}?>
+						<!--<?if($rows[userImage]!=""){echo "<img src='boardImg/$skin/isImage.gif' align=absmiddle>";}?>-->
+						<?if($rows[file]!=""){echo "<img src='boardImg/$skin/isFile.gif' align=absmiddle>";}?>
+						<?if($num2>0){echo "<font class=sfont color=navy>[".$num2."]</font>";}?>
+					<?}?>
+						
+<?
+			}
+?>
+
+						<?if($rows[regDate]>$_yesterDay){?>&nbsp;<img src="boardImg/<?echo $skin?>/new.gif" width="23" border="0"><?}?>
+					</td>
+<?if($oo=="1"){?>
+					<td><?echo $rows[o]?> / <?echo $rows[x]?></td>
+<?}?>
+					<td><?echo $rows[name]?></td>
+					<td><?echo substr($rows[regDate], 0, 10)?></td>
+
+<?if($linkpage!="1"){?>	
+					<td><?echo $rows[count]?></td>
+<?}?>
+				</tr>
+				<tr>
+					<td colspan=7 background="boardImg/<?echo $skin?>/icon02.gif" height=1></td>
+				</tr>
+<?
+			$boardNum--;
+		}	
+	}else{
+?>
+				<tr align=center height=50>
+					<td colspan=7 align=center><b>저장된 글이 없습니다.</b></td>
+				</tr>
+				<tr>
+					<td colspan=7 background="boardImg/<?echo $skin?>/icon02.gif" height=1></td>
+				</tr>
+<?
+	}
+?>
+			</table>
+
+			<table>
+				<tr>
+					<td valign=bottom>
+<?
+	$query="searchKey=$_GET[searchKey]&searchStr=$_GET[searchStr]&section=$_GET[section]";
+	$url="index.html?main=boardList.html&board=$board";
+
+	pager($total,$pages,$maxPage,$url,$query);					
+?>					
+					</td>
+				</tr>
+			</table>
+<script>
+	function searchBoard(form){
+		if(form.searchStr.value==""){
+			alert("검색할 내용을 입력해주세요");
+			form.searchStr.focus();
+			return false;
+		}
+		form.submit();
+	}
+</script>
+			<table width=<?echo $width?>>
+				<form name=searchItem method=get action="index.html?main=boardList.html">
+				<input type=hidden name=main value="<?echo $main?>">
+				<input type=hidden name=category value="<?echo $category?>">
+				<input type=hidden name=board value="<?echo $board?>">
+				<input type=hidden name=section value="<?echo $_GET[section]?>">
+				<tr>
+					<td>
+						<a href="index.html?main=boardList.html&board=<?echo $board?>"><img src="boardImg/<?echo $skin?>/list_icon.gif" border=0 align=absmiddle></a>
+						<?if($_SESSION[s_level]>=$writeLevel || $writeLevel==0){?>
+						<a href="index.html?main=boardWrite.html&board=<?echo $board?>&section=<?echo $_GET[section]?>"><img src="boardImg/<?echo $skin?>/write_icon.gif" border=0 align=absmiddle></a>
+						<?}?>
+
+<?
+	if($boardStyle=="1"){//일반게시판일때만
+		if($_SESSION[s_id]!=""){
+?>
+						<a href="index.html?main=boardScrap.html"><img src="boardImg/<?echo $skin?>/scrap_list.gif" border="0" align=absmiddle></a>
+
+<?	
+		}else{
+?>
+						<a href="javascript:onclick=alert('회원로그인 하세요.')"><img src="boardImg/<?echo $skin?>/scrap_list.gif" border="0" align=absmiddle></a>
+<?
+		}
+	}
+?>
+					</td>
+					<td align=right>
+						<select class=black name=searchKey>
+							<option value="title" <?if($_GET[searchKey]=="title"){echo "selected";}?>>제목</option>
+							<option value="name" <?if($_GET[searchKey]=="name"){echo "selected";}?>>이름</option>
+							<option value="id" <?if($_GET[searchKey]=="id"){echo "selected";}?>>ID</option>
+						</select>
+						<input type=text name=searchStr class=black size=10 value=<?echo $_GET[searchStr]?>>
+						<!--<a href="javascript:searchBoard(this.form)"><img src="boardImg/<?echo $skin?>/submit_icon.gif" border=0></a>-->
+						<input type=button value="검색" class=button1 onclick=searchBoard(this.form)>
+					</td>
+				</tr>
+				<tr>
+					<td height=20></td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+<?
+	if(is_file("boardImg/boardInclude/$boardBottom")){
+		include "boardImg/boardInclude/$boardBottom";
+	}
+?>

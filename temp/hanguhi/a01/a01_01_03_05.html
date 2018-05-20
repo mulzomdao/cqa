@@ -1,0 +1,93 @@
+<?
+	session_start();
+	include "../inc/connect.html";
+	include "../inc/function.html";
+	include "../inc/variable.html";
+	include "../inc/session.html";
+?>
+
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+	<title>NetPlus</title>
+	<link href="/css/style2.css" rel="stylesheet" type="text/css">
+	<script language="javascript" src="/js/script.js"></script>
+</head>
+
+<script>
+
+	function excel_add_check(){
+
+		//alert(excel_add_form.excel.value);
+
+		var flie_name = excel_add_form.excel.value;
+		var str_low = flie_name.toLowerCase(flie_name);
+		var str_dotlocation = str_low.lastIndexOf(".");
+		var str_ext = str_low.substring(str_dotlocation+1);
+
+		//alert(str_ext);
+
+		if(excel_add_form.excel.value==""){
+			alert("엑셀파일을 선택해 주세요!");
+		}else if(str_ext!="xls"){
+			alert("'xls' 확장자 파일만 가능합니다.");
+			excel_add_form.excel.value = "";
+		}else{
+			if(confirm('등록 하시겠습니까?')){
+				excel_add_form.submit();
+			}
+		}
+
+	}
+
+</script>
+
+<BODY BGCOLOR=#FFFFFF LEFTMARGIN=0 TOPMARGIN=0 MARGINWIDTH=0 MARGINHEIGHT=0 height=100% align="left">
+
+<table width="380" border="0" cellpadding="0" cellspacing="0" align=center>
+	<tr>
+		<td width="80%" valign="bottom" height="30"><img src="/images/icon02.gif">
+			<b>엑셀등록</b> <font style="font-size:11">(확장자 xls 파일만 가능합니다.)</font>
+		</td>
+		<td align=right valign=bottom>
+<?if($_GET[return_page]=="a01_01_02"){?>
+			<font style="font-size:12"><a href="../test2.xls">셈플다운</a></font>
+<?}else if($_GET[return_page]=="a01_01_02_03"){?>
+			<font style="font-size:12"><a href="../test3.xls">셈플다운</a></font>
+<?}else{?>
+			<font style="font-size:12"><a href="../test.xls">셈플다운</a></font>
+<?}?>
+		</td>
+	</tr>
+</table>
+
+<table width="380" border="1" cellpadding="2" cellspacing="0" bordercolor="#CCCCCC" bgcolor="#ffffff" align=center>
+
+<form method=post name="excel_add_form" action="a01_01_edit.html" ENCTYPE='multipart/form-data'>
+<input type = 'hidden' name = 'flag' value = 'excel_add'>
+<input type = 'hidden' name = 'return_page' value = '<?echo $_GET[return_page]?>'>
+<input type = 'hidden' name = 'line_num' value = '<?echo $_GET[line_num]?>'>
+
+	<tr>
+		<td>
+			<table border=1 cellpadding=1 cellspacing=0 width=100% style="border-collapse:collapse" bordercolor=#CCCCCC>
+				<tr height=20>
+					<td class="bold" width=100>파일</td>
+					<td class="center"><input type="file" name="excel" value="" style="width:264"></td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+
+<table width="380" border="0" bordercolor="DDECFC" cellpadding=0 cellspacing=0 align=center>
+	<tr>
+		<td align="right" height=27>
+			<img src="/images/bt_regi.gif" border=0 onclick="excel_add_check();" style="cursor:hand">
+			<img src="/images/bt_close.gif" style="cursor:hand" onclick="self.close();">
+		</td>
+	</tr>
+</table>
+
+</body>
+</html>

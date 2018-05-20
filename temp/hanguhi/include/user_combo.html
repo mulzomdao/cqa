@@ -1,0 +1,74 @@
+<?
+	session_start();
+	include "../inc/connect.html";
+	include "../inc/function.html";
+	include "../inc/variable.html";
+	include "../inc/session.html";
+
+	if($_GET[agent_seq]!=""){
+
+		if($_SESSION[user_level] < 20){
+			$select = "select * from np_user where user_id = '$_SESSION[user_id]' and user_use_yn = 'Y'";
+		}else{
+			$select = "select * from np_user where agent_seq = '$_GET[agent_seq]' and user_use_yn = 'Y'";
+		}
+		//echo $select;
+
+		$result=@mysql_query($select);
+		$num = @mysql_num_rows($result);
+	}
+?>
+
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+	<title>NetPlus</title>
+	<link href="/css/style2.css" rel="stylesheet" type="text/css">
+	<script language="javascript" src="/js/script.js"></script>
+</head>
+
+<script>
+
+	function parentInsert(){
+		parent.document.<?echo $_GET[form_nm]?>.user_id.value = eval("document.user_id.user_id.options[document.user_id.user_id.selectedIndex].value");
+	}
+
+</script>
+
+<BODY BGCOLOR=#FFFFFF LEFTMARGIN=0 TOPMARGIN=0 MARGINWIDTH=0 MARGINHEIGHT=0 height=100% align="left">
+
+<table width="1200" border="0" bordercolor="">
+<form name="user_id">
+
+	<select name="user_id" onchange="parentInsert()" style="width:120" <?echo $_GET[disabled]?>>
+<?if($_SESSION[user_level] >= 20){?>
+		<option value="">선택해주세요</option>
+<?}?>
+		<!--
+		<option value=""><?echo $_GET[agent_seq]?></option>
+		<option value=""><?echo $_GET[user_id]?></option>
+		<option value=""><?echo $_GET[form_nm]?></option>
+		-->
+<?
+	if($num>0){
+
+		while($rows = @mysql_fetch_array($result)){
+
+			if($rows[user_id] == $_GET[user_id]){
+				$selected = "selected";
+			}else{
+				$selected = "";
+			}
+
+			echo "<option value='$rows[user_id]' $selected>$rows[user_nm]</option>";
+
+		}
+	}
+?>
+	</select>
+</form>
+</table>
+
+</body>
+</html>
+<?//echo $select?>

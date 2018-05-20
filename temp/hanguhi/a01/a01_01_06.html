@@ -1,0 +1,759 @@
+<?
+	session_start();
+	include "../inc/connect.html";
+	include "../inc/function.html";
+	include "../inc/variable.html";
+	include "../inc/session.html";
+
+	$select1 = "select a.*, b.agent_nm, b.agent_seq, c.user_nm from np_contract a, np_agent b, np_user c where a.cont_seq = $_GET[cont_seq] and a.cont_agent_seq = b.agent_seq and a.cont_user_id = c.user_id ";
+
+	//echo $select1;
+	$result1=@mysql_query($select1);
+	$row1=@mysql_fetch_array($result1);
+
+	if($row1[cont_stat]!="대기" && $_SESSION[user_level] < 90){
+		alert("대기 상태만 수정 가능합니다.");
+	}
+
+	$cont_file = short_str(stripslashes($row1[cont_file]), 26);
+	$cont_refer = nl2br(stripslashes($row1[cont_refer]));
+	$cust_jumin = explode("-", $row1[cust_jumin]);
+
+	if($_SESSION[user_level] < 30){
+		$disabled = "disabled";
+	}
+
+	$select2 = "select * from np_company where comp_seq = $row1[comp_seq]";
+	$result2=@mysql_query($select2);
+	$row2=@mysql_fetch_array($result2);
+
+	$select3 = "select * from np_cust where cust_seq = $row1[cust_seq]";
+	$result3=@mysql_query($select3);
+	$row3=@mysql_fetch_array($result3);
+
+
+	$select4 = "select * from np_account where cust_seq = $row1[cust_seq] ";
+	//echo $select2;
+	$result4=@mysql_query($select4);
+	$row4=@mysql_fetch_array($result4);
+
+	$acc_refer = nl2br(stripslashes($row4[acc_refer]));
+?>
+
+
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+	<title>NetPlus</title>
+	<link href="/css/style2.css" rel="stylesheet" type="text/css">
+	<script language="javascript" src="/js/script.js"></script>
+</head>
+
+<script>
+
+	function cont_edit_check(){
+
+/*
+		if(line_check()){
+			if(confirm('등록 하시겠습니까?')){
+				//cont_edit.submit();
+			}
+		}
+*/
+
+		if(cont_edit.agent_seq.value==""){
+			alert("대리점을 선택해 주세요!");
+			cont_edit.agent_seq.focus();
+		}else if(cont_edit.user_id.value==""){
+			alert("영업사원을 선택해 주세요!");
+			document.frames["userframe"].user_id.user_id.focus();
+		}else if(cont_edit.cont_gubun.value==""){
+			alert("청약서구분을 선택해 주세요!");
+			cont_edit.cont_gubun.focus();
+		}else if(cont_edit.comp_seq.value==""){
+			alert("사업자 정보가 입력되지 않았습니다.");
+			window.open('a01_01_03_03.html', '_change', 'width=730, height=360,scrollbars=no, status=no, location=no');
+		}else if(cont_edit.cust_seq.value==""){
+			alert("고객 정보가 입력되지 않았습니다.");
+			window.open('a01_01_03_01.html', '_change', 'width=730, height=360,scrollbars=no, status=no, location=no');
+		}else if(cont_edit.acc_gubun.value==""){
+			alert("결제구분을 선택해 주세요!");
+			cont_edit.acc_gubun.focus();
+		}else{
+			if(acc_check() && line_check()){
+				if(confirm('수정 하시겠습니까?')){
+					cont_edit.submit();
+				}
+			}
+		}
+	}
+
+	function line_check(){
+
+		var chknum = 0;
+		var noObj = cont_edit.elements["no[]"];
+
+		if(typeof noObj.length != "undefined"){
+			var end_i = noObj.length;
+		}else{
+			var end_i = 1;
+		}
+
+		for(var i = 0; i < end_i; i++){
+
+			var no = i+1;
+
+			var sangho = eval("cont_edit.sangho_"+no);
+			var upjong = eval("cont_edit.upjong_"+no);
+			var line_addr = eval("cont_edit.line_addr_"+no);
+			var chacksin = eval("cont_edit.chacksin_"+no);
+			var hope_num = eval("cont_edit.hope_num_"+no);
+
+			if(sangho.value!="" && upjong.value!="" && line_addr.value!="" && chacksin.value!=""){
+				chknum++;
+			}
+		}//end for
+
+		if(chknum==0){
+			alert("회선을 등록해 주세요.");
+			return false;
+		}
+
+		cont_edit.line_cnt.value = chknum;
+
+		return true;
+	}
+
+
+	function acc_check(){
+		/*
+		if(cont_edit.acc_gubun.value=="신용카드" || cont_edit.acc_gubun.value=="계좌이체"){
+			if(cont_edit.acc_nm.value==""){
+				alert("은행/카드사명을 선택해 주세요.");
+				document.frames["comboframe"].acc_nm.acc_nm.focus();
+				return false;
+			}else if(cont_edit.acc_num.value==""){
+				alert("카드/계좌번호를 입력해 주세요.");
+				cont_edit.acc_num.focus();
+				return false;
+			}else if(cont_edit.acc_cust_nm.value==""){
+				alert("결제자명을 입력해 주세요.");
+				cont_edit.acc_cust_nm.focus();
+				return false;
+			}else{
+				return true;
+			}
+		}else if(cont_edit.acc_gubun.value=="지로"){
+			if(cont_edit.acc_zipcode.value==""){
+				alert("우편번호를 입력해 주세요.");
+				zipopen('cont_edit', 'acc_zipcode', 'acc_addr1', 'acc_addr2');
+				return false;
+			}else if(cont_edit.acc_addr2.value==""){
+				alert("주소를 입력해 주세요.");
+				cont_edit.acc_addr2.focus();
+				return false;
+			}else{
+				return true;
+			}
+		}
+		*/
+
+		return true;
+	}
+
+</script>
+
+<div id="helpbox" style="border-width:0px; border-style:none; width:0px; height:0px; position:absolute; left:0px; top:0px; z-index:1;" ></div>
+
+<BODY BGCOLOR=#FFFFFF LEFTMARGIN=0 TOPMARGIN=0 MARGINWIDTH=0 MARGINHEIGHT=0 height=100% align="left3" onload="accCheck();">
+
+<table width="1200" border="0" bordercolor="">
+	<tr height=20>
+		<td valign="bottom">현재위치 : HOME &gt; 청약서관리 &gt; 청약서관리 수정</td>
+	</tr>
+</table>
+
+
+<table width="1200" border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<td width="50%" valign="bottom" height="20"><img src="/images/icon02.gif">
+			<b>청약서정보</b>
+		</td>
+		<td width="50%" align=right valign="bottom">청약서번호 : <?echo $_GET[cont_seq]?></td>
+	</tr>
+</table>
+
+<script>
+	function userChange(){
+
+		var agent_seq=eval("document.cont_edit.agent_seq.options[document.cont_edit.agent_seq.selectedIndex].value");
+		document.frames["userframe"].location.replace("/include/user_combo.html?agent_seq="+agent_seq+"&user_id=&form_nm=cont_edit");
+		document.cont_edit.user_id.value="";
+
+	}
+</script>
+
+<table width="1200" border="1" cellpadding="2" cellspacing="0" bordercolor="#CCCCCC" bgcolor="#ffffff">
+
+<form method=post name="cont_edit" action="a01_01_edit.html" ENCTYPE='multipart/form-data'>
+<input type='hidden' name='flag' value='cont_edit'>
+<input type='hidden' name='user_id' value='<?echo $row1[cont_user_id]?>'>
+<input type='hidden' name='cust_seq' value='<?echo $row1[cust_seq]?>'>
+<input type='hidden' name='cont_gubun' value='<?echo $row1[cont_gubun]?>'>
+<input type='hidden' name='acc_seq' value='<?echo $row4[acc_seq]?>'>
+<input type='hidden' name='comp_seq' value='<?echo $row1[comp_seq]?>'>
+<input type='hidden' name='acc_nm' value='<?echo $row4[acc_nm]?>'>
+<input type='hidden' name='line_cnt' value=''>
+<input type='hidden' name='cont_seq' value='<?echo $cont_seq?>'>
+
+	<tr>
+		<td>
+			<table border=1 cellpadding=1 cellspacing=0 width=100% style="border-collapse:collapse" bordercolor=#CCCCCC>
+				<tr height=20>
+					<td width="13%" class="bold">대리점</td>
+					<td width="20%" class="center">
+						<select name="agent_seq" onchange="userChange()" style="width:120">
+							<?agent_combo($_SESSION[user_level], $row1[agent_seq])?>
+						</select>
+					</td>
+					<td width="13%" class="bold">영업사원</td>
+					<td width="20%" class="center">
+						<iframe src="/include/user_combo.html?user_id=<?echo $row1[cont_user_id]?>&agent_seq=<?echo $row1[agent_seq]?>&form_nm=cont_edit" name="userframe" width="100%" height="19" scrolling="No" frameborder="0" align="left3" allowTransparency ="true"marginwidth="0" marginheight="0" frameborder="0" vspace="0" hspace="0" style="z-index:99;"></iframe>
+					</td>
+					<td width="14%" class="bold">연락처</td>
+					<td width="20%" class="center"><input type="text" name="cont_user_hp" value="<?echo $row1[cont_user_hp]?>" style="width:236"></td>
+				</tr>
+				<tr height=20>
+					<td class="bold">청약서구분</td>
+					<td class="left3"><?echo $row1[cont_gubun]?></td>
+					<td class="bold">종합파일</td>
+					<td class="center">
+						<input type="file" name="cont_file" value="" style="width:200">
+						<?if($row1[cont_file]){?><a onfocus="this.blur()" href="javascript:sabon_down('<?echo $row1[cont_file]?>')" title="<?echo $row1[cont_file]?>">보기</a><?}?>
+					</td>
+					<td class="bold">청약서등록일</td>
+					<td class="left3"><?echo $row1[cont_reg_dt]?></td>
+				</tr>
+
+<?if($row1[cont_gubun]=="이동"){?>
+				<tr height=20>
+					<td class="bold">변경전사업자</td>
+					<td class="center">
+						<select name="pre_fix_saupja" style="width:120">
+							<option value=''>선택해주세요</option>
+							<?code_combo("saupja", $row1[pre_fix_saupja])?>
+						</select>
+					</td>
+					<td class="bold">변경후사업자</td>
+					<td class="center">
+						<select name="after_fix_saupja" style="width:120">
+							<option value=''>선택해주세요</option>
+							<?code_combo("saupja", $row1[after_fix_saupja])?>
+						</select>
+					</td>
+					<td class="bold">번호부여사업자</td>
+					<td class="left3">
+						<select name="number_saupja" style="width:120">
+							<option value=''>선택해주세요</option>
+							<?code_combo("saupja", $row1[number_saupja])?>
+						</select>
+					</td>
+				</tr>
+<?}?>
+
+				<tr height=20>
+					<td width="10%" class="bold">참고사항</td>
+					<td width="*" class="center" colspan=5><textarea style="width:1034; height:40; ime-mode:active" name="cont_refer"></textarea></td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+
+<script>
+	function comboChange(){
+
+		var acc_gubun=eval("document.cont_edit.acc_gubun.options[document.cont_edit.acc_gubun.selectedIndex].value");
+		document.frames["comboframe"].location.replace("/include/acc_combo.html?acc_gubun="+acc_gubun+"&acc_nm=<?echo $row[acc_nm]?>&form_nm=cont_edit");
+		document.cont_edit.acc_nm.value="";
+
+		cont_edit.acc_num.value="";
+		cont_edit.acc_cust_nm.value="";
+		cont_edit.sangdong.checked=false;
+		cont_edit.acc_zipcode.value="";
+		cont_edit.acc_addr1.value="";
+		cont_edit.acc_addr2.value="";
+		//cont_edit.acc_refer.value="";
+
+		if(acc_gubun=="신용카드"){
+			cont_edit.year.value="<?echo $_year?>";
+			cont_edit.month.value="<?echo $_month?>";
+		}else{
+			cont_edit.year.value="";
+			cont_edit.month.value="";
+		}
+
+		accCheck();
+
+	}
+
+	function accCheck(){
+
+		var acc_gubun=eval("document.cont_edit.acc_gubun.options[document.cont_edit.acc_gubun.selectedIndex].value");
+
+		if(acc_gubun=="신용카드"){
+			cont_edit.acc_num.disabled=false;
+			cont_edit.acc_cust_nm.disabled=false;
+			cont_edit.year.disabled=false;
+			cont_edit.month.disabled=false;
+			cont_edit.sangdong.disabled=true;
+			cont_edit.acc_zipcode.disabled=true;
+			cont_edit.acc_addr1.disabled=true;
+			cont_edit.acc_addr2.disabled=true;
+			//cont_edit.acc_refer.disabled=false;
+		}else if(acc_gubun=="계좌이체"){
+			cont_edit.acc_num.disabled=false;
+			cont_edit.acc_cust_nm.disabled=false;
+			cont_edit.year.disabled=true;
+			cont_edit.month.disabled=true;
+			cont_edit.sangdong.disabled=true;
+			cont_edit.acc_zipcode.disabled=true;
+			cont_edit.acc_addr1.disabled=true;
+			cont_edit.acc_addr2.disabled=true;
+			//cont_edit.acc_refer.disabled=false;
+		}else if(acc_gubun=="지로"){
+			document.frames["comboframe"].acc_nm.acc_nm.disabled=true;
+			cont_edit.acc_num.disabled=true;
+			cont_edit.acc_cust_nm.disabled=true;
+			cont_edit.year.disabled=true;
+			cont_edit.month.disabled=true;
+			cont_edit.sangdong.disabled=false;
+			cont_edit.acc_zipcode.disabled=false;
+			cont_edit.acc_addr1.disabled=false;
+			cont_edit.acc_addr2.disabled=false;
+			//cont_edit.acc_refer.disabled=false;
+		}else{
+			cont_edit.acc_num.disabled=true;
+			cont_edit.acc_cust_nm.disabled=true;
+			cont_edit.year.disabled=true;
+			cont_edit.month.disabled=true;
+			cont_edit.sangdong.disabled=true;
+			cont_edit.acc_zipcode.disabled=true;
+			cont_edit.acc_addr1.disabled=true;
+			cont_edit.acc_addr2.disabled=true;
+			//cont_edit.acc_refer.disabled=true;
+		}
+
+	}
+
+	function sangDong(flag){
+		if(flag=="Y"){
+			cont_edit.acc_zipcode.value=cont_edit.cust_zipcode.value;
+			cont_edit.acc_addr1.value=cont_edit.cust_addr1.value;
+			cont_edit.acc_addr2.value=cont_edit.cust_addr2.value;
+		}else{
+			cont_edit.acc_zipcode.value="";
+			cont_edit.acc_addr1.value="";
+			cont_edit.acc_addr2.value="";
+		}
+	}
+
+	function searchCompany(){
+
+		var user_id = cont_edit.user_id.value;
+		var cust_seq = cont_edit.cust_seq.value;
+
+		if(user_id == ""){
+			alert("영업사원을 선택해 주세요.");
+		//}else if(cust_seq == ""){
+		//	alert("고객을 선택해 주세요.");
+		}else{
+			var url = "a01_01_03_03.html?user_id="+user_id+"&cust_seq="+cust_seq+"&form_name=cont_edit";
+			window.open(url, '_change', 'width=730, height=360,scrollbars=no, status=no, location=no');
+		}
+	}
+
+</script>
+
+
+<table width="1200" border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<td width="50%" valign="bottom" height="25"><img src="/images/icon02.gif">
+			<b>고객정보</b>
+		</td>
+		<td width="50%" valign="bottom" align=right>
+			<a style="cursor:hand" onclick="window.open('a01_01_06_02.html?cust_seq=<?echo $row1[cust_seq]?>', '_change2', 'width=1030, height=360,scrollbars=no, status=no, location=no');"><img src="/images/bt_modify.gif" border=0 style="margin-bottom:2px;"></a>
+		</td>
+	</tr>
+</table>
+
+<table width="1200" border="1" cellpadding="2" cellspacing="0" bordercolor="#CCCCCC" bgcolor="#ffffff">
+	<tr>
+		<td>
+			<table border=1 cellpadding=1 cellspacing=0 width=100% style="border-collapse:collapse" bordercolor=#CCCCCC>
+				<tr height=20>
+					<td width="13%" class="bold">성명</td>
+					<td width="20%" class="center"><input type="text" name="cust_nm" value="<?echo $row1[cust_nm]?>" style="width:236" disabled></td>
+					<td width="13%" class="bold">주민번호</td>
+					<td width="20%" class="center">
+						<input type="text" name="cust_jumin1" maxlength=6 onKeyDown="return onlyNum();" onkeyup="if(this.value.length==6) document.cont_edit.cust_jumin2.focus()" style="ime-mode:disabled;width:100" value="<?echo substr($row1[cust_jumin], 0, 6)?>" disabled>-<input type="text" name="cust_jumin2" maxlength=7 onKeyDown="return onlyNum();" style="ime-mode:disabled;width:100" value="<?echo substr($row1[cust_jumin], 7, 7)?>" disabled>
+					</td>
+					<td width="14%" class="bold">회원구분</td>
+					<td width="20%" class="center">
+						<select name="cust_gubun" style="width:120" disabled>
+							<option value="">선택해주세요</option>
+							<?code_combo("cust_gubun", $row1[cust_gubun])?>
+						</select>
+					</td>
+				</tr>
+				<tr height=20>
+					<td class="bold">전화번호</td>
+					<td class="center"><input type="text" name="cust_tel" value="<?echo $row1[cust_tel]?>" style="width:236" disabled></td>
+					<td class="bold">휴대전화</td>
+					<td class="center" colspan=3><input type="text" name="cust_hp" value="<?echo $row1[cust_hp]?>" style="width:235" disabled></td>
+				</tr>
+				<tr height=20>
+					<td class="bold">주소지</td>
+					<td class="center" colspan=5>
+						<table width="100%" border="0" cellpadding="0" cellspacing="0">
+							<tr align=left>
+								<td width=66><input type="text" name="cust_zipcode" style="width:65;" disabled  value="<?echo $row1[cust_zipcode]?>"></td>
+								<!--<td width=82><a href="javascript:zipopen('cont_edit', 'cust_zipcode', 'cust_addr1', 'cust_addr2')"><img src="/images/bt_post_01.gif" border=0 height=19 width=81></a></td>-->
+								<td width=82><img src="/images/bt_post_01.gif" border=0 height=19 width=81></td>
+								<td width=301><input type="text" name="cust_addr1" style="width:300;" value="<?echo $row1[cust_addr1]?>" disabled></td>
+								<td width="*"><input type="text" name="cust_addr2" style="width:585; ime-mode:active" value="<?echo $row1[cust_addr2]?>" disabled></td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+
+				<tr height=20>
+					<td width="13%" class="bold">결제구분</td>
+					<td width="20%" class="center">
+						<select name="acc_gubun" onChange="comboChange();" style="width:120">
+							<option value="">선택해주세요</option>
+							<?code_combo("acc_gubun", $row4[acc_gubun])?>
+						</select>
+					</td>
+					<td width="13%" class="bold">은행/카드사명</td>
+					<td width="20%" class="center">
+						<iframe src="/include/acc_combo.html?acc_gubun=<?echo $row4[acc_gubun]?>&acc_nm=<?echo $row4[acc_nm]?>&form_nm=cont_edit" name="comboframe" width="100%" height="19" scrolling="No" frameborder="0" align="left" allowTransparency ="true"marginwidth="0" marginheight="0" frameborder="0" vspace="0" hspace="0" style="z-index:99;"></iframe>
+					</td>
+					<td width="14%" class="bold">카드/계좌번호</td>
+					<td width="20%" class="center"><input type="text" name="acc_num" value="<?echo $row4[acc_num]?>" style="width:236"></td>
+				</tr>
+
+				<tr height=20>
+					<td width="13%" class="bold">결제자명</td>
+					<td width="20%" class="center"><input type="text" name="acc_cust_nm" value="<?echo $row4[acc_cust_nm]?>" style="width:235; ime-mode:active"></td>
+					<td class="bold">카드유효기간</td>
+					<td class="center" colspan=3><?month_combo($row4[card_year]."-".$row4[card_month])?></td>
+				</tr>
+
+				<tr height=20>
+					<td class="bold">청구지주소</td>
+					<td class="center" colspan=5>
+						<table width="100%" border="0" cellpadding="0" cellspacing="0">
+							<tr align=left>
+								<td width=44>상동<input type="checkbox" name="sangdong" value="Y" class="checkbox" onclick="if(this.checked){sangDong('Y');}else{sangDong('N');}"></td>
+								<td width=66><input type="text" name="acc_zipcode" style="width:65;" readonly  value="<?echo $row4[acc_zipcode]?>"></td>
+								<td width=82><a href="javascript:if(cont_edit.acc_gubun.value=='지로'){zipopen('cont_edit', 'acc_zipcode', 'acc_addr1', 'acc_addr2')}else{alert('결제구분이 \'지로\' 일때만 가능합니다.')}"><img src="/images/bt_post_01.gif" border=0 height=19 width=81></a></td>
+								<td width=301><input type="text" name="acc_addr1" style="width:300;" value="<?echo $row4[acc_addr1]?>" readonly></td>
+								<td width="*"><input type="text" name="acc_addr2" style="width:541; ime-mode:active" value="<?echo $row4[acc_addr2]?>"></td>
+							</tr>
+						</table>
+
+					</td>
+				</tr>
+				<!--
+				<tr height=20>
+					<td width="10%" class="bold">참고사항</td>
+					<td width="*" class="center" colspan=5><textarea style="width:1034; height:40; ime-mode:active" name="acc_refer"><?echo $row[acc_refer]?></textarea></td>
+				</tr>
+				-->
+			</table>
+		</td>
+	</tr>
+</table>
+
+<table width="1200" border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<td width="50%" valign="bottom" height="25"><img src="/images/icon02.gif">
+			<b>사업자정보</b>
+		</td>
+		<td width="50%" valign="bottom" align=right>
+			<?if($row1[comp_seq]){?>
+			<a style="cursor:hand" onclick="window.open('a01_01_06_01.html?comp_seq=<?echo $row1[comp_seq]?>', '_change', 'width=1030, height=260,scrollbars=no, status=no, location=no');"><img src="/images/bt_modify.gif" border=0 style="margin-bottom:2px;"></a>
+			<?}else{?>
+			<a style="cursor:hand" onclick="searchCompany()"><img src="/images/bt_inquiry.gif" border=0 style="margin-bottom:2px;"></a>
+			<?}?>
+		</td>
+	</tr>
+</table>
+
+<table width="1200" border="1" cellpadding="2" cellspacing="0" bordercolor="#CCCCCC" bgcolor="#ffffff">
+	<tr>
+		<td>
+			<table border=1 cellpadding=1 cellspacing=0 width=100% style="border-collapse:collapse" bordercolor=#CCCCCC>
+
+				<tr height=20>
+					<td width="13%" class="bold">상호</td>
+					<td width="20%" class="center"><input type="text" name="comp_nm" value="<?echo $row1[comp_nm]?>" style="width:235; ime-mode:active" disabled></td>
+					<td width="13%" class="bold">등록번호</td>
+					<td width="*" class="center" colspan=3>
+						<input type="text" name="comp_num" value="<?echo $row1[comp_num]?>" style="width:235" disabled><select name="comp_num_flag" style="width:120; margin-left:1px;" disabled>
+							<option value="">선택해주세요</option>
+							<?code_combo("comp_num_flag", $row1[comp_num_flag])?>
+						</select>
+						<!--
+						<input type=radio name="comp_num_flag" value="사업자번호" class=checkbox>사업자번호
+						<input type=radio name="comp_num_flag" value="인허가번호" class=checkbox>인허가번호
+						-->
+					</td>
+				</tr>
+				<tr height=20>
+					<td class="bold">대표자</td>
+					<td class="center"><input type="text" name="comp_boss_nm" value="<?echo $row1[comp_boss_nm]?>" style="width:235" disabled></td>
+					<td class="bold">법인번호</td>
+					<td width="20%" class="center"><input type="text" name="comp_corpor_num" value="<?echo $row1[comp_corpor_num]?>" style="width:235" disabled></td>
+					<td width="14%" class="bold">업태</td>
+					<td width="20%" class="center"><input type="text" name="comp_status" value="<?echo $row1[comp_status]?>" style="width:236" disabled></td>
+				</tr>
+				<tr height=20>
+					<td class="bold">종목</td>
+					<td class="center"><input type="text" name="comp_type" value="<?echo $row1[comp_type]?>" style="width:235" disabled></td>
+					<td class="bold">대표전화</td>
+					<td class="center"><input type="text" name="comp_tel" value="<?echo $row1[comp_tel]?>" style="width:235" disabled></td>
+					<td class="bold">휴대전화</td>
+					<td class="center"><input type="text" name="comp_hp" value="<?echo $row1[comp_hp]?>" style="width:236" disabled></td>
+				</tr>
+				<tr height=20>
+					<td width="10%" class="bold">사업장주소지</td>
+					<td width="*" class="center" colspan=5>
+						<table width="100%" border="0" cellpadding="0" cellspacing="0">
+							<tr align=left>
+								<td width=66><input type="text" name="comp_zipcode" style="width:65;" disabled  value="<?echo $row1[comp_zipcode]?>"></td>
+								<!--<td width=82><a href="javascript:zipopen('comp_add', 'comp_zipcode', 'comp_addr1', 'comp_addr2')"><img src="/images/bt_post_01.gif" border=0 height=19 width=81></a></td>-->
+								<td width=82><img src="/images/bt_post_01.gif" border=0 height=19 width=81></td>
+								<td width=301><input type="text" name="comp_addr1" style="width:300;" value="<?echo $row1[comp_addr1]?>" disabled></td>
+								<td width="*"><input type="text" name="comp_addr2" style="width:584; ime-mode:active" value="<?echo $row1[comp_addr2]?>" disabled></td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+
+			</table>
+		</td>
+	</tr>
+</table>
+
+
+<script>
+
+	function addRow(maxUp){
+		var objTbody, objRow, objCell, add, objLen, vNo;
+		//alert(objLen);
+		objTbody=document.getElementById("appTable");
+		objLen=objTbody.rows.length;
+		viewNo=objLen;
+		preViewNo=viewNo-1;
+
+		/*
+		pre_line_num = eval("document.cont_edit.line_num_"+preViewNo+".value");
+		if(pre_line_num == ""){
+			alert("이전 회선 정보를 입력해 주세요");
+			eval("document.cont_edit.line_num_"+preViewNo+".focus();");
+			return false;
+		}
+		*/
+
+		if(maxUp <= objLen) return false;
+
+		objRow=objTbody.insertRow(objLen);
+		objRow.align='center';
+
+		objCell1=objRow.insertCell(0);
+		objCell2=objRow.insertCell(1);
+		objCell3=objRow.insertCell(2);
+		objCell4=objRow.insertCell(3);
+		objCell5=objRow.insertCell(4);
+		objCell6=objRow.insertCell(5);
+
+		objCell1.innerHTML='<a onfocus="this.blur()" href="javascript:copyInfo('+viewNo+')">'+viewNo+'</a><input type="hidden" name="no[]" value="'+viewNo+'">';
+		objCell2.innerHTML='<input type="text" name="sangho_' + viewNo + '" value="" style="width:198"><!--상호-->';
+		objCell3.innerHTML='<input type="text" name="upjong_' + viewNo + '" value="" style="width:198"><!--업종-->';
+		objCell4.innerHTML='<input type="text" name="line_addr_' + viewNo + '" value="" style="width:318"><!--기본주소-->';
+		objCell5.innerHTML='<input type="text" name="chacksin_' + viewNo + '" value="" style="width:198"><!--착신번호-->';
+		objCell6.innerHTML='<input type="text" name="hope_num_' + viewNo + '" value="" style="width:198"><!--희망번호-->';
+	}
+
+	function copyInfo(no) {
+
+		var prev_no = no - 1;
+
+		var sangho = eval("cont_edit.sangho_"+prev_no+".value");
+		var upjong = eval("cont_edit.upjong_"+prev_no+".value");
+		var line_addr = eval("cont_edit.line_addr_"+prev_no+".value");
+		var chacksin = eval("cont_edit.chacksin_"+prev_no+".value");
+		var hope_num = eval("cont_edit.hope_num_"+prev_no+".value");
+
+		//alert(line_num);
+		//if(!line_num && !line_zipcode && !line_addr1 && !line_addr2 && !line_mang && !line_suyong && !line_114_yn && !info_gubun && !info_nm && !info_detail && !chack_num && !line_upjong_cd){
+
+		if(!sangho||!upjong){
+			alert('이전 등록된 회선정보가 없습니다. 회선정보를 먼저 입력해주세요');
+		} else {
+
+			eval("cont_edit.sangho_"+no+".value = cont_edit.sangho_"+prev_no+".value");
+			eval("cont_edit.upjong_"+no+".value = cont_edit.upjong_"+prev_no+".value");
+			eval("cont_edit.line_addr_"+no+".value = cont_edit.line_addr_"+prev_no+".value");
+			eval("cont_edit.chacksin_"+no+".value = cont_edit.chacksin_"+prev_no+".value");
+			eval("cont_edit.hope_num_"+no+".value = cont_edit.hope_num_"+prev_no+".value");
+
+		}
+	}
+
+	// 회선 입력 row 삭제
+	function delRow(){
+		var objTbody = document.getElementById("appTable");
+		var objLen = objTbody.rows.length;
+		if(objLen > 2) {
+			objTbody.deleteRow(objLen-1);
+			return true;
+		} else{
+			//alert('기본행은 삭제할 수 없습니다.');
+			return false;
+		}
+	}
+
+
+	// 회선 입력 row 삭제
+	function delRowAll(){
+
+		var objTbody = document.getElementById("appTable");
+		var objLen = objTbody.rows.length;
+
+		for(var i=objLen; i>2; i--){
+			objTbody.deleteRow(objLen-1);
+			objLen = objLen-1;
+		}
+
+		document.cont_edit.sangho_1.value = "";
+		document.cont_edit.upjong_1.value = "";
+		document.cont_edit.line_addr_1.value = "";
+		document.cont_edit.chacksin_1.value = "";
+		document.cont_edit.hope_num_1.value = "";
+	}
+
+	function excel_add(){
+		delRowAll();
+		window.open('a01_01_03_05.html', '_change', 'width=440, height=120,scrollbars=no, status=no, location=no');
+	}
+</script>
+
+<script>
+	function line_confirm(obj, viewNo){
+
+		var line_num = obj.value;
+		document.frames["lineframe"].location.replace("/include/line_confirm.html?viewNo="+viewNo+"&line_num="+line_num+"&form_nm=cont_edit");
+
+	}
+</script>
+
+
+<table width="1200" border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<td width="50%" valign="bottom" height="25"><img src="/images/icon02.gif">
+			<b>회선정보</b>
+		</td>
+		<td>
+			<iframe src="/include/line_confirm.html?viewNo=&line_num=&form_nm=cont_edit" name="lineframe" width="0" height="0" scrolling="No" frameborder="0" align="left3" allowTransparency ="true"marginwidth="0" marginheight="0" frameborder="0" vspace="0" hspace="0" style="z-index:99;"></iframe>
+		</td>
+		<td width="50%" valign="bottom" align=right>
+			<a style="cursor:hand" onclick="addRow(1000)"><img src="/images/bt_cross_01.gif" border=0 style="margin-bottom:2px;" title="행추가"></a>
+			<a style="cursor:hand" onclick="delRow()"><img src="/images/bt_minus.gif" border=0 style="margin-bottom:2px;" title="행삭제"></a>
+			<a style="cursor:hand" onclick="excel_add()"><img src="/images/bt_excel_01.gif" border=0 style="margin-bottom:2px;"></a>
+		</td>
+	</tr>
+</table>
+
+<table width="1200" border="1" cellpadding="2" cellspacing="0" bordercolor="#CCCCCC" bgcolor="#ffffff">
+	<tr>
+		<td>
+			<table border=1 cellpadding=1 cellspacing=0 width=100% style="border-collapse:collapse" bordercolor=#CCCCCC id="appTable">
+				<tr height=20>
+					<td class="bold" width=60>번호*</td>
+					<td class="bold" width=200>상호*</td>
+					<td class="bold" width="200">업종*</td>
+					<td class="bold" width="*">주소(안내동)*</td>
+					<td class="bold" width=200>착신번호*</td>
+					<td class="bold" width=200>희망번호</td>
+				</tr>
+
+<?
+	$select = "select * from np_line where cont_seq = $_GET[cont_seq] order by 1 asc";
+	$result=@mysql_query($select);
+	$num = mysql_num_rows($result);
+?>
+				<input type="hidden" name="line_num" value="<?echo $num?>">
+<?
+	if($num>0){
+
+		$line_num = 1;
+		while($rows = @mysql_fetch_array($result)){
+
+?>
+
+				<input type="hidden" name="line_seq_<?echo $line_num?>" value="<?echo $rows[line_seq]?>">
+				<tr align=center height=20 style="vertical-align:bottom;">
+					<td><?echo $line_num?><input type="hidden" name="no[]" value="<?echo $line_num?>"></td><!--번호-->
+					<td><input type="text" name="sangho_<?echo $line_num?>" value="<?echo $rows[sangho]?>" style="width:198"></td><!--상호-->
+					<td><input type="text" name="upjong_<?echo $line_num?>" value="<?echo $rows[upjong]?>" style="width:198"></td><!--업종-->
+					<td><input type="text" name="line_addr_<?echo $line_num?>" value="<?echo $rows[line_addr]?>" style="width:318"></td><!--주소-->
+					<td><input type="text" name="chacksin_<?echo $line_num?>" value="<?echo $rows[chacksin]?>" style="width:198"></td><!--착신번호-->
+					<td><input type="text" name="hope_num_<?echo $line_num?>" value="<?echo $rows[hope_num]?>" style="width:198"></td><!--희망번호-->
+				</tr>
+
+
+
+<?
+			$line_num++;
+		}
+	}
+?>
+
+			</table>
+		</td>
+	</tr>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table width="1200" border="0" bordercolor="DDECFC" cellpadding=0 cellspacing=0>
+	<tr>
+		<td align="right" height=27>
+			<img src="/images/bt_modify.gif" border=0 onclick="cont_edit_check();" style="cursor:hand">
+			<img src="/images/bt_back_01.gif" style="cursor:hand" onclick="history.go(-1);">
+		</td>
+	</tr>
+
+</form>
+</table>
+
+<?include "../include/bottom.html";?>
+
+</body>
+</html>

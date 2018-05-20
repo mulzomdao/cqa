@@ -24,7 +24,7 @@
             <ul class="list-inline mb0">
 
                 <li class="list-inline-item">
-                    <a href="http://www.facebook.com" class="social-icon-sm si-gray si-gray-round si-facebook" target="_blank">
+                    <a href="https://www.facebook.com/corea.quilt.centre/" class="social-icon-sm si-gray si-gray-round si-facebook" target="_blank">
                         <i class="fa fa-facebook"></i>
                         <i class="fa fa-facebook"></i>
                     </a>
@@ -36,7 +36,7 @@
                     </a>
                 </li>
                 <li class="list-inline-item">
-                    <a href="https://www.instagram.com" class="social-icon-sm si-gray si-gray-round si-instagram" target="_blank">
+                    <a href="https://www.instagram.com/cqa_official/" class="social-icon-sm si-gray si-gray-round si-instagram" target="_blank">
                         <i class="fa fa-instagram"></i>
                         <i class="fa fa-instagram"></i>
                     </a>
@@ -101,12 +101,12 @@
                     </ul>
                 </li>
                 <li class="nav-item dropdown <?if ($menu_active == "40") {echo "active";}?>">
-                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">지회/지부</a>
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">지회/지부/분과</a>
                     <ul class="dropdown-menu dropdown-menu-right">
                         <li><a href="office_main.php" class="dropdown-item">지회</a></li>
                         <li><a href="office_sub.php" class="dropdown-item">지부</a></li>
-                        <li><a href="office_art_quilt.php" class="dropdown-item">분과-한국아트퀼트</a></li>
-                        <li><a href="office_traditional_quilt.php" class="dropdown-item">분과-실용전통퀼트</a></li>
+                        <li><a href="office_art_quilt.php" class="dropdown-item">한국아트퀼트</a></li>
+                        <li><a href="office_traditional_quilt.php" class="dropdown-item">실용전통공예</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown <?if ($menu_active == "30") {echo "active";}?>">
@@ -122,7 +122,7 @@
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">CQA교육/교재</a>
                     <ul class="dropdown-menu dropdown-menu-right">
                         <li><a href="education_notice.php" class="dropdown-item">교육공지/접수</a></li>
-                        <li><a href="education_receive.php" class="dropdown-item">교육접수현황</a></li>
+                        <li><a href="education_receive.php" class="dropdown-item">교육접수정보</a></li>
                         <li><a href="education_book.php" class="dropdown-item">교재/템플릿</a></li>
                     </ul>
                 </li>

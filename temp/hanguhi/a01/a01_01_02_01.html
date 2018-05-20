@@ -1,0 +1,164 @@
+<?
+	session_start();
+	include "../inc/connect.html";
+	include "../inc/function.html";
+	include "../inc/variable.html";
+	include "../inc/session.html";
+
+	$chk_temp = $_POST[chk];
+	$in_str = "";
+
+	if(!empty($chk_temp)){
+		for($i=0;$i<count($chk_temp);$i++) {
+			//echo $chk_temp[$i]."<br>";
+
+			if($i==0){
+				$in_str = $chk_temp[$i];
+			}else{
+				$in_str = $in_str.",".$chk_temp[$i];
+			}
+		}
+	}
+?>
+
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+	<title>NetPlus</title>
+	<link href="/css/style2.css" rel="stylesheet" type="text/css">
+	<script language="javascript" src="/js/kcmsScript.js"></script>
+	<script language="javascript" src="../js/calendar.js"></script>
+</head>
+
+<script>
+
+	function user_mod_check(){
+
+		if(confirm('변경신청 하시겠습니까?')){
+			document.cont_appro.submit();
+		}
+
+	}
+
+	function excel_add(){
+		//alert(cont_appro.line_num.value);
+		var line_num = cont_appro.line_num.value;
+		window.open('a01_01_03_05.html?return_page=a01_01_02_01&line_num='+line_num, '_change', 'width=440, height=120,scrollbars=no, status=no, location=no');
+	}
+
+	function all_fill(col_nm){
+
+		var line_num = cont_appro.line_num.value;
+		for(var i=1; i<=line_num; i++){
+			//eval("document.frm.aa"+0).value;
+
+			eval("document.cont_appro."+col_nm+"_"+i).value = eval("document.cont_appro."+col_nm+"_1").value;
+		}
+	}
+
+</script>
+
+
+<BODY BGCOLOR=#FFFFFF LEFTMARGIN=0 TOPMARGIN=0 MARGINWIDTH=0 MARGINHEIGHT=0 height=100% align="left" >
+
+<table width="1100" border="0" cellpadding="0" cellspacing="0" align=center>
+	<tr>
+		<td width="50%" valign="bottom" class="tlt1" height="30"><img src="/images/icon02.gif">
+			<b>변경신청</b>
+		</td>
+		<td width="50%" valign="bottom" align=right>
+			<!--a style="cursor:hand" onclick="excel_add()"><img src="/images/bt_excel_01.gif" border=0 style="margin-bottom:2px;"></a-->
+		</td>
+	</tr>
+</table>
+
+
+<table width="1100" border="1" cellpadding="2" cellspacing="0" bordercolor="#CCCCCC" bgcolor="#ffffff" align=center>
+
+<form method=post name="cont_appro" action="a01_01_edit.html" ENCTYPE='multipart/form-data'>
+<input type='hidden' name='flag' value='cont_change_add'>
+<input type="hidden" name="user_id" value="<?echo $_POST[user_id]?>">
+<input type="hidden" name="cust_seq" value="<?echo $_POST[cust_seq]?>">
+<input type="hidden" name="comp_seq" value="<?echo $_POST[comp_seq]?>">
+
+	<tr>
+		<td>
+			<div id="bottomright" style="position:RELATIVE; z-index:1; overflow:scroll; overflow-x:hidden; width:1093; height:242px; left:0px; top:0px; visibility:visible;" align="left">
+			<table border=1 cellpadding=1 cellspacing=0 width=100% style="border-collapse:collapse" bordercolor=#CCCCCC id="appTable">
+				<tr height=20>
+					<td class="bold" width=30>번호</td>
+					<td class="bold" width=*>상호</td>
+					<td class="bold" width=*>업종</td>
+					<td class="bold" width=*>주소(안내동)</td>
+					<td class="bold" width=90>착신번호</td>
+					<td class="bold" width=80>가입번호</td>
+
+					<td class="bold" width=70 onclick="all_fill('change_req_dt')">요청일자</td>
+					<td class="bold" width=100 onclick="all_fill('change_sangho')">상호변경</td>
+					<td class="bold" width=80 onclick="all_fill('change_upjong')">업종변경</td>
+					<td class="bold" width=160 onclick="all_fill('change_addr')">주소변경</td>
+					<td class="bold" width=80 onclick="all_fill('change_chacksin')">착신변경</td>
+					<!--<td class="bold" width=120>희망번호</td>-->
+				</tr>
+
+<?
+	//$select = "select * from np_line where cont_seq = $_POST[cont_seq] and line_seq in (".$in_str.") order by 1 asc";
+	$select = "select * from np_line where line_seq in (".$in_str.") order by 1 asc";
+
+	//echo $select;
+	$result=@mysql_query($select);
+	$num = mysql_num_rows($result);
+?>
+				<input type="hidden" name="line_num" value="<?echo $num?>">
+<?
+	if($num>0){
+
+		$line_num = 1;
+		while($rows = @mysql_fetch_array($result)){
+
+?>
+				<tr align=center height=20 style="vertical-align:bottom;">
+					<td>
+						<?echo $line_num?>
+						<input type="hidden" name="line_seq_<?echo $line_num?>" value="<?echo $rows[line_seq]?>">
+						<input type="hidden" name="no[]" value="<?echo $line_num?>">
+					</td><!--번호-->
+					<td><?echo $rows[sangho]?></td><!--상호-->
+					<td><?echo $rows[upjong]?></td><!--업종-->
+					<td><?echo $rows[line_addr]?></td><!--주소-->
+					<td><?echo $rows[chacksin]?></td><!--착신번호-->
+					<td><?echo $rows[gaip_num]?></td><!--가입번호-->
+					<td><input type="text" name="change_req_dt_<?echo $line_num?>" value="<?echo $_date?>" style="width:69"></td><!--요청일자-->
+					<td><input type="text" name="change_sangho_<?echo $line_num?>" value="" style="width:100"></td><!--상호변경-->
+					<td><input type="text" name="change_upjong_<?echo $line_num?>" value="" style="width:80"></td><!--업종변경-->
+					<td><input type="text" name="change_addr_<?echo $line_num?>" value="" style="width:160"></td><!--주소변경-->
+					<td><input type="text" name="change_chacksin_<?echo $line_num?>" value="" style="width:80"></td><!--착신변경-->
+				</tr>
+
+<?
+			$line_num++;
+		}
+	}
+?>
+			</table>
+			</div>
+		</td>
+	</tr>
+</form>
+</table>
+
+
+
+
+<table width="1100" border="0" cellpadding="0" cellspacing="0" border=1 align=center>
+	<tr>
+		<td width="100%" align=right height="30">
+			<img src="/images/bt_change_regi.gif" border=0 onclick="user_mod_check();" style="cursor:hand">
+			<img src="/images/bt_close.gif" border=0 onclick="self.close();" style="cursor:hand">
+		</td>
+	</tr>
+</table>
+
+
+</body>
+</html>

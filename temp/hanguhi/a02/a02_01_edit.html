@@ -1,0 +1,140 @@
+<?
+	session_start();
+	include "../inc/session.html";
+	include "../inc/connect.html";
+	include "../inc/variable.html";
+	include "../inc/function.html";
+
+	if($_POST[flag] == "cust_add"){
+
+		$ip = getenv("REMOTE_ADDR");
+
+		$cust_jumin = $_POST[jumin1]."-".$_POST[jumin2];
+
+		$file=$_FILES['cust_sabon'];
+
+		if($file[name]!=""){
+			$reFileName=upload_file_Check($file, $_file_size, $_ok_file, "../file_upload/sabon/", "file");
+		}
+
+		$tong_file=$_FILES['cust_tongjang'];
+
+		if($tong_file[name]!=""){
+			$tong_file_name=upload_file_Check($tong_file, $_file_size, $_ok_file, "../file_upload/sabon/", "file");
+		}
+
+		$insert1 = "
+			insert into np_cust(
+				cust_seq, cust_nm, cust_jumin, cust_gubun, cust_tel, cust_hp, cust_zipcode, cust_addr1, cust_addr2, cust_email, cust_sabon, cust_memo, cust_use_yn, cust_reg_id, cust_reg_dt, cust_reg_ip, cust_tongjang, cust_relation
+			) values (
+				'', '$_POST[cust_nm]', '$cust_jumin', '$_POST[cust_gubun]', '$_POST[cust_tel]', '$_POST[cust_hp]', '$_POST[cust_zipcode]', '$_POST[cust_addr1]', '$_POST[cust_addr2]', '$_POST[cust_email]', '$reFileName', '$_POST[cust_memo]', 'Y', '$_SESSION[user_id]', now(), '$ip', '$tong_file_name', '$cust_relation'
+			)
+		";
+
+		mysql_query($insert1);
+
+		$insert2 = "
+			insert into np_account(
+				acc_seq, cust_seq, acc_gubun, acc_nm, acc_num, acc_cust_nm, card_year, card_month, acc_zipcode, acc_addr1, acc_addr2, acc_email, acc_reg_id, acc_reg_dt, acc_reg_ip
+			) values (
+				'', (select cust_seq from np_cust where cust_jumin = '$cust_jumin' order by 1 desc limit 1), '$_POST[acc_gubun]', '$_POST[acc_nm]', '$_POST[acc_num]', '$_POST[acc_cust_nm]', '$_POST[year]', '$_POST[month]', '$_POST[acc_zipcode]', '$_POST[acc_addr1]', '$_POST[acc_addr2]', '$_POST[acc_email]', '$_SESSION[user_id]', now(), '$ip'
+			)
+		";
+
+		mysql_query($insert2);
+		history(-2);
+	}
+
+	if($_POST[flag] == "cust_mod"){
+
+		if($_POST[cust_reg_id] != $_SESSION[user_id]){
+			alert("권한이 없습니다.");
+			exit;
+		}
+
+		$file=$_FILES['cust_sabon'];
+
+		if($file[name]!=""){
+
+			$select = "select cust_sabon from np_cust where cust_seq = '$_POST[cust_seq]' ";
+			$result = mysql_query($select);
+			$row = @mysql_fetch_array($result);
+
+			if($row[cust_sabon]!=""){
+				unlink("../file_upload/cust_sabon/".$row[cust_sabon]);
+			}
+
+			$reFileName=upload_file_Check($file, $_file_size, $_ok_file, "../file_upload/sabon/", "file");
+
+			$update = "update np_cust set cust_sabon = '$reFileName' where cust_seq = '$_POST[cust_seq]' ";
+			mysql_query($update);
+		}
+
+		$update1 = "
+			update np_cust set
+				cust_nm = '$_POST[cust_nm]',
+				cust_gubun = '$_POST[cust_gubun]',
+				cust_tel = '$_POST[cust_tel]',
+				cust_hp = '$_POST[cust_hp]',
+				cust_zipcode = '$_POST[cust_zipcode]',
+				cust_addr1 = '$_POST[cust_addr1]',
+				cust_addr2 = '$_POST[cust_addr2]',
+				cust_email = '$_POST[cust_email]',
+				cust_memo = '$_POST[cust_memo]',
+				cust_relation = '$_POST[cust_relation]',
+				cust_use_yn = '$_POST[cust_use_yn]'
+			where
+				cust_seq = '$_POST[cust_seq]'
+				and cust_reg_id = '$_SESSION[user_id]'
+		";
+
+		$update2 = "
+			update np_account set
+				acc_gubun = '$_POST[acc_gubun]',
+				acc_nm = '$_POST[acc_nm]',
+				acc_num = '$_POST[acc_num]',
+				acc_cust_nm = '$_POST[acc_cust_nm]',
+				card_year = '$_POST[year]',
+				card_month = '$_POST[month]',
+				acc_zipcode = '$_POST[acc_zipcode]',
+				acc_addr1 = '$_POST[acc_addr1]',
+				acc_addr2 = '$_POST[acc_addr2]',
+				acc_email = '$_POST[acc_email]',
+				acc_refer = '$_POST[acc_refer]'
+			where
+				acc_seq = '$_POST[acc_seq]'
+				and acc_reg_id = '$_SESSION[user_id]'
+		";
+
+		//echo2($update1);
+		//echo2($update2);
+
+		mysql_query($update1);
+		mysql_query($update2);
+		history(-1);
+	}
+
+	if($_POST[flag] == "cust_del"){
+
+		if($_POST[cust_reg_id] != $_SESSION[user_id]){
+			alert("권한이 없습니다.");
+			exit;
+		}
+
+		$select = "select cust_sabon from np_cust where cust_seq = '$_POST[cust_seq]' ";
+		$result = mysql_query($select);
+		$row = @mysql_fetch_array($result);
+
+		if($row[cust_sabon]!=""){
+			unlink("../file_upload/cust_sabon/".$row[cust_sabon]);
+		}
+
+		$delete1 = "delete from np_cust where cust_seq = '$_POST[cust_seq]' and cust_reg_id = '$_SESSION[user_id]' ";
+		$delete2 = "delete from np_account where acc_seq = '$_POST[acc_seq]' and acc_reg_id = '$_SESSION[user_id]' ";
+
+		mysql_query($delete1);
+		mysql_query($delete2);
+		history(-2);
+	}
+
+?>

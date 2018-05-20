@@ -1,0 +1,282 @@
+<?
+	include('boardFunction.html');
+	if($_POST[board]){$board=$_POST[board];}elseif($_GET[board]){$board=$_GET[board];}
+	if($_POST[boardNo]){$boardNo=$_POST[boardNo];}elseif($_GET[boardNo]){$boardNo=$_GET[boardNo];}
+
+	board_exist($board, $db_name);
+	if(!$board_exist) echo "<script>alert('관련테이블이 없습니다.');history.go(-1);</script>";
+	
+	board_option($board);
+
+	if($writeLevel>$_SESSION[s_level] && $writeLevel!=0){
+		echo "<script>alert('님께서는 사용할수 없는 회원등급입니다.');history.go(-1);</script>";
+	}
+	
+	$boardMain=$board."_main";
+	//no  id  name  passwd  email  title  html  regDate  count  depth  sameNo  file  fileSize  userImage  imageSize  fileDown  ip  prodNo 
+	//no  boardNo  main 
+	$select="select b.no, b.name, b.passwd, b.email, b.title, b.html, b.file, b.file2, b.file3, b.userImage, b.userImage2, b.userImage3, b.section, b.open, b.secret, b.regDate, bm.main from $board b, $boardMain bm where b.no=$boardNo and b.no=bm.boardNo limit 1";
+	//echo $select;
+	$result=@mysql_query($select);
+	$row=@mysql_fetch_array($result);
+
+	$boardMain2=stripslashes($row[main]);
+
+	if(is_file("boardImg/boardInclude/$boardTop")){
+		include "boardImg/boardInclude/$boardTop";
+	}
+?>
+<script LANGUAGE="JavaScript1.2" SRC="boardScript.js"></script>
+<table width="<?echo $width?>" cellspacing=0 cellpadding=0 align=center>
+	<tr>
+		<td align=center valign=top>
+			<table width="<?echo $width?>" cellspacing=0 cellpadding=0 align=center>
+				<tr height=50>
+					<td>
+						<img src="boardImg/<?echo $skin?>/icon01.gif" border="0" align=absmiddle> 
+                        <font color="#666666"><b><?echo $boardName?></b>
+					</td>
+
+<?if($_SESSION[s_level] >= 8){?>
+					<form name=mainMove method=get action=boardEdit.html>
+					<input type=hidden name=flag value="mainMove">
+					<input type=hidden name=board value="<?echo $_GET[board]?>">
+					<input type=hidden name=boardNo value="<?echo $_GET[boardNo]?>">
+					<td align=right valign=bottom>
+<?
+		$select8="select boardName, board from boardAdmin order by boardName asc";	
+		$result8=mysql_query($select8);
+?>
+						<select name=selectBoard class=form2>
+<?
+		while($rows8=mysql_fetch_array($result8)){
+?>						
+							<option value="<?echo $rows8[board]?>" <?if($rows8[board]==$_GET[board]){echo "selected";}?>><?echo $rows8[boardName]?></option>
+<?
+		}	
+?>
+						</select>
+						<select name=copyMove class=form2>
+							<option value="copy">복사</option>
+							<option value="move">이동</option>
+						</select>
+						
+						<input type=button name=move value=확인 class=button1 onclick="if(mainMove.selectBoard.value!='<?echo $_GET[board]?>'){mainMove.submit();}">&nbsp;&nbsp;
+					</td>
+					</form>
+<?}?>
+				</tr>
+			</table>
+
+			<table width="<?echo $width?>" cellspacing=2 cellpadding=2>
+				<tr><td width="100%" height="2" colspan="2" bgcolor="#E2E2E2"></td></tr>
+				<tr><td height=10></td></tr>
+
+				<form method=post name=boardAdd action="boardEdit.html" onsubmit="return boardAddCheck();" ENCTYPE='multipart/form-data'>
+				<input type=hidden name=flag value=boardModify>
+				<input type=hidden name=category value=<?echo $category?>>
+				<input type=hidden name=board value=<?echo $board?>>
+				<input type=hidden name=boardNo value=<?echo $boardNo?>>
+				<input type=hidden name=passwd1 value="">
+				<script>var theText='<?echo $row[passwd]?>';boardAdd.passwd1.value=Encrypt(theText);</script>
+
+				<tr>
+					<td align=right width=100 valign=middle>이름&nbsp;</td>
+					<td width=*>
+						<table cellpadding=0 cellspacing=0 width=100%>
+							<tr>
+								<td width=50%><input type=text name=name class=form3 size=10 maxlength=10 value="<?echo $row[name]?>" style="ime-mode:active"></td>
+<?
+	if($section!=""){
+		$section2=explode("|", $section);
+?>								
+								<td width=50% align=right>
+									분류&nbsp;
+									<select name=section class=form2>
+									<?for($i=0; $i<sizeof($section2); $i++){?>
+										<option value="<?echo $section2[$i]?>" <?if($section2[$i]==$row[section]){echo "selected";}?>><?echo $section2[$i]?></option>
+									<?}?>
+									</select>
+								</td>
+<?
+	}
+?>
+							</tr>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td align=right valign=middle>이메일&nbsp;</td>
+					<td>
+						<table cellpadding=0 cellspacing=0 width=100%>
+							<tr>
+								<td width=50%><input type=text name=email class=form3 size=20 maxlength=100 value="<?echo $row[email]?>" style="ime-mode:disabled"></td>
+<?
+	if($_SESSION[s_level]>7){
+?>								
+								<td width=50% align=right>
+									숨기기 &nbsp;<input type=checkbox name=open  value='x' <?if($row[open]=="x"){echo "checked";}?>>
+								</td>
+<?
+	}
+?>
+							</tr>
+						</table>
+						
+					</td>
+				</tr>
+				<tr>
+					<td align=right valign=middle>제목&nbsp;</td>
+					<td><input type=text name=title class=form3 maxlength=100 style="ime-mode:active" style="width:<?echo $width-100?>" value="<?echo htmlspecialchars($row[title])?>"></td>
+				</tr>
+				<tr>
+					<td align=right valign=middle><?if($linkpage=="1"){echo "Page Link";}else{echo "내용";}?>&nbsp;</td>
+					<td>
+						<textarea rows=15 class=form2 name=main style="ime-mode:active" style="width:<?echo $width-100?>"><?echo htmlspecialchars($boardMain2)?></textarea><br>
+					</td>
+				</tr>
+
+				<tr>
+					<td align=right valign=middle>&nbsp;</td>
+					<td>
+
+						<table cellpadding=0 cellspacing=0 width=100%>
+							<tr>
+								<td width=70%>
+									<font color=red>※ 욕이나 관리자 사칭, 광고글은 올릴 수 없습니다.</font>
+								</td>
+								<td width=30% align=right>
+									<?if($secret=="1"){?>비밀글&nbsp;&nbsp;<input type=checkbox name=secret value=1 <?if($row[secret]=="1"){echo "checked";}?>><?}?>
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+
+
+				<tr>
+					<td align=right valign=middle>비밀번호&nbsp;</td>
+					<td>
+
+						<table cellpadding=0 cellspacing=0 width=100%>
+							<tr>
+								<td width=50%>
+									<input type=password name=passwd class=form3 size=10 maxlength=20 value="<?if($_SESSION[s_level]>7){echo $row[passwd];}?>">&nbsp;(수정이나 삭제시필요)
+								</td>
+								<td width=50% align=right>
+<?if($html==1){?>
+									HTML &nbsp;<input type=checkbox name=html2  value='1' <?if($row[html]=="1"){echo "checked";}?>>
+<?}?>								
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+
+<?if($imageYes==1){?>
+				<tr>
+					<td align=right valign=middle>이미지업로드&nbsp;</td>
+					<td>
+						<input type=file name=userImage class=form3 style="cursor:hand">
+<?
+	if($row[userImage]){		
+		$imgSize1 = getimagesize("./imgUpload/$row[userImage]");
+?>		
+						<input type=button value="보기" class=form3 onclick="javascript:void(window.open('boardImg.html?img_name=<?echo $row[userImage]?>','pic_pop','width=<?echo $imgSize1[0]?>, height=<?echo $imgSize1[1]?>, scrollbars=no'))">
+<?
+	}
+?>
+					</td>
+				</tr>
+<?}?>
+<?if($imageYes2==1){?>
+				<tr>
+					<td align=right valign=middle>이미지업로드&nbsp;</td>
+					<td>
+						<input type=file name=userImage2 class=form3 style="cursor:hand">
+<?
+	if($row[userImage2]){		
+		$imgSize1 = getimagesize("./imgUpload2/$row[userImage2]");
+?>		
+						<input type=button value="보기" class=form3 onclick="javascript:void(window.open('boardImg.html?img_name2=<?echo $row[userImage2]?>','pic_pop','width=<?echo $imgSize1[0]?>, height=<?echo $imgSize1[1]?>, scrollbars=no'))">
+<?
+	}
+?>					
+					</td>
+				</tr>
+<?}?>
+<?if($imageYes3==1){?>
+				<tr>
+					<td align=right valign=middle>이미지업로드&nbsp;</td>
+					<td>
+						<input type=file name=userImage3 class=form3 style="cursor:hand">
+<?
+	if($row[userImage3]){		
+		$imgSize1 = getimagesize("./imgUpload3/$row[userImage3]");
+?>		
+						<input type=button value="보기" class=form3 onclick="javascript:void(window.open('boardImg.html?img_name3=<?echo $row[userImage3]?>','pic_pop','width=<?echo $imgSize1[0]?>, height=<?echo $imgSize1[1]?>, scrollbars=no'))">
+<?
+	}
+?>	
+					</td>
+				</tr>
+<?}?>
+
+<?if($fileYes==1){?>
+				<tr>
+					<td align=right valign=middle>파일업로드&nbsp;</td>
+					<td>
+						<input type=file name=file class=form3 style="cursor:hand">
+						<a href="./fileUpload/<?echo $row[file]?>" target=blank>	<?echo $row[file]?></a>
+					</td>
+				</tr>
+<?}?>
+
+<?if($fileYes2==1){?>
+				<tr>
+					<td align=right valign=middle>파일업로드&nbsp;</td>
+					<td>
+						<input type=file name=file2 class=form3 style="cursor:hand">
+						<a href="./fileUpload2/<?echo $row[file2]?>" target=blank>	<?echo $row[file2]?></a>
+					</td>
+				</tr>
+<?}?>
+
+<?if($fileYes3==1){?>
+				<tr>
+					<td align=right valign=middle>파일업로드&nbsp;</td>
+					<td>
+						<input type=file name=file3 class=form3 style="cursor:hand">
+						<a href="./fileUpload3/<?echo $row[file3]?>" target=blank>	<?echo $row[file3]?></a>
+					</td>
+				</tr>
+<?}?>
+
+				<tr><td height=10></td></tr>
+				<tr><td width="100%" height="2" colspan="2" bgcolor="#E2E2E2"></td></tr>
+				<tr height=50>
+					<td>
+						<a href="index.html?main=boardList.html&board=<?echo $board?>"><img src="boardImg/<?echo $skin?>/list_icon.gif" border="0" align=absmiddle></a>
+					</td>
+					<td align=right>
+						<input type=image src="boardImg/<?echo $skin?>/edit_icon.gif" align=absmiddle>
+						<a href="javascript:if(boardAdd.passwd.value!=unEncrypt(boardAdd.passwd1.value)){alert('비밀번호가 맞지 않습니다.');boardAdd.passwd.focus();}else{location.href='boardEdit.html?flag=boardDel&board=<?echo $board?>&boardNo=<?echo $boardNo?>&category=<?echo $category?>'}"><img src="boardImg/<?echo $skin?>/del_icon.gif" border=0 align=absmiddle></a>
+					<td>
+				</tr>
+				</form>
+
+			</table>
+		</td>
+	</tr>
+</table>
+<?
+	if(is_file("boardImg/boardInclude/$boardBottom")){
+		include "boardImg/boardInclude/$boardBottom";
+	}
+?>
+
+
+
+
+
+

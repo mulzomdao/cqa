@@ -1,0 +1,338 @@
+<?
+	session_start();
+	include "../inc/session.html";
+	include "../inc/connect.html";
+	include "../inc/variable.html";
+	include "../inc/function.html";
+
+	if($_POST[flag] == "bod_add"){
+
+		$section=$_POST[section];
+
+		bod_opt($section);
+
+		if($_section == "") {
+			close("관련 게시판이 없습니다.");
+		}
+
+		if($_write_level > $_SESSION[user_level]){
+			close("$_bod_nm 에 글쓰기 권한이 없습니다.");
+		}
+
+		$section = $_POST[section];
+		$pwd = $_POST[pwd];
+		$title = addslashes($_POST[title]);
+		$content = addslashes($_POST[content]);
+		$secret = $_POST[secret];
+
+		if(empty($secret)){$secret = "0";}
+
+		$no_fuck_arr = explode("|", $_no_fuck);
+
+		no_fuck($title, $no_fuck_arr);
+		no_fuck($content, $no_fuck_arr);
+
+		$file=$_FILES['file_nm'];
+		$ip=getenv("REMOTE_ADDR");
+
+		if($file[name]!=""){
+			$reFileName=upload_file_Check($file, $_file_size, $_ok_file, "../file_upload/", "file");
+		}
+
+		$insert = sprintf("
+			insert into np_bod(
+				bod_seq, section, pwd, title, content, file_nm, file_size, user_id, user_nm, reg_dt, ip, secret, use_yn
+			) values (
+				'', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', now(), '%s', '%s', '1'
+			)
+
+		", $section, $pwd, $title, $content, $reFileName, $file[size], $_POST[user_id], $_POST[user_nm], $ip, $secret);
+
+		mysql_query($insert);
+
+
+		if($_POST[pop_yn] == "Y"){
+
+			$delete = "DELETE FROM np_popup";
+			mysql_query($delete);
+
+			if($_POST[start_dt]==""){$_POST[start_dt] = '1900-01-01';}
+			if($_POST[end_dt]==""){$_POST[end_dt] = '2100-12-31';}
+
+			$select = "select max(bod_seq) bod_seq from np_bod";
+
+			$result = mysql_query($select);
+			$row = mysql_fetch_array($result);
+
+			$insert = "
+				insert into np_popup values (
+					'',
+					$row[bod_seq],
+					'$_POST[start_dt]',
+					'$_POST[end_dt]',
+					'Y',
+					'$_POST[user_id]',
+					now(),
+					'$ip'
+				)
+			";
+
+			//echo $insert;
+			mysql_query($insert);
+		}
+
+		opener();
+
+	}
+
+	//게시물 수정
+	if($_POST[flag] == "bod_mod"){
+
+		bod_opt($_POST[section]);
+
+		if($_section == "") echo "<script>alert('관련 게시판이 없습니다.');history.go(-1);</script>";
+
+		if($_write_level > $_SESSION[user_level]){
+			alert("$_bod_nm 에 글쓰기 권한이 없습니다.");
+		}
+
+		$title = addslashes($_POST[title]);
+		$content = addslashes($_POST[content]);
+
+		$file=$_FILES['file_nm'];
+		if(empty($secret)){$secret = "0";}
+
+		$no_fuck_arr = explode("|", $_no_fuck);
+
+		no_fuck($title, $no_fuck_arr);
+		no_fuck($content, $no_fuck_arr);
+
+		$select = sprintf("select bod_seq, file_nm from np_bod where section = '%s' and bod_seq = %d and pwd = '%s' ", $_POST[section], $_POST[bod_seq], $_POST[pwd]);
+
+		$result = mysql_query($select);
+		$row = @mysql_fetch_array($result);
+
+		if($row[bod_seq]==""){
+			alert("비밀번호가 맞지 않습니다.");
+			exit;
+		}
+
+		$update = sprintf("
+			update np_bod set title = '%s', content = '%s', secret = '%s', fix_dt = now(), fix_user_id = '%s' where section = '%s' and bod_seq = %d
+		", $title, $content, $_POST[secret], $_SESSION[user_id], $_POST[section], $_POST[bod_seq]);
+
+		@mysql_query($update);
+
+		if($file[name]!=""){
+			$reFileName=upload_file_Check($file, $_file_size, $_ok_file, "../file_upload/", "file");
+
+			$update2 = sprintf("
+				update np_bod set file_nm = '%s', file_size = '%s' where section = '%s' and bod_seq = %d
+			", $reFileName, $file[size], $_POST[section], $_POST[bod_seq]);
+
+			@mysql_query($update2);
+
+			if($row[file_nm]!=""){
+				unlink("../file_upload/".$row[file_nm]);
+			}
+		}
+
+
+		if($_POST[pop_yn] == "Y"){
+
+			$delete = "DELETE FROM np_popup";
+			mysql_query($delete);
+
+			if($_POST[start_dt]==""){$_POST[start_dt] = '1900-01-01';}
+			if($_POST[end_dt]==""){$_POST[end_dt] = '2100-12-31';}
+
+			$insert = "
+				insert into np_popup values (
+					'',
+					$_POST[bod_seq],
+					'$_POST[start_dt]',
+					'$_POST[end_dt]',
+					'Y',
+					'$_POST[user_id]',
+					now(),
+					'$ip'
+				)
+			";
+
+			mysql_query($insert);
+		}else{
+			$delete = "DELETE FROM np_popup where bod_seq = $_POST[bod_seq]";
+			mysql_query($delete);
+		}
+
+		echo "<script>opener.location.reload()</script>";
+		history("-1");
+	}
+
+	//글삭제
+	if($_POST[flag] == "bod_del"){
+
+		$section=$_POST[section];
+
+		bod_opt($section);
+
+		if($_section == "") echo "<script>alert('관련 게시판이 없습니다.');history.go(-1);</script>";
+
+		if($_write_level > $_SESSION[user_level]){
+			alert("$_bod_nm 에 글쓰기 권한이 없습니다.");
+		}
+
+		$section = $_POST[section];
+		$pwd = $_POST[pwd];
+
+		$bod_seq = $_POST[bod_seq];
+		$page = $_POST[page];
+		$cols = $_POST[cols];
+		$str = $_POST[str];
+
+		$select = sprintf("select bod_seq, file_nm from np_bod where section = '%s' and bod_seq = %d and pwd = '%s' ", $section, $bod_seq, $pwd);
+
+		$result = mysql_query($select);
+		$row = @mysql_fetch_array($result);
+
+		if($row[bod_seq]==""){
+			alert("비밀번호가 맞지 않습니다.");
+			exit;
+		}
+
+		$delete = sprintf("
+			delete from np_bod where section = '%s' and bod_seq = %d
+		", $section, $bod_seq);
+
+		@mysql_query($delete);
+
+		$delete2 = sprintf("
+			delete from np_bod_tail where section = '%s' and bod_seq = %d
+		", $section, $bod_seq);
+
+		@mysql_query($delete2);
+
+		if($row[file_nm]!=""){
+			echo2($row[file_nm]);
+			@unlink("../file_upload/".$row[file_nm]);
+		}
+
+		$delete = "DELETE FROM np_popup where bod_seq = $_POST[bod_seq]";
+		mysql_query($delete);
+
+		//replace("../a10/a1012.html?section=$section&bod_seq=$bod_seq&page=$page&cols$cols=&str=$str");
+		opener();
+	}
+
+
+	//파일 삭제
+	if($_POST[flag] == "file_del"){
+
+		$section=$_POST[section];
+
+		bod_opt($section);
+
+		if($_section == "") echo "<script>alert('관련 게시판이 없습니다.');history.go(-1);</script>";
+
+		if($_write_level > $_SESSION[user_level]){
+			alert("$_bod_nm 에 글쓰기 권한이 없습니다.");
+		}
+
+		$pwd = $_POST[pwd];
+
+		$bod_seq = $_POST[bod_seq];
+		$page = $_POST[page];
+		$cols = $_POST[cols];
+		$str = $_POST[str];
+
+		$select = sprintf("select bod_seq, file_nm from np_bod where section = '%s' and bod_seq = %d and pwd = '%s' ", $section, $bod_seq, $pwd);
+
+		$result = mysql_query($select);
+		$row = @mysql_fetch_array($result);
+
+		if($row[bod_seq]==""){
+			alert("비밀번호가 맞지 않습니다.");
+			exit;
+		}
+
+		$update = sprintf("
+			update np_bod set file_nm = '', file_size = '' where section = '%s' and bod_seq = %d
+		", $section, $bod_seq);
+
+		@mysql_query($update);
+
+		if($row[file_nm]!=""){
+			@unlink("../file_upload/".$row[file_nm]);
+		}
+
+		history("-1");
+	}
+
+
+	// 꼬리글 등록
+	if($_POST[flag] == "tail_add"){
+
+		bod_opt($_POST[section]);
+
+		if($_section == "") echo "<script>alert('관련 게시판이 없습니다.');history.go(-1);</script>";
+
+		if($_write_level > $_SESSION[user_level]){
+			alert("$_bod_nm 에 글쓰기 권한이 없습니다.");
+		}
+
+		if($_tail_yn != "Y"){
+			alert("$_bod_nm 에 꼬리글 쓰기 권한이 없습니다.");
+		}
+
+		$tail_content = addslashes($_POST[tail_content]);
+		$no_fuck_arr = explode("|", $_no_fuck);
+
+		no_fuck($tail_content, $no_fuck_arr);
+
+		$ip=getenv("REMOTE_ADDR");
+
+		$insert = sprintf("
+			insert into np_bod_tail(
+				tail_seq, bod_table, section, bod_seq, user_id, user_nm, pwd, tail_content, reg_dt, ip
+			) values (
+				'', 'np_bod', '$_POST[section]', '$_POST[bod_seq]', '$_POST[user_id]', '$_POST[user_nm]', '$_POST[pwd]', '$tail_content', now(), '$ip'
+			)
+
+		");
+
+		mysql_query($insert);
+		history("-1");
+	}
+
+
+	//꼬리글삭제
+	if($_GET[flag] == "tail_del"){
+
+		$tail_seq = $_GET[tail_seq];
+		$pwd = $_GET[pwd];
+
+		if($tail_seq == "" || $pwd == ""){
+			alert("잘못된 접근 입니다.");
+		}
+
+		$select = sprintf("select tail_seq from np_bod_tail where tail_seq = %d and pwd = '%s' ", $tail_seq, $pwd);
+
+		//echo2($select);
+
+		$result = mysql_query($select);
+		$row = @mysql_fetch_array($result);
+
+		if($row[tail_seq]==""){
+			alert("비밀번호가 맞지 않습니다.");
+			exit;
+		}
+
+		$delete = sprintf("
+			delete from np_bod_tail where tail_seq = %d
+		", $tail_seq);
+
+		@mysql_query($delete);
+
+		history("-1");
+	}
+?>

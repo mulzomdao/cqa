@@ -1,0 +1,245 @@
+<?
+	//no, id, passwd, name, email, tel, hp, zipcode, addr1, addr2, jumin1, jumin2, regDate, birth, marry, job, mailService, level, loginDate  
+	$id=$_GET[id];
+	$page=$_GET[page];
+	$searchKey=$_GET[searchKey];
+	$searchStr=$_GET[searchStr];
+
+	$select="select no, id, passwd, name, email, tel, hp, zipcode, addr1, addr2, jumin1, regDate, marry, company, job, mailService, level, loginDate, memo from member where id='$id' limit 1";
+	$result=mysql_query($select);
+	$row=mysql_fetch_array($result);
+
+	$tel=explode("-", $row[tel]);
+	$hp=explode("-", $row[hp]);
+
+	if($searchKey!="" && $searchStr!=""){
+		$where="where $searchKey like '%$searchStr%' and";
+	}else{
+		$where="where";
+	}
+?>
+<script>
+	function winopen(){
+		window.open('../search_post.html','_box','width=400,height=250,scrollbars=yes');
+	}
+</script>	
+
+<table width=100%>
+	<tr>
+		<td height=30 width=50%><b>회원 상세보기</b></td>
+		<td align=right width=50% valign=bottom>
+			
+<?
+	$select_next="select id from member $where no>$row[no] order by no limit 1";
+	$select_prev="select id from member $where no<$row[no] order by no desc limit 1";
+
+	$next = mysql_query($select_next);
+	$prev = mysql_query($select_prev);
+
+	//echo "select p.prodCode from product p, prodCategory pc where p.prodCode>'$prodCode' and pc.category='$category' limit 1";
+	$next_result = mysql_fetch_array($next);
+	$prev_result = mysql_fetch_array($prev);
+?>		
+
+<?
+	if($prev_result[id]!=""){
+		echo "<a href='index.html?main=m_modify.html&id=$prev_result[id]&page=$_GET[page]&searchKey=$_GET[searchKey]&searchStr=$_GET[searchStr]&orderBy=$_GET[orderBy]'>이전회원▼</a>";
+	}else{
+		echo "이전회원▼";
+	}
+?>
+				&nbsp;&nbsp;<a href='index.html?main=m_list.html<?queryString($QUERY_STRING);?>'>리스트</a>&nbsp;
+<?
+	if($next_result[id]!=""){
+		echo "<a href='index.html?main=m_modify.html&id=$next_result[id]&page=$_GET[page]&searchKey=$_GET[searchKey]&searchStr=$_GET[searchStr]&orderBy=$_GET[orderBy]'>▲다음회원</a>";
+	}else{
+		echo "▲다음회원";
+	}
+?>
+		</td>
+	</tr>
+</table>
+
+<table border=1 width=100% cellpadding=0 cellspacing=0>
+	<form name=memberAdd method=post action="memberEdit.html">
+	<input type=hidden name=flag value="memberModify">
+	<input type=hidden name=id value="<?echo $id?>">
+	<input type=hidden name=page value="<?echo $page?>">
+	<input type=hidden name=searchKey value="<?echo $searchKey?>">
+	<input type=hidden name=searchStr value="<?echo $searchStr?>">
+	<tr>
+		<td>
+			<table width=100% cellpadding=0 cellspacing=2>
+				<tr><td height=3></td></tr>
+				<tr>
+                    <td width="20%" align=right> * 회원아이디</td>
+                    <td width="80%" class=black>&nbsp;
+						<?echo $row[id]?> <?if($row[b2b]=='1' && $row[level]==1){echo "<font color=red>(B2B회원 신청)</font>";}?>
+						<!--
+						<input type='text' size='12' maxlength='12' name='id' class=form2 readonly value="<?echo $row[id]?>" readonly>&nbsp;
+						-->
+					</td>
+                </tr>
+				<tr>
+                    <td align=right>* 비밀번호</td>
+                    <td>&nbsp;
+                        <input type="text" name="passwd" size="10" maxlength=10 style="ime-mode:active" class=form2 readonly value="<?if($_SESSION[s_level]==9){echo $row[passwd];}?>">
+					</td>
+                </tr>
+                <tr>
+                    <td align=right>* 성명</td>
+                    <td>&nbsp;
+                        <input type="text" name="name" size="10" maxlength=10 style="ime-mode:active" class=form2 value="<?echo $row[name]?>">
+					</td>
+                </tr>
+                <tr>
+                    <td align=right>* 주민등록번호</td>
+                    <td>&nbsp;
+						<input type="text" name="jumin1" size="6" class=form2 readonly value="<?echo $row[jumin1]?>"> - 
+						<input type="password" value="*******" class=form2 readonly size=7 readonly>
+					</td>
+                </tr>
+                <tr>
+                    <td align=right> * 전화번호</td>
+                    <td>&nbsp;
+                        <input type="text" name="tel1" size="4" maxlength=4 onkeyPress="if ((event.keyCode<48) || (event.keyCode>57)) event.returnValue=false;" style="ime-mode:disabled" class=form2 value="<?echo $tel[0]?>"> - 
+						<input type="text" name="tel2" size="4" maxlength=4 onkeyPress="if ((event.keyCode<48) || (event.keyCode>57)) event.returnValue=false;" style="ime-mode:disabled" class=form2 value="<?echo $tel[1]?>"> - 
+						<input type="text" name="tel3" size="4" maxlength=4 onkeyPress="if ((event.keyCode<48) || (event.keyCode>57)) event.returnValue=false;" style="ime-mode:disabled" class=form2 value="<?echo $tel[2]?>">
+                    </td>
+                </tr>
+                <tr>
+                    <td align=right> * 우편번호</td>
+                    <td>&nbsp;
+                        <input type="text" name="zipcode" size="7" maxlength=7 readonly value="<?echo $row[zipcode]?>" class=form2>&nbsp;
+						<input type=button value="우편번호검색" onclick="winopen()" class=button3>
+                    </td>
+                </tr>
+                <tr>
+                    <td align=right> * 주소</td>
+                    <td>&nbsp;
+                        <input type="text" name="addr1" size="50" maxlength=100 class=form2 value="<?echo $row[addr1]?>">
+                    </td>
+                </tr>
+                <tr>
+                    <td align=right> * 나머지주소</td>
+                    <td>&nbsp;
+                        <input type="text" name="addr2" size="50" style="ime-mode:active" class=form2 value="<?echo $row[addr2]?>">
+                    </td>
+                </tr>
+                <tr>
+                    <td align=right> * 이메일</td>
+                    <td>&nbsp;
+                        <input type="text" name="email" size="37" style="ime-mode:disabled" class=form2 value="<?echo $row[email]?>">
+                    </td>
+                </tr>
+                <tr>
+                    <td align=right> 메일서비스유무</td>
+                    <td>&nbsp;
+						예<input type="radio" name="mailService" value='1' <?if($row[mailService]=='1'){echo "checked";}?>> &nbsp;&nbsp;
+						아니오<input type="radio" name="mailService" value='0' <?if($row[mailService]=='0' || $row[mailService]==''){echo "checked";}?>>
+                    </td>
+                </tr>
+                <tr>
+                    <td align=right> 휴대폰번호</td>
+                    <td>&nbsp;
+                        <input type="text" name="hp1" size="4" onkeyPress="if ((event.keyCode<48) || (event.keyCode>57)) event.returnValue=false;" style="ime-mode:disabled" class=form2 value="<?echo $hp[0]?>"> - 
+						<input type="text" name="hp2" size="4" onkeyPress="if ((event.keyCode<48) || (event.keyCode>57)) event.returnValue=false;" style="ime-mode:disabled" class=form2 value="<?echo $hp[1]?>"> - 
+						<input type="text" name="hp3" size="4" onkeyPress="if ((event.keyCode<48) || (event.keyCode>57)) event.returnValue=false;" style="ime-mode:disabled" class=form2 value="<?echo $hp[2]?>">
+					</td>
+                </tr>
+				<!--
+                <tr>
+                    <td align=right> 결혼여부</td>
+                    <td>&nbsp;
+                        기혼<input type="radio" name="marry" value=1 <?if($row[marry]=='1'){echo "checked";}?>> &nbsp;&nbsp;&nbsp;
+						미혼<input type="radio" name="marry" value=0 <?if($row[marry]=='0'){echo "checked";}?>>
+                    </td>
+                </tr>
+				-->
+				<input type=hidden name=marry value="<?echo $row[marry]?>">
+				<tr>
+                    <td align=right> 회사명</td>
+                    <td>&nbsp;
+                        <input type="text" name="company" style="ime-mode:active" class=form2 value="<?echo $row[company]?>">
+                    </td>
+                </tr>
+                <tr>
+                    <td align=right> 업무분야</td>
+                    <td>&nbsp;
+                        <select name="job" size="1" class=form2>
+							<option value="">직업</option>
+<?for($i=1;$i<sizeof($_job);$i++){?>
+							<option value="<?echo $i?>" <?if($i==$row[job]){echo "selected";}?>><?echo $_job[$i]?></option>
+<?}?>	
+						</select>
+                    </td>
+				</tr>
+				<tr>
+                    <td align=right> 회원레벨</td>
+                    <td>&nbsp;
+						<select name="level" size="1" class=form2>
+							<option value="">레벨</option>
+<?
+	for($i=1;$i<sizeof($_memberLevel);$i++){
+	if($_memberLevel[$i]==""){continue;}
+?>
+							<option value="<?echo $i?>" <?if($i==$row[level]){echo "selected";}?>><?echo $_memberLevel[$i]?></option>
+<?
+	}
+?>	
+						</select>
+						<!--
+
+
+						<input type=text size=1 maxlength=1 name=level value="<?echo $row[level];?>" onkeyPress="if ((event.keyCode<48) || (event.keyCode>57)) event.returnValue=false;" style="ime-mode:disabled" onchange="javascript:if(this.value=='' || this.value=='0'){this.value='<?echo $row[level]?>';alert('레벨를 1이상 입력해주세요');}" class=form2>
+						-->
+                    </td>
+                </tr>
+
+				<tr height=18>
+                    <td align=right> 회원가입일</td>
+                    <td>&nbsp;
+                        <?echo $row[regDate]?>
+                    </td>
+                </tr>
+				<tr height=18>
+                    <td align=right> 마지막로그인</td>
+                    <td>&nbsp;
+                        <?echo $row[loginDate]?>
+                    </td>
+                </tr>
+<?
+	if($row[memberMemo]!=""){
+?>
+				<tr height=18>
+                    <td align=right> B2B신청자메모</td>
+                    <td>&nbsp;
+                        <textarea name=memberMemo rows=3 cols=100 class=form2><?echo $row[memberMemo]?></textarea>
+                    </td>
+                </tr>
+<?
+	}	
+?>
+				<tr height=18>
+                    <td align=right> 관리자메모</td>
+                    <td>&nbsp;
+                        <textarea name=memo rows=3 cols=100 class=form2><?echo $row[memo]?></textarea>
+                    </td>
+                </tr>
+
+				<tr>
+<?
+	if($_SESSION[s_level]>="8"){
+?>	
+					<td align=center width=100% colspan=4 height=28>
+					   <input type=button value=" 회원 정보 수정 " onclick="memberCheck()" class=button style=cursor:hand>
+					</td>
+<?
+	}			   
+?>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	</form>
+</table>

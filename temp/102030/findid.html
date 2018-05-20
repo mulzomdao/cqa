@@ -1,0 +1,83 @@
+<?
+	if($_SESSION[s_id]==""){
+?>
+<table width="820" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+  <form name=memberLogin method=post action="memberEdit.html">
+  <input type=hidden name=flag value="idpass">
+	<!--
+    <td width="200" align="center" valign="top"><table width="170"  border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td height="24">&nbsp;</td>
+      </tr>
+      <tr>
+        <td><img src="images/Stit_member2.jpg" width="170" height="57"></td>
+      </tr>
+      <tr>
+        <td><img src="images/Stit_s02.jpg" width="170" height="23"></td>
+      </tr>
+      <tr>
+        <td><img src="images/Stit_bottom.jpg" width="170" height="40"></td>
+      </tr>
+    </table></td>
+	-->
+    <td valign="top"><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td height="24" align="right"><span class="style1"><!--- Home &gt; 로그인 --></span>&nbsp;&nbsp;&nbsp;</td>
+      </tr>
+      <tr>
+        <td width=100% align=center><table width="620" border="0" cellpadding="0" cellspacing="0" background="images/bg_center.jpg">
+          <tr>
+            <td><img src="images/tit_member3.jpg" width="620" height="56"></td>
+          </tr>
+          <tr>
+            <td align="center"><img src="images/tit_s_member3.jpg" width="559" height="47"></td>
+          </tr>
+          <tr>
+            <td align="center"><img src="images/tit_s_id.jpg" width="559" height="45"></td>
+          </tr>
+          <tr>
+            <td height="10"></td>
+          </tr>
+          <tr>
+            <td align="center"><table width="400" height="150" border="0" cellpadding="0" cellspacing="0" bgcolor="EDF9ED">
+              <tr>
+                <td height="40" colspan="3"></td>
+                </tr>
+              <tr>
+                <td width="130" height="34" align="right"><span class="style2"><strong>이름</strong>&nbsp;</span></td>
+                <td width="160" align="left"><input name="name" type="text" size="19" tabindex=1></td>
+                <td rowspan="2">
+					<input type=image src="images/btn_ok2.jpg" border="0"  tabindex=4>
+				</td>
+              </tr>
+              <tr>
+                <td align="right"><span class="style2"><strong>주민등록번호</strong>&nbsp;</span></td>
+                <td align="left">
+					<input name="jumin1" type="text" size="7" maxlength=6  tabindex=2> - <input name="jumin2" type="text" size="8" maxlength=7  tabindex=3></td>
+                </tr>
+              <tr>
+                <td height="40" colspan="3"></td>
+                </tr>
+            </table></td>
+          </tr>
+          <tr>
+            <td align="center">&nbsp;</td>
+          </tr>
+          <tr>
+            <td align="center">&nbsp;</td>
+          </tr>
+          <tr>
+            <td><img src="images/bottom_center.jpg" width="620" height="35"></td>
+          </tr>
+        </table></td>
+      </tr>
+    </table></td>
+  </tr>
+</table>
+<br>
+<?
+	}else{
+		include "main.html";
+	}
+?>

@@ -1,0 +1,101 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+	<title>t-broad PARTNER</title>
+	<link href="/css/style1.css" rel="stylesheet" type="text/css">
+	<script language="javascript" src="/js/script.js"></script>
+</head>
+
+<script>
+		function logInCheck(form){
+		if(form.user_id.value==""){
+			alert("사번를 입력해주세요.");
+			form.user_id.focus();
+			return false;
+		}
+		if(form.pwd.value==""){
+			alert("비밀번호를 입력해주세요.");
+			form.pwd.focus();
+			return false;
+		}
+
+	}
+</script>
+
+
+<body bgcolor='' background='' leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onload="login.user_id.focus();">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" height="100%" style="border:7px solid #D8D8D8;">
+<form name="login" method="post" onSubmit='return logInCheck(this)' action="login_check.html">
+	<input type="hidden" name = "flag" value="login">
+	<tr>
+		<td align="center" valign="top">
+
+			<table border="0" cellpadding="0" cellspacing="0" align="center">
+				<tr>
+					<td height=20></td>
+				</tr>
+				<tr>
+					<td width="100%" align="center"><img src="./images/main01.gif" /></td>
+				</tr>
+			</table>
+
+			<table width="500" border="0" cellpadding="0" cellspacing="0" align="center">
+				<tr>
+					<td width="100%" valign="bottom" class="tlt1" height="30"><img src="/images/icon02.gif">
+						<b>사용자 로그인</b>
+					</td>
+				</tr>
+			</table>
+
+			<table width="500" border="4" cellpadding="1" cellspacing="0" bordercolor="#a8b9d8" bgcolor="#ffffff" align="center" height="100">
+				<tr>
+					<td width=100%>
+
+						<table width="100%" border="0" cellpadding="0" cellspacing="0" bordercolor="#FFFFFF" bgcolor="#aab9d8">
+							<tr>
+								<td width="35%" align=right class="white"><font color="#888888"><b>아이디</b></font>&nbsp;</td>
+								<td width="30%" class="white"><input type="text" style="width:160;ime-mode:disabled" value="" tabindex=1 name="user_id"></td><!--아이디-->
+								<td width="35%" rowspan=2 class="white" style="padding-left:1px">
+									<a href="main.html"><input name="image" type=image  src="/images/bt01.gif" tabindex=3 border=0 style="width:48; height:42" class=checkbox></a>
+								</td>
+							</tr>
+							<tr>
+								<td class="white" align=right><font color="#888888"><b>비밀번호</b></font>&nbsp;</td>
+								<td class="white"><input type="password" name="pwd" style="width:160;" value="" tabindex=2></td><!--비밀번호-->
+							</tr>
+						</table>
+
+					</td>
+				</tr>
+			</table>
+
+			<table width="500" border="0" cellpadding="0" cellspacing="0" border=1 align="center">
+				<tr>
+					<td width="50%" align="left" height="20">
+						<a style="cursor:hand" onclick="window.open('agent.html', '_change', 'width=830, height=380,scrollbars=no, status=no, location=no');">대리점등록신청</a>
+					</td>
+					<td width="50%" align="right" height="20">
+						<!--
+						<a style="cursor:hand" onclick="window.open('member.html', '_user_add', 'width=830, height=260,scrollbars=no, status=no, location=no');">사용자등록신청</a>
+						-->
+					</td>
+				</tr>
+			</table>
+
+			<table width="500" border="0" cellpadding="0" cellspacing="0" border=1 align="center">
+				<tr>
+					<td width="100%" align="center" height="30" style="padding-top:15px">
+			<!--
+						본 시스템으로 접근하는 횟수와 접속위치는 모든 LOG 기록에 남게 됩니다.<br>
+			반복되는 접근은 불법적인 해킹을 하려는 시도로 간주하고 법적조치를 하겠습니다.<br>
+			귀하의 접속자 IP 는 [ <?echo getenv("REMOTE_ADDR");?> ] 입니다.
+			-->
+					</td>
+				</tr>
+			</table>
+
+		</td>
+	</tr>
+</form>
+</table>
+</body>

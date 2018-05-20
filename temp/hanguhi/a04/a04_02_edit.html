@@ -1,0 +1,99 @@
+<?
+	session_start();
+	include "../inc/session.html";
+	include "../inc/connect.html";
+	include "../inc/variable.html";
+	include "../inc/function.html";
+
+	if($_SESSION[user_level]<30){
+		close("권한이 없습니다.");
+	}
+
+	if($_POST[flag] == "agent_add"){
+
+		$ip = getenv("REMOTE_ADDR");
+
+		$saup=$_FILES['saup_sabon'];
+		$shinbun=$_FILES['shinbun_sabon'];
+		$tongjang=$_FILES['tongjang_sabon'];
+
+		if($saup[name]!=""){
+			$saup_file=upload_file_Check($saup, $_file_size, $_ok_file, "../file_upload/sabon/", "file");
+		}
+
+		if($shinbun[name]!=""){
+			$shinbun_file=upload_file_Check($shinbun, $_file_size, $_ok_file, "../file_upload/sabon/", "file");
+		}
+
+		if($tongjang[name]!=""){
+			$tongjang_file=upload_file_Check($tongjang, $_file_size, $_ok_file, "../file_upload/sabon/", "file");
+		}
+
+
+		$insert = "
+			insert into np_agent(
+				agent_seq, agent_nm, agent_boss_nm, agent_busi_num, agent_status, agent_type, agent_tel, agent_fax, agent_zipcode, agent_addr1, agent_addr2, agent_homepage, agent_refer, agent_use_yn, agent_reg_id, agent_reg_dt, agent_reg_ip, agent_id, saup_sabon, shinbun_sabon, tongjang_sabon
+			) values (
+				'', '$_POST[agent_nm]', '$_POST[agent_boss_nm]', '$_POST[agent_busi_num]', '$_POST[agent_status]', '$_POST[agent_type]', '$_POST[agent_tel]', '$_POST[agent_fax]', '$_POST[agent_zipcode]', '$_POST[agent_addr1]', '$_POST[agent_addr2]', '$_POST[agent_homepage]', '$_POST[agent_refer]', '$_POST[agent_use_yn]', '$_SESSION[user_id]', now(), '$ip', '$_POST[agent_id]', '$saup_file', '$shinbun_file', '$tongjang_file'
+			)
+		";
+
+		mysql_query($insert);
+		opener();
+	}
+
+	if($_POST[flag] == "agent_mod"){
+
+		$saup=$_FILES['saup_sabon'];
+		$shinbun=$_FILES['shinbun_sabon'];
+		$tongjang=$_FILES['tongjang_sabon'];
+
+		if($saup[name]!=""){
+			$saup_file=upload_file_Check($saup, $_file_size, $_ok_file, "../file_upload/sabon/", "file");
+			$query .= "saup_sabon = '$saup_file', ";
+		}
+
+		if($shinbun[name]!=""){
+			$shinbun_file=upload_file_Check($shinbun, $_file_size, $_ok_file, "../file_upload/sabon/", "file");
+			$query .= "shinbun_sabon = '$shinbun_file', ";
+		}
+
+		if($tongjang[name]!=""){
+			$tongjang_file=upload_file_Check($tongjang, $_file_size, $_ok_file, "../file_upload/sabon/", "file");
+			$query .= "tongjang_sabon = '$tongjang_file', ";
+		}
+
+		$update = "
+			update np_agent set
+				agent_nm = '$_POST[agent_nm]',
+				agent_boss_nm = '$_POST[agent_boss_nm]',
+				agent_busi_num = '$_POST[agent_busi_num]',
+				agent_status = '$_POST[agent_status]',
+				agent_type = '$_POST[agent_type]',
+				agent_tel = '$_POST[agent_tel]',
+				agent_fax = '$_POST[agent_fax]',
+				agent_zipcode = '$_POST[agent_zipcode]',
+				agent_addr1 = '$_POST[agent_addr1]',
+				agent_addr2 = '$_POST[agent_addr2]',
+				agent_homepage = '$_POST[agent_homepage]',
+				agent_refer = '$_POST[agent_refer]',
+				agent_id = '$_POST[agent_id]',
+				$query
+				agent_use_yn = '$_POST[agent_use_yn]'
+			where
+				agent_seq = '$_POST[agent_seq]'
+		";
+
+		mysql_query($update);
+		reload();
+		history(-1);
+	}
+
+	if($_POST[flag] == "agent_del"){
+
+		$delete = "delete from np_agent where agent_seq = '$_POST[agent_seq]' ";
+
+		mysql_query($delete);
+		opener();
+	}
+?>

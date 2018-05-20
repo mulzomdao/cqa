@@ -1,0 +1,154 @@
+<?
+	session_start();
+	include "../inc/connect.html";
+	include "../inc/function.html";
+	include "../inc/variable.html";
+	include "../inc/session.html";
+
+	$select = "
+		select
+			a.*,
+			b.user_nm
+		from
+			np_company a,
+			np_user b
+		where
+			a.comp_reg_id = b.user_id
+			and a.comp_seq = '$_GET[comp_seq]' ";
+
+	//echo2($select);
+	$result=@mysql_query($select);
+	$row=@mysql_fetch_array($result);
+
+	if($row[comp_seq]==""){
+		alert("권한이 없습니다.");
+	}
+?>
+
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+	<title>NetPlus</title>
+	<link href="/css/style2.css" rel="stylesheet" type="text/css">
+	<script language="javascript" src="/js/script.js"></script>
+</head>
+
+<script>
+
+	function comp_edit_check(){
+
+		if(comp_edit.comp_nm.value==""){
+			alert("상호를 입력해 주세요!");
+			comp_edit.comp_nm.focus();
+		}else if(comp_edit.comp_boss_nm.value==""){
+			alert("대표자명를 입력해 주세요!");
+			comp_edit.comp_boss_nm.focus();
+		}else if(comp_edit.comp_num.value==""){
+			alert("등록번호를 입력해 주세요!");
+			comp_edit.comp_num.focus();
+		}else{
+			if(confirm('수정 하시겠습니까?')){
+				comp_edit.submit();
+			}
+		}
+
+	}
+
+</script>
+
+<BODY BGCOLOR=#FFFFFF LEFTMARGIN=0 TOPMARGIN=0 MARGINWIDTH=0 MARGINHEIGHT=0 height=100% align="left" onload="comp_edit.comp_nm.focus();">
+
+<table width="980" border="0" cellpadding="0" cellspacing="0" align=center>
+	<tr>
+		<td width="100%" valign="bottom" height="30"><img src="/images/icon02.gif">
+			<b>사업자정보수정</b> <font style="font-size:11">(전화번호는 '-' 없이 입력해 주세요!)</font>
+		</td>
+	</tr>
+</table>
+
+<table width="980" border="1" cellpadding="2" cellspacing="0" bordercolor="#CCCCCC" bgcolor="#ffffff" align=center>
+
+<form method=post name="comp_edit" action="a01_01_edit.html" ENCTYPE='multipart/form-data'>
+<input type = 'hidden' name = 'flag' value = 'comp_edit'>
+<input type = 'hidden' name = 'comp_seq' value = '<?echo $row[comp_seq]?>'>
+<input type = 'hidden' name = 'comp_reg_id' value = '<?echo $row[comp_reg_id]?>'>
+
+	<tr>
+		<td>
+			<table border=1 cellpadding=1 cellspacing=0 width=100% style="border-collapse:collapse" bordercolor=#CCCCCC>
+				<tr height=20>
+					<td width="13%" class="bold">상호</td>
+					<td width="20%" class="center"><input type="text" name="comp_nm" value="<?echo $row[comp_nm]?>" style="width:191; ime-mode:active"></td>
+					<td width="13%" class="bold">등록번호</td>
+					<td width="*" class="center" colspan=3>
+						<input type="text" name="comp_num" value="<?echo $row[comp_num]?>" style="width:191">
+						<input type=radio name="comp_num_flag" value="사업자번호" class=checkbox <?if($row[comp_num_flag]=="사업자번호"){echo "checked";}?>>사업자번호
+						<input type=radio name="comp_num_flag" value="인허가번호" class=checkbox <?if($row[comp_num_flag]=="인허가번호"){echo "checked";}?>>인허가번호
+					</td>
+				</tr>
+
+				<tr height=20>
+					<td class="bold">대표자</td>
+					<td class="center"><input type="text" name="comp_boss_nm" value="<?echo $row[comp_boss_nm]?>" style="width:191"></td>
+					<td class="bold">법인번호</td>
+					<td width="20%" class="center"><input type="text" name="comp_corpor_num" value="<?echo $row[comp_corpor_num]?>" style="width:191"></td>
+					<td width="14%" class="bold">업태</td>
+					<td width="20%" class="center"><input type="text" name="comp_status" value="<?echo $row[comp_status]?>" style="width:192"></td>
+				</tr>
+				<tr height=20>
+					<td class="bold">종목</td>
+					<td class="center"><input type="text" name="comp_type" value="<?echo $row[comp_type]?>" style="width:191"></td>
+					<td class="bold">대표전화</td>
+					<td class="center"><input type="text" name="comp_tel" value="<?echo $row[comp_tel]?>" style="width:191" style="ime-mode:disabled" maxlength="11" onKeyDown="return onlyNum();" onBlur="chkTelNumber(this,1)" onFocus="chkTelNumber(this,2)"></td>
+					<td class="bold">팩스</td>
+					<td class="center"><input type="text" name="comp_fax" value="<?echo $row[comp_fax]?>" style="width:192" style="ime-mode:disabled" maxlength="11" onKeyDown="return onlyNum();" onBlur="chkTelNumber(this,1)" onFocus="chkTelNumber(this,2)"></td>
+				</tr>
+				<tr height=20>
+					<td class="bold">휴대전화</td>
+					<td class="center"><input type="text" name="comp_hp" value="<?echo $row[comp_hp]?>" style="width:191" style="ime-mode:disabled" maxlength="11" onKeyDown="return onlyNum();" onBlur="chkTelNumber(this,1)" onFocus="chkTelNumber(this,2)"></td>
+					<td class="bold">사업자사본</td>
+					<td class="center">
+						<input type="file" name="comp_sabon" value="<?echo $row[comp_sabon]?>" style="width:160">
+						<?if($row[comp_sabon]){?><a href="javascript:sabon_down('<?echo $row[comp_sabon]?>')">보기</a><?}?>
+					</td>
+					<td class="bold">신분증사본</td>
+					<td class="center">
+						<input type="file" name="sinbun_sabon" value="<?echo $row[sinbun_sabon]?>" style="width:160">
+						<?if($row[sinbun_sabon]){?><a href="javascript:sabon_down('<?echo $row[sinbun_sabon]?>')">보기</a><?}?>
+					</td>
+				</tr>
+
+				<tr height=20>
+					<td width="10%" class="bold">사업장주소지</td>
+					<td width="*" class="center" colspan=5>
+						<table width="100%" border="0" cellpadding="0" cellspacing="0">
+							<tr align=left>
+								<td width=66><input type="text" name="comp_zipcode" style="width:65;" readonly  value="<?echo $row[comp_zipcode]?>"></td>
+								<td width=82><a href="javascript:zipopen('comp_edit', 'comp_zipcode', 'comp_addr1', 'comp_addr2')"><img src="/images/bt_post_01.gif" border=0 height=19 width=81></a></td>
+								<td width=331><input type="text" name="comp_addr1" style="width:330;" value="<?echo $row[comp_addr1]?>" readonly></td>
+								<td width="*"><input type="text" name="comp_addr2" style="width:363; ime-mode:active" value="<?echo $row[comp_addr2]?>"></td>
+							</tr>
+						</table>
+
+					</td>
+				</tr>
+				<tr height=20>
+					<td width="10%" class="bold">참고사항</td>
+					<td width="*" class="center" colspan=5><textarea style="width:842; height:60; ime-mode:active" name=comp_refer><?echo $row[comp_refer]?></textarea></td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+
+<table width="980" border="0" bordercolor="DDECFC" cellpadding=0 cellspacing=0 align=center>
+	<tr>
+		<td align="right" height=27>
+			<img src="/images/bt_modify.gif" border=0 onclick="comp_edit_check();" style="cursor:hand">
+			<img src="/images/bt_close.gif" style="cursor:hand" onclick="self.close();">
+		</td>
+	</tr>
+</table>
+
+</body>
+</html>

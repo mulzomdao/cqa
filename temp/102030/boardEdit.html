@@ -1,0 +1,498 @@
+<?
+	session_start();
+
+	include "Admin/connect.html";
+	include "boardFunction.html";
+
+	if($_POST[flag]=="boardAdd"){
+		
+		board_exist($board, $db_name);
+		if(!$board_exist) echo "<script>alert('관련테이블이 없습니다.');history.go(-1);</script>";
+		
+		board_option($board);
+
+		if($writeLevel>0 && $_SESSION[s_level]<$writeLevel){
+			echo "<script>alert('글을 쓸수 없는 회원레벨입니다..');history.go(-1);</script>";
+			exit;
+		}
+
+		$name=$_POST[name];
+		$email=$_POST[email];
+		$title=addslashes($_POST[title]);
+		$main=addslashes($_POST[main]);
+
+		$filt_1=explode("|", $noFuck);
+		filt($title, $filt_1);
+		filt($main, $filt_1);
+
+		$passwd=$_POST[passwd];
+		$html2=$_POST[html2];
+		$file=$_FILES['file'];
+		$file2=$_FILES['file2'];
+		$file3=$_FILES['file3'];
+
+		$userImage=$_FILES['userImage'];
+		$userImage2=$_FILES['userImage2'];
+		$userImage3=$_FILES['userImage3'];
+		$category=$_POST[category];
+		$board=$_POST[board];
+		
+		if($_POST[ip]!=""){
+			$ip=$_POST[ip];		
+		}else{
+			$ip=getenv("REMOTE_ADDR");
+		}
+
+		$id=$_SESSION[s_id];
+
+		if($file[name]!=""){
+			$reFileName=upload_file_Check($file, $fileSize, $noFile, "./fileUpload/", "file");
+		}
+
+		if($file2[name]!=""){
+			$reFileName2=upload_file_Check($file2, $fileSize, 'html|htm', "./fileUpload2/", "img");
+		}
+
+		if($file3[name]!=""){
+			$reFileName3=upload_file_Check($file3, $fileSize, "mp3|asf", "./fileUpload3/", "img");
+		}
+		
+		if($userImage[name]!=""){
+			$reImgName=upload_file_Check($userImage, $fileSize, "gif|jpg|jpeg|bmp", "./imgUpload/", "img");
+			$reImgName1=explode(".", $reImgName);
+			
+			/*
+			if($reImgName1[1]!="" && $reImgName1[1]!="gif" && $reImgName1[1]!="GIF" && $boardStyle=="3"){
+				$file = "./imgUpload/$reImgName";
+				$saveDir = "./imgUpload/sumnail/"; // 저장할 경로
+				$saveName = "$reImgName"; // 이미지명
+				$sFactor = 120; // 허용이미지 사이즈
+				$img = imgThumbo2($file, $saveName, $sFactor, $saveDir);
+			}
+			*/
+		}
+		if($userImage2[name]!=""){
+			$reImgName2=upload_file_Check($userImage2, $fileSize, "gif|jpg|jpeg|bmp", "./imgUpload2/", "img");
+		}
+		if($userImage3[name]!=""){
+			$reImgName3=upload_file_Check($userImage3, $fileSize, "gif|jpg|jpeg|bmp", "./imgUpload3/", "img");
+		}
+		
+		$select="select max(sameNo) maxNo from $board";
+		$result=@mysql_query($select);
+		$row=@mysql_fetch_array($result);
+		
+		if($row[maxNo]){
+			$sameNo=$row[maxNo]+1;
+		}else{
+			$sameNo=1;
+		}
+
+		$insert="insert into $board(id, name, passwd, email, title, html, regDate, count, depth, sameNo, file, file2, file3, fileSize, fileSize2, fileSize3, userImage, userImage2, userImage3, imageSize, imageSize2, imageSize3, fileDown, ip, section, open, secret) values('$id', '$name', '$passwd', '$email', '$title', '$html2', now(), 0, 'A', '$sameNo', '$reFileName', '$reFileName2', '$reFileName3', '$file[size]', '$file2[size]', '$file3[size]', '$reImgName', '$reImgName2', '$reImgName3', '$userImage[size]', '$userImage2[size]', '$userImage3[size]', 0, '$ip', '$_POST[section]', '$_POST[open]', '$_POST[secret]' )";
+
+		@mysql_query($insert);
+		
+		$select="select no from $board order by no desc limit 1";
+		$result=@mysql_query($select);
+		$row=@mysql_fetch_array($result);
+		$boardNo=$row[no];
+
+		$boardMain=$board."_main";
+		$insert2="insert into $boardMain(boardNo, main) values('$boardNo', '$main')";
+		@mysql_query($insert2);
+
+		echo "<script>location.replace('index.html?main=boardList.html&board=$board&section=$_POST[section]');</script>";
+	}
+
+	if($_POST[flag]=="tailAdd"){
+		$board=$_POST[board];
+		$boardNo=$_POST[boardNo];
+		$id=$_SESSION[s_id];
+		$name=$_POST[name];
+		$passwd=$_POST[passwd];
+		if($_POST[ip]!=""){
+			$ip=$_POST[ip];		
+		}else{
+			$ip=getenv("REMOTE_ADDR");
+		}
+		$main=addslashes($_POST[main]);
+		
+		$insert1="insert into tail(board, boardNo, id, name, passwd, regDate, ip) values('$board', '$boardNo', '$id', '$name', '$passwd', now(), '$ip')";
+		//echo $insert1."<br>";
+		@mysql_query($insert1);
+		
+		$select="select no from tail order by no desc limit 1";
+		$result=@mysql_query($select);
+		$row=@mysql_fetch_array($result);
+
+		$insert2="insert into tailMain(tailNo, main) values($row[no], '$main')";
+		//echo $insert2;
+		@mysql_query($insert2);
+
+		echo "<script>location.replace('index.html?main=boardView.html&board=$board&boardNo=$boardNo');</script>";
+	}
+
+	if($_POST[flag]=="tailDel"){
+		$board=$_POST[board];
+		$boardNo=$_POST[boardNo];
+		$name=$_POST[name];
+		$tailNo=$_POST[tailNo];
+		
+		//no  board  boardNo  id  name  passwd  regDate  ip  
+		//no  tailNo  main  
+		$delete="delete from tail where no=$tailNo";
+		$delete2="delete from tailMain where tailNo=$tailNo";
+
+		//echo "$delete <br>";
+		//echo "$delete2 <br>";
+
+		@mysql_query($delete);
+		@mysql_query($delete2);
+
+		echo "<script>location.replace('index.html?main=boardView.html&board=$board&boardNo=$boardNo');</script>";
+	}
+
+	if($_POST[flag]=="boardModify"){
+		$name=$_POST[name];
+		$email=$_POST[email];
+		$title=$_POST[title];
+		$main=$_POST[main];
+		$board=$_POST[board];
+		$boardNo=$_POST[boardNo];
+		$html2=$_POST[html2];
+
+		board_option($board);
+
+		$file=$_FILES['file'];
+		$file2=$_FILES['file2'];
+		$file3=$_FILES['file3'];
+		$userImage=$_FILES['userImage'];
+		$userImage2=$_FILES['userImage2'];
+		$userImage3=$_FILES['userImage3'];
+
+		if($file[name]!=""){
+			$reFileName=upload_file_Check($file, $fileSize, $noFile, "./fileUpload/", "file");
+			$updateFile=", file='$reFileName', fileSize='$file[size]' ";
+		}
+
+		if($file2[name]!=""){
+			$reFileName2=upload_file_Check($file2, $fileSize, "html|htm", "./fileUpload2/", "img");
+			$updateFile3=", file2='$reFileName2', fileSize2='$file2[size]' ";
+		}
+
+		if($file3[name]!=""){
+			$reFileName3=upload_file_Check($file3, $fileSize, "mp3|asf", "./fileUpload3/", "img");
+			$updateFile2=", file3='$reFileName3', fileSize3='$file3[size]' ";
+		}
+
+		if($userImage[name]!=""){
+			$reImgName=upload_file_Check($userImage, $fileSize, "gif|jpg|jpeg|bmp", "./imgUpload/", "img");
+			//echo $reImgName."<br>";
+			$updateImg=", userImage='$reImgName', imageSize='$userImage[size]' ";
+			
+			/*
+			$reImgName1=explode(".", $reImgName);
+			if($reImgName1[1]!="" && $reImgName1[1]!="gif" && $reImgName1[1]!="GIF" && $boardStyle=="3"){
+				$file = "./imgUpload/$reImgName";
+				$saveDir = "./imgUpload/sumnail/"; // 저장할 경로
+				$saveName = "$reImgName"; // 이미지명
+				$sFactor = 120; // 허용이미지 사이즈
+				$img = imgThumbo2($file, $saveName, $sFactor, $saveDir);
+			}
+			*/
+		}
+		if($userImage2[name]!=""){
+			$reImgName2=upload_file_Check($userImage2, $fileSize, "gif|jpg|jpeg|bmp", "./imgUpload2/", "img");
+			//echo $reImgName."<br>";
+			$updateImg2=", userImage2='$reImgName2', imageSize2='$userImage2[size]' ";
+		}
+		if($userImage3[name]!=""){
+			$reImgName3=upload_file_Check($userImage3, $fileSize, "gif|jpg|jpeg|bmp", "./imgUpload3/", "img");
+			//echo $reImgName."<br>";
+			$updateImg3=", userImage3='$reImgName3', imageSize3='$userImage3[size]' ";
+		}
+		
+		if($_POST[regDate]!=""){
+			$regDate2=", regDate='$_POST[regDate]' ";
+		}
+
+		$boardMain=$board."_main";
+
+		$update="update $board set name='$_POST[name]', email='$email', title='$title', html='$html2', section='$_POST[section]', secret='$_POST[secret]', open='$_POST[open]' $updateFile $updateFile2 $updateFile3 $updateImg $updateImg2 $updateImg3 $regDate2 where no=$boardNo ";
+		$update2="update $boardMain set main='$main' where boardNo=$boardNo ";
+
+		//echo $update;
+		@mysql_query($update);
+		@mysql_query($update2);
+
+		echo "<script>location.replace('index.html?main=boardView.html&board=$board&boardNo=$boardNo');</script>";
+	}
+
+	if($_GET[flag]=="boardDel"){
+		$board=$_GET[board];
+		$boardNo=$_GET[boardNo];
+		$boardMain=$board."_main";
+
+		$delete1="delete from $board where no=$boardNo";
+		$delete2="delete from $boardMain where boardNo=$boardNo";
+		
+		$select="select no from tail where board='$board' and boardNo=$boardNo";
+		$result=@mysql_query($select);
+		while($rows=@mysql_fetch_array($result)){
+			$delete="delete from tailMain where tailNo=$rows[no]";	
+			@mysql_query($delete);
+		}
+
+		$delete3="delete from tail where board='$board' and boardNo=$boardNo";
+
+		/*
+		echo $delete1."<br>";
+		echo $delete2."<br>";
+		echo $delete3."<br>";
+		*/
+
+		@mysql_query($delete1);
+		@mysql_query($delete2);
+		@mysql_query($delete3);
+
+		echo "<script>alert('삭제하였습니다.');location.replace('index.html?main=boardList.html&board=$board');</script>";
+	}
+
+	if($_POST[flag]=="boardReply"){
+		$name=$_POST[name];
+		$email=$_POST[email];
+		$title=addslashes($_POST[title]);
+		$main=addslashes($_POST[main]);
+		$passwd=$_POST[passwd];
+		$html2=$_POST[html2];
+		
+		if($_POST[ip]!=""){
+			$ip=$_POST[ip];		
+		}else{
+			$ip=getenv("REMOTE_ADDR");
+		}
+
+		$id=$_SESSION[s_id];
+
+		$board=$_POST[board];
+		$boardNo=$_POST[boardNo];
+		$sameNo=$_POST[sameNo];
+		$depth=$_POST[depth];
+
+		board_option($board);
+
+		$select="select depth, right(depth, 1) from $board where sameNo=$sameNo and length(depth)=length('$depth')+1 and locate('$depth', depth)=1 order by depth desc limit 1 ";
+		//echo $select."<br>";
+
+		$result=@mysql_query($select);
+		$num=@mysql_num_rows($result);
+
+		if($num>0){
+			$row=@mysql_fetch_row($result);
+			$depth1=substr($row[0], 0, -1);
+			$depth2=++$row[1];
+			$newDepth=$depth1.$depth2;
+		}else{
+			$newDepth=$depth."A";
+		}
+
+		$file=$_FILES['file'];
+		$userImage=$_FILES['userImage'];
+		$userImage2=$_FILES['userImage2'];
+		$userImage3=$_FILES['userImage3'];
+		
+		if($_POST[ip]!=""){
+			$ip=$_POST[ip];		
+		}else{
+			$ip=getenv("REMOTE_ADDR");
+		}
+
+		$id=$_SESSION[s_id];
+
+		if($file[name]!=""){
+			$reFileName=upload_file_Check($file, $fileSize, $noFile, "./fileUpload/", "file");
+			//echo $reFileName."<br>";
+		}
+		if($userImage[name]!=""){
+			$reImgName=upload_file_Check($userImage, $fileSize, "gif|jpg|jpeg|bmp", "./imgUpload/", "img");
+			//echo $reImgName."<br>";
+		}
+		if($userImage2[name]!=""){
+			$reImgName2=upload_file_Check($userImage2, $fileSize, "gif|jpg|jpeg|bmp", "./imgUpload2/", "img");
+			//echo $reImgName."<br>";
+		}
+		if($userImage3[name]!=""){
+			$reImgName3=upload_file_Check($userImage3, $fileSize, "gif|jpg|jpeg|bmp", "./imgUpload3/", "img");
+			//echo $reImgName."<br>";
+		}
+
+		$insert="insert into $board(id, name, passwd, email, title, html, regDate, count, depth, sameNo, file, fileSize, userImage, userImage2, userImage3, imageSize, imageSize2, imageSize3, fileDown, ip, section, open) values('$id', '$name', '$passwd', '$email', '$title', '$html2', now(), 0, '$newDepth', '$sameNo', '$reFileName', '$file[size]', '$reImgName', '$reImgName2', '$reImgName3', '$userImage[size]', '$userImage2[size]', '$userImage3[size]', 0, '$ip', '$_POST[section]', '$_POST[open]')";
+		//echo $insert."<br>";
+		
+		@mysql_query($insert);
+		
+		$select2="select no from $board order by no desc limit 1";
+		$result2=@mysql_query($select2);
+		$row2=@mysql_fetch_array($result2);
+		$boardNo2=$row2[no];
+
+		$boardMain=$board."_main";
+		$insert2="insert into $boardMain(boardNo, main) values('$boardNo2', '$main')";
+		@mysql_query($insert2);
+		//echo $insert2."<br>";
+
+		echo "<script>location.replace('index.html?main=boardList.html&board=$board');</script>";
+	}
+
+
+	if($_GET[flag]=="oo"){
+		$update="update $_GET[board] set o=o+1 where no=$boardNo ";
+		//echo "$update <br>";
+		@mysql_query($update);
+	
+		session_register("s_ox");
+		
+		$ip=getenv("REMOTE_ADDR");
+		$_SESSION[s_ox]=$ip.$_GET[board].$_GET[boardNo];
+
+		//echo $_SESSION[s_ox];
+		
+		echo "<script>location.replace('index.html?main=boardView.html&board=$_GET[board]&boardNo=$_GET[boardNo]');</script>";
+	}
+
+	if($_GET[flag]=="xx"){
+		$update="update $_GET[board] set x=x+1 where no=$boardNo ";
+		//echo "$update <br>";
+		@mysql_query($update);
+	
+		session_register("s_ox");
+		
+		$ip=getenv("REMOTE_ADDR");
+		$_SESSION[s_ox]=$ip.$_GET[board].$_GET[boardNo];
+
+		//echo $_SESSION[s_ox];
+		
+		echo "<script>location.replace('index.html?main=boardView.html&board=$_GET[board]&boardNo=$_GET[boardNo]');</script>";
+	}
+
+	if($_GET[flag]=="mainMove"){
+
+		if($_SESSION[s_level]<9){
+			echo "<script>alert('잘못된 경로 입니다.'); history.go(-1);</script>";
+			exit;
+		}
+
+		$selectBoard=explode(" ", $_GET[selectBoard]);
+
+		// b.no, b.id, b.name, b.passwd, b.email, b.title, b.html, b.regDate, b.count, b.depth, b.sameNo, b.file, b.fileSize, b.userImage, b.userImage2, b.userImage3, b.imageSize, b.imageSize2, b.imageSize3, b.fileDown, b.ip, b.prodNo, b.section, b.open, b.o, b.x, b.secret, 
+
+		$select="select b.id, b.name, b.passwd, b.email, b.title, b.html, b.regDate, b.count, b.depth, b.sameNo, b.file, b.fileSize, b.userImage, b.userImage2, b.userImage3, b.imageSize, b.imageSize2, b.imageSize3, b.fileDown, b.ip, b.prodNo, b.section, b.open, b.o, b.x, b.secret,  bm.boardNo, bm.main from $_GET[board] b, $_GET[board]_main bm where b.no=bm.boardNo and b.no=$_GET[boardNo]";
+		
+		//echo $select;
+
+		$result=mysql_query($select);
+		$row=mysql_fetch_array($result);
+		
+		$select="select max(sameNo) maxNo from $selectBoard[0]";
+		$result=@mysql_query($select);
+		$row2=@mysql_fetch_array($result);
+		
+		if($row2[maxNo]){
+			$sameNo=$row2[maxNo]+1;
+		}else{
+			$sameNo=1;
+		}
+
+		$insert="insert into $selectBoard[0](id, name, passwd, email, title, html, regDate, count, depth, sameNo, file, fileSize, userImage, userImage2, userImage3, imageSize, imageSize2, imageSize3, fileDown, ip, section, open, o, x, secret) values('$row[id]', '$row[name]', '$row[passwd]', '$row[email]', '$row[title]', '$row[html]', '$row[regDate]', '$row[count]', 'A', '$sameNo', '$row[file]', '$row[fileSize]', '$row[userImage]', '$row[userImage2]', '$row[userImage3]', '$row[imageSize]', '$row[imageSize2]', '$row[imageSize3]', '$row[fileDown]', '$row[ip]', '$row[section]', '$row[open]', '$row[o]', '$row[x]', '$row[secret]')";
+		//echo $insert."<br>";
+		@mysql_query($insert);
+
+		$select="select no from $selectBoard[0] order by no desc limit 1";
+		$result=@mysql_query($select);
+		$row3=@mysql_fetch_array($result);
+		$boardNo=$row3[no];
+
+		$boardMain=$selectBoard[0]."_main";
+		$insert2="insert into $boardMain(boardNo, main) values('$boardNo', '$row[main]')";
+		//echo $insert2;
+		@mysql_query($insert2);
+
+		if($copyMove=="move"){
+			$delete1="delete from $_GET[board] where no=$_GET[boardNo] ";
+			$delete2="delete from $_GET[board]_main where boardNo=$_GET[boardNo] ";
+			//echo $delete;
+
+			mysql_query($delete1);
+			mysql_query($delete2);
+			
+			echo "<script>alert('게시물이 이동 되었습니다.');location.replace('index.html?mian=boardList.html&board=$selectBoard[0]');</script>";
+			exit;
+		}else{
+			echo "<script>alert('게시물이 복사 되었습니다.');history.go(-1);</script>";
+		}
+	}
+?>
+
+<?
+	if($_GET[flag]=="scrapAdd"){
+
+		if($_SESSION[s_id]==""){echo "<script>alert('회원 로그인 해주세요.'); history.go(-1);</script>";}
+		
+		$select="select no from scrap where id='$_SESSION[s_id]' and board='$_GET[board]' and boardNo=$_GET[boardNo] ";
+		echo $select."<br>";
+		$result=mysql_query($select);
+		$num=mysql_num_rows($result);
+
+		if($num==0){
+			$insert="insert into scrap(id, board, boardName, section, boardNo, title, regDate) values('$_SESSION[s_id]', '$_GET[board]', '$_GET[boardName]', '$_GET[section]', '$_GET[boardNo]', '$_GET[title]', now()) ";
+			echo $insert;
+			mysql_query($insert);
+			echo "<script>alert('스크랩 하였습니다.'); //history.go(-1);</script>";
+		}else{
+			echo "<script>alert('이미 스크랩 하였습니다.'); //history.go(-1);</script>";
+		}
+	}
+?>
+
+<?
+	if($_POST[flag]=="scrapDel"){
+		$del=$_POST['del'];
+		
+		if(empty($del)){
+			echo "<script>alert('삭제할 글을 선택해주세요'); history.go(-1);</script>";
+		}else{
+			for($i=0;$i<count($del);$i++) { 
+				$delete="delete from scrap where no=$del[$i] and id='$_SESSION[s_id]'";
+				//echo $delete."<br>";
+				mysql_query($delete);				
+			}
+
+			echo "<script>location.replace('index.html?main=$_POST[main]');</script>";
+		}
+	}
+?>
+
+<?
+	if($_POST[flag]=="sendMail"){
+
+		$from="디씨스 <".$_POST[sendEmail].">";
+		$mailto=$_POST[email]." <".$_POST[email].">";
+		$subject=$_POST[title];
+		
+		$add_headers="from : ".$from."\n";
+		$add_headers.="reply-to : ".$from."\n";
+		
+		if($_POST[html]=="1"){
+			$add_headers.="Content-Type: text/html;Charset=EUC-KR";
+		}
+
+		$content=stripslashes($_POST[content]);
+
+		mail($mailto, $subject, $content, $add_headers);
+
+		//echo $content;
+
+		echo "<script>setTimeout('self.close();', 1000);</script><table align=center width=100% height=300><tr><td align=center>메일을 보냈습니다...</td></tr></table>";	
+
+	}
+?>

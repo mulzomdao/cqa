@@ -1,0 +1,45 @@
+<link href="include/main.css" rel="stylesheet" type="text/css">
+<?
+	include "Admin/connect.html";
+
+	$aa = @mysql_query("select * from member where id='$id'");
+	$aa_total = @mysql_fetch_array($aa);
+
+	echo "<table border='0' width='280'><tr><td>아이디 $id 로 검색한 결과 입니다.</td></tr><tr><td bgcolor='#696969' align='center' colspan='2' height='2'><spacer type='block' height='1'></td></tr>";
+
+	if(!$aa_total) echo "<tr><td><br>아이디를 사용하셔도 좋습니다.</td></tr>";
+	else echo "<tr><td><br>아이디가 사용중입니다. 다시 검색해주세요.</td></tr>";
+
+	echo "
+	<tr>
+	<td height='10'></td>
+	</tr>
+	<tr>
+	<td bgcolor='#696969' align='center' colspan='2' height='1'><spacer type='block' height='1'></td>
+	</tr>
+
+	<form name='frm7' method='post' action='$PHP_SELF?tb=$tb'>
+	<tr>
+	";
+
+	if($aa_total) echo "<td>아이디입력: <input type='text' name='id' size='15' maxlength='12' value='' class=form1 onBlur=this.className='form1' onFocus=this.className='form2' style='ime-mode:disabled'>&nbsp;&nbsp;<input type='submit' name='sub' value='다시검색' class='for_button'></td>";
+	else echo "<td>아이디입력: <input type='text' name='id' size='15' maxlength='12' value='$id' class=form1 onBlur=this.className='form1' onFocus=this.className='form2' style='ime-mode:disabled'>&nbsp;&nbsp;<input type='submit' name='sub' value='다시검색' class='for_button'></td>";
+
+	echo"
+	</tr>
+
+	<script>document.frm7.id.focus();</script>
+
+	<tr>
+	<td bgcolor='#696969' align='center' colspan='2' height='2'><spacer type='block' height='1'></td>
+	</tr>
+
+	<tr>
+	<td>
+	";
+
+	if(!$aa_total) echo "<input type='button' value='적용하기' class='for_button' onclick=\"opener.document.memberAdd.id.value = '$id'; self.close(); opener.document.memberAdd.passwd.focus();\">&nbsp;<input type='button' value='창닫기' onclick='self.close();' class='for_button'>";
+	else echo "<input type='button' value='창닫기' onclick=\"opener.document.memberAdd.id.value = ''; self.close(); opener.document.memberAdd.passwd.focus();\" class='for_button'>";
+
+	echo "</td></tr></form></table>";
+?>

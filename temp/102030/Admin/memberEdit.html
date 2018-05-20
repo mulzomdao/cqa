@@ -1,0 +1,193 @@
+<?
+	session_start();
+
+	include "connect.html";
+	include "function.html";
+	include "variable.html";
+
+	if($_POST[flag]=="adminCheck"){
+		$passwd=$_POST[passwd];
+		$id=$_POST[id];
+
+		$select="select id, name, email, level from member where id='$id' and passwd='$passwd' and level>6 limit 1";
+		//echo $select;
+		$result=mysql_query($select);
+		$num=mysql_num_rows($result);
+
+		if($num>0){
+			$row=mysql_fetch_array($result);
+			session_register("s_name");
+			session_register("s_id");
+			session_register("s_email");
+			session_register("s_level");
+
+			$_SESSION[s_name]=$row[name];
+			$_SESSION[s_id]=$row[id];
+			$_SESSION[s_email]=$row[email];
+			$_SESSION[s_level]=$row[level];
+
+			//echo $_SESSION[s_level];
+			
+			if($_POST[prePage]!=""){				
+				echo "<script>location.replace('$_POST[prePage]');</script>";
+			}else{
+				echo "<script>location.replace('index.html?main=m_list.html');</script>";
+			}
+		}else{
+			echo "<script>alert('아이디나 패스워드가 맞지 않습니다.');history.go(-1);</script>";
+		}
+	}
+	
+	if($_SESSION[s_level]<7 || $_SESSION[s_level]==""){
+		echo "<script>alert('관리자 페이지입니다. 관리자로 로그인 해주세요.');location.replace('adminLogin.html');</script>";
+	}
+?>
+
+<?
+	if($_POST[flag]=="levelFix"){
+		$category=$_POST[category];
+		$id=$_POST[id];
+		$page=$_POST[page];
+		$searchStr=$_POST[searchStr];
+		$searchKey=$_POST[searchKey];
+		$level=$_POST[level];
+
+		$update="update member set level='$level' where id='$id' ";
+		//echo $update;
+		mysql_query($update);
+
+		echo "<script>location.replace('index.html?main=m_list.html&page=$page&searchKey=$searchKey&searchStr=$searchStr&orderBy=$_POST[orderBy]');</script>";
+	}
+?>
+
+<?
+	if($_GET[flag]=="memberDel"){
+		$category=$_GET[category];
+		$id=$_GET[id];
+		$page=$_GET[page];
+		$searchStr=$_GET[searchStr];
+		$searchKey=$_GET[searchKey];
+
+		$delete="delete from member where no='$_GET[memberNo]' ";
+		
+		mysql_query($delete);
+		
+		echo "<script>history.go(-1);</script>";
+	}
+?>
+
+<?
+	if($_POST[flag]=="memberModify"){
+		$category=$_POST[category];
+		$page=$_POST[page];
+		$searchStr=$_POST[searchStr];
+		$searchKey=$_POST[searchKey];
+
+		$id=$_POST[id];
+		$tel1=$_POST[tel1];
+		$tel2=$_POST[tel2];
+		$tel3=$_POST[tel3];
+		$zipcode=$_POST[zipcode];
+		$addr1=$_POST[addr1];
+		$addr2=$_POST[addr2];
+		$email=$_POST[email];
+		$mailService=$_POST[mailService];
+		$hp1=$_POST[hp1];
+		$hp2=$_POST[hp2];
+		$hp3=$_POST[hp3];
+		$marry=$_POST[marry];
+		$job=$_POST[job];
+		$level=$_POST[level];
+		$memo=$_POST[memo];
+		$name=$_POST[name];
+
+		$tel=$tel1."-".$tel2."-".$tel3;
+		if($hp1!="" && $hp2!="" && $hp3!=""){
+			$hp=$hp1."-".$hp2."-".$hp3;
+		}
+
+		$update="update member set tel='$tel', zipcode='$zipcode', addr1='$addr1', addr2='$addr2', email='$email', mailService='$mailService', hp='$hp', marry='$marry', job='$job', level='$level', memo='$memo', name='$name' where id='$id' ";
+		mysql_query($update);
+
+		echo "<script>alert('회원정보를 수정하였습니다.');location.replace('index.html?main=m_modify.html&id=$id&page=$page&searchKey=$searchKey&searchStr=$searchStr');</script>";
+	}
+?>
+
+<?
+	if($_POST[flag]=="classRegist"){
+		$update="update admission set regist='$_POST[regist]' where no=$_POST[no] ";
+		//echo $update;
+		mysql_query($update);
+		echo "<script>alert('수정하였습니다.'); history.go(-1);</script>";
+	}
+?>
+
+<?
+	if($_GET[flag]=="registDel"){
+		$delete="delete from admission where no=$_GET[no] ";
+		//echo $update;
+		mysql_query($delete);
+		echo "<script>/*alert('삭제하였습니다.');*/ history.go(-1);</script>";
+	}
+?>
+
+<?
+	if($_POST[flag]=="sendMail"){
+
+		$sendEmail=explode("|", $_POST[sendEmail]);
+
+		//no, sendEmail, id, level, mailService, html, title, content, regDate, etc 
+		$insert="insert into email(sendEmail, level, mailService, html, title, content, regDate) values('$_POST[sendEmail]', '$_POST[level]', '$_POST[mailService]', '$_POST[html]', '$_POST[title]', '$_POST[content]', now())";
+		//echo $insert."<br>";
+		mysql_query($insert);
+		
+		
+		if($_POST[level]!="" && $_POST[level]>0){
+			$where.=" and level='$_POST[level]' ";
+		}
+		if($_POST[mailService]=="1"){
+			$where.=" and mailService='1' ";
+		}
+
+		$select="select email, name from member where email!='' $where ";
+		//echo $select."<br>";
+		$result=mysql_query($select);
+		$num=mysql_num_rows($result);
+		
+		while($rows=mysql_fetch_array($result)){
+				
+			$from="$sendEmail[2] <".$sendEmail[0].">";
+			$mailto=$rows[name]." <".$rows[email].">";
+			$subject=$_POST[title];
+			
+			$add_headers="from : ".$from."\n";
+			$add_headers.="reply-to : ".$from."\n";
+			
+			if($_POST[html]=="1"){
+				$add_headers.="Content-Type: text/html;Charset=EUC-KR";
+				$contents=stripslashes($_POST[content]);
+				//$prodInfo1=str_replace("\\", "", $prodInfo1);
+			}else{
+				$contents=nl2br($_POST[content]);
+			}
+
+			//$contents=$_POST[content];
+
+			mail($mailto, $subject, $contents, $add_headers);
+		}
+
+		//echo $contents;
+
+		echo "<script>alert('$num 통의 메일을 보냈습니다.'); history.go(-1);</script>";
+
+	}
+?>
+
+<?
+	if($_GET[flag]=="mailDel"){
+		$delete="delete from email where no=$_GET[no] ";
+		//echo $delete;
+		mysql_query($delete);
+		echo "<script>/*alert('삭제하였습니다.');*/ history.go(-1);</script>";
+	}
+?>

@@ -1,0 +1,897 @@
+<?
+	session_start();
+	include "../inc/session.html";
+	include "../inc/connect.html";
+	include "../inc/variable.html";
+	include "../inc/function.html";
+
+	if($_POST[flag] == "cont_add"){
+		//post_out();
+
+		$update1 = "
+			update np_account set
+				acc_gubun = '$_POST[acc_gubun]',
+				acc_nm = '$_POST[acc_nm]',
+				acc_num = '$_POST[acc_num]',
+				acc_cust_nm = '$_POST[acc_cust_nm]',
+				card_year = '$_POST[year]',
+				card_month = '$_POST[month]',
+				acc_zipcode = '$_POST[acc_zipcode]',
+				acc_addr1 = '$_POST[acc_addr1]',
+				acc_addr2 = '$_POST[acc_addr2]',
+				acc_email = '$_POST[acc_email]',
+				acc_refer = '$_POST[acc_refer]'
+			where
+				acc_seq = '$_POST[acc_seq]'
+		";
+
+		//echo2($update1);
+		mysql_query($update1);
+		$ip = getenv("REMOTE_ADDR");
+
+		for($i=1; $i<=$_POST[line_cnt]; $i++) {
+
+			$insert1 = "
+				insert into np_line(
+					line_seq, cont_seq, sangho, upjong, line_addr, chacksin, hope_num, line_stat, line_reg_id, line_reg_dt, line_reg_ip
+				) values (
+					'', '$_POST[cont_seq]', '".$_POST["sangho_".$i]."', '".$_POST["upjong_".$i]."', '".$_POST["line_addr_".$i]."', '".$_POST["chacksin_".$i]."', '".$_POST["hope_num_".$i]."', '미개통', '$_SESSION[user_id]', now(), '$ip'
+				)
+			";
+
+			mysql_query($insert1);
+		}
+
+		$select1 = "select * from np_cust where cust_seq = '$_POST[cust_seq]' ";
+		$result1 = mysql_query($select1);
+		$row1 = @mysql_fetch_array($result1);
+
+		$select2 = "select * from np_company where comp_seq = '$_POST[comp_seq]' ";
+		$result2 = mysql_query($select2);
+		$row2 = @mysql_fetch_array($result2);
+
+		$file=$_FILES['cont_file'];
+
+		$ip = getenv("REMOTE_ADDR");
+
+		if($file[name]!=""){
+			$reFileName=upload_file_Check($file, $_file_size, $_ok_file, "../file_upload/sabon/", "file");
+		}
+
+		$insert2 = "
+			insert into np_contract (
+				cont_seq, cont_gubun, cust_seq, cust_nm, cust_jumin, cust_gubun, cust_tel, cust_hp, cust_zipcode, cust_addr1, cust_addr2, comp_seq, comp_nm, comp_num, comp_num_flag, comp_boss_nm, comp_status, comp_type, comp_tel, comp_zipcode, comp_addr1, comp_addr2, cont_refer, cont_file, cont_stat, cont_reg_id, cont_reg_dt, cont_reg_ip, cont_user_id, cont_agent_seq, comp_corpor_num, cont_user_hp, pre_fix_saupja, after_fix_saupja, number_saupja, comp_hp
+			) values (
+				'$_POST[cont_seq]', '$_POST[cont_gubun]', '$row1[cust_seq]', '$row1[cust_nm]', '$row1[cust_jumin]', '$row1[cust_gubun]', '$row1[cust_tel]', '$row1[cust_hp]', '$row1[cust_zipcode]', '$row1[cust_addr1]', '$row1[cust_addr2]', '$row2[comp_seq]', '$row2[comp_nm]', '$row2[comp_num]', '$row2[comp_num_flag]', '$row2[comp_boss_nm]', '$row2[comp_status]', '$row2[comp_type]', '$row2[comp_tel]', '$row2[comp_zipcode]', '$row2[comp_addr1]', '$row2[comp_addr2]', '$_POST[cont_refer]', '$reFileName', '대기', '$_SESSION[user_id]', now(), '$ip', '$_POST[user_id]', '$_POST[agent_seq]', '$row2[comp_corpor_num]', '$_POST[cont_user_hp]', '$_POST[pre_fix_saupja]', '$_POST[after_fix_saupja]', '$_POST[number_saupja]', '$row2[comp_hp]'
+			)
+		";
+		//echo2($insert2);
+		mysql_query($insert2);
+		history(-2);
+
+	}
+
+
+	if($_POST[flag] == "cont_edit"){
+		//post_out();
+
+		$select2 = "select * from np_contract where cont_seq = $_POST[cont_seq] ";
+		$result2 = mysql_query($select2);
+		$row2 = @mysql_fetch_array($result2);
+
+		if($row2[cont_stat]!="대기" && $_SESSION[user_level] < 90){
+			alert("대기 상태만 수정할 수 있습니다.");
+			exit;
+		}
+
+		$update1 = "
+			update np_account set
+				acc_gubun = '$_POST[acc_gubun]',
+				acc_nm = '$_POST[acc_nm]',
+				acc_num = '$_POST[acc_num]',
+				acc_cust_nm = '$_POST[acc_cust_nm]',
+				card_year = '$_POST[year]',
+				card_month = '$_POST[month]',
+				acc_zipcode = '$_POST[acc_zipcode]',
+				acc_addr1 = '$_POST[acc_addr1]',
+				acc_addr2 = '$_POST[acc_addr2]',
+				acc_email = '$_POST[acc_email]',
+				acc_refer = '$_POST[acc_refer]'
+			where
+				acc_seq = '$_POST[acc_seq]'
+		";
+
+		//echo2($update1);
+		mysql_query($update1);
+
+		$ip = getenv("REMOTE_ADDR");
+
+		for($i=1; $i<=$_POST[line_cnt]; $i++) {
+
+			$update2 = "
+				update np_line set
+					sangho = '".$_POST["sangho_".$i]."',
+					upjong = '".$_POST["upjong_".$i]."',
+					line_addr = '".$_POST["line_addr_".$i]."',
+					chacksin = '".$_POST["chacksin_".$i]."',
+					hope_num = '".$_POST["hope_num_".$i]."'
+				where
+					line_seq = '".$_POST["line_seq_".$i]."'
+
+			";
+
+			mysql_query($update2);
+		}
+
+		$select1 = "select * from np_cust where cust_seq = '$_POST[cust_seq]' ";
+		$result1 = mysql_query($select1);
+		$row1 = @mysql_fetch_array($result1);
+		$select2 = "select * from np_company where comp_seq = '$_POST[comp_seq]' ";
+		$result2 = mysql_query($select2);
+		$row2 = @mysql_fetch_array($result2);
+
+		$file=$_FILES['cont_file'];
+
+		$ip = getenv("REMOTE_ADDR");
+
+		if($file[name]!=""){
+			$reFileName=upload_file_Check($file, $_file_size, $_ok_file, "../file_upload/sabon/", "file");
+			$file_str = "cont_file = '$reFileName', ";
+		}
+
+		$update2 = "
+			update np_contract set
+				cust_nm = '$row1[cust_nm]',
+				cust_gubun = '$row1[cust_gubun]',
+				cust_tel = '$row1[cust_tel]',
+				cust_hp = '$row1[cust_hp]',
+				cust_zipcode = '$row1[cust_zipcode]',
+				cust_addr1 = '$row1[cust_addr1]',
+				cust_addr2 = '$row1[cust_addr2]',
+
+				comp_seq = '$row2[comp_seq]',
+				comp_nm = '$row2[comp_nm]',
+				comp_num = '$row2[comp_num]',
+				comp_num_flag = '$row2[comp_num_flag]',
+				comp_boss_nm = '$row2[comp_boss_nm]',
+				comp_status = '$row2[comp_status]',
+				comp_type = '$row2[comp_type]',
+				comp_tel = '$row2[comp_tel]',
+				comp_zipcode = '$row2[comp_zipcode]',
+				comp_addr1 = '$row2[comp_zipcode]',
+				comp_addr2 = '$row2[comp_addr2]',
+
+				cont_refer = '$_POST[cont_refer]',
+				$file_str
+
+				comp_corpor_num = '$_POST[comp_corpor_num]',
+				cont_user_hp = '$_POST[cont_user_hp]',
+				pre_fix_saupja = '$_POST[pre_fix_saupja]',
+				after_fix_saupja = '$_POST[after_fix_saupja]',
+				number_saupja = '$_POST[number_saupja]',
+				comp_hp = '$row2[comp_hp]'
+
+			where
+				cont_seq = $_POST[cont_seq]
+		";
+
+		mysql_query($update2);
+		history(-2);
+	}
+
+
+	//상품해지 신청
+	if($_POST[flag] == "cont_heji"){
+
+		$new_cont_seq = get_cont_seq();
+		$ip = getenv("REMOTE_ADDR");
+		$chk_temp = $_POST[chk];
+
+		$select1 = "select * from np_cust where cust_seq = '$_POST[cust_seq]' ";
+		$result1 = mysql_query($select1);
+		$row1 = @mysql_fetch_array($result1);
+
+		if($_POST[comp_seq] != ""){
+			$select2 = "select * from np_company where comp_seq = '$_POST[comp_seq]' ";
+			$result2 = mysql_query($select2);
+			$row2 = @mysql_fetch_array($result2);
+		}
+
+		$select3 = "select * from np_account where cust_seq = '$_POST[cust_seq]' ";
+		$result3 = mysql_query($select3);
+		$acc_row = @mysql_fetch_array($result3);
+
+		$select4 = "select * from np_user where user_id = '$_POST[user_id]' ";
+		$result4 = mysql_query($select4);
+		$user_row = @mysql_fetch_array($result4);
+
+		$file=$_FILES['cont_file'];
+
+		$ip = getenv("REMOTE_ADDR");
+
+		if($file[name]!=""){
+			$reFileName=upload_file_Check($file, $_file_size, $_ok_file, "../file_upload/sabon/", "file");
+		}
+
+		$insert2 = "
+			insert into np_contract (
+				cont_seq, cont_gubun, cust_seq, cust_nm, cust_jumin, cust_gubun, cust_tel, cust_hp, cust_zipcode, cust_addr1, cust_addr2, comp_seq, comp_nm, comp_num, comp_num_flag, comp_boss_nm, comp_status, comp_type, comp_tel, comp_zipcode, comp_addr1, comp_addr2, cont_refer, cont_file, cont_stat, cont_reg_id, cont_reg_dt, cont_reg_ip, cont_user_id, cont_agent_seq, comp_corpor_num, cont_user_hp, pre_fix_saupja, after_fix_saupja, number_saupja, comp_hp
+			) values (
+				$new_cont_seq, '해지', '$row1[cust_seq]', '$row1[cust_nm]', '$row1[cust_jumin]', '$row1[cust_gubun]', '$row1[cust_tel]', '$row1[cust_hp]', '$row1[cust_zipcode]', '$row1[cust_addr1]', '$row1[cust_addr2]', '$row2[comp_seq]', '$row2[comp_nm]', '$row2[comp_num]', '$row2[comp_num_flag]', '$row2[comp_boss_nm]', '$row2[comp_status]', '$row2[comp_type]', '$row2[comp_tel]', '$row2[comp_zipcode]', '$row2[comp_addr1]', '$row2[comp_addr2]', '$_POST[cont_refer]', '$reFileName', '대기', '$_SESSION[user_id]', now(), '$ip', '$user_row[user_id]', '$user_row[agent_seq]', '$row2[comp_corpor_num]', '$user_row[user_hp]', '$_POST[pre_fix_saupja]', '$_POST[after_fix_saupja]', '$_POST[number_saupja]', '$row2[comp_hp]'
+			)
+		";
+
+		//echo $insert2."<br><br>";
+		mysql_query($insert2);
+
+		for($i=0;$i<count($chk_temp);$i++) {
+			$insert = "
+				insert into np_line
+				select
+					'', $new_cont_seq, sangho, upjong, line_addr, chacksin, hope_num, confirm_num, gaip_num, open_dt, '해지', line_open_dt, '$_SESSION[user_id]', now(), '$ip', yangdo_cont_seq, yangdo_line_seq, yangdo_nm, change_req_dt, change_hope_num, change_chacksin, change_sangho, change_upjong, change_addr, stop_restart
+				from
+					np_line
+				where
+					line_seq = ".$chk_temp[$i];
+			//echo $insert."<br><br>";
+			mysql_query($insert);
+		}
+
+		echo "<script>location.replace('a01_01_01.html');</script>";
+	}
+
+
+	//상품변경신청
+	if($_POST[flag] == "cont_change_add"){
+
+		$new_cont_seq = get_cont_seq();
+		$ip = getenv("REMOTE_ADDR");
+		$chk_temp = $_POST[chk];
+
+		$select1 = "select * from np_cust where cust_seq = '$_POST[cust_seq]' ";
+		$result1 = mysql_query($select1);
+		$row1 = @mysql_fetch_array($result1);
+
+		if($_POST[comp_seq] != ""){
+			$select2 = "select * from np_company where comp_seq = '$_POST[comp_seq]' ";
+			$result2 = mysql_query($select2);
+			$row2 = @mysql_fetch_array($result2);
+		}
+
+		$select3 = "select * from np_account where cust_seq = '$_POST[cust_seq]' ";
+		$result3 = mysql_query($select3);
+		$acc_row = @mysql_fetch_array($result3);
+
+		$select4 = "select * from np_user where user_id = '$_POST[user_id]' ";
+		$result4 = mysql_query($select4);
+		$user_row = @mysql_fetch_array($result4);
+
+		$insert2 = "
+			insert into np_contract (
+				cont_seq, cont_gubun, cust_seq, cust_nm, cust_jumin, cust_gubun, cust_tel, cust_hp, cust_zipcode, cust_addr1, cust_addr2, comp_seq, comp_nm, comp_num, comp_num_flag, comp_boss_nm, comp_status, comp_type, comp_tel, comp_zipcode, comp_addr1, comp_addr2, cont_refer, cont_file, cont_stat, cont_reg_id, cont_reg_dt, cont_reg_ip, cont_user_id, cont_agent_seq, comp_corpor_num, cont_user_hp, pre_fix_saupja, after_fix_saupja, number_saupja, comp_hp
+			) values (
+				$new_cont_seq, '변경', '$row1[cust_seq]', '$row1[cust_nm]', '$row1[cust_jumin]', '$row1[cust_gubun]', '$row1[cust_tel]', '$row1[cust_hp]', '$row1[cust_zipcode]', '$row1[cust_addr1]', '$row1[cust_addr2]', '$row2[comp_seq]', '$row2[comp_nm]', '$row2[comp_num]', '$row2[comp_num_flag]', '$row2[comp_boss_nm]', '$row2[comp_status]', '$row2[comp_type]', '$row2[comp_tel]', '$row2[comp_zipcode]', '$row2[comp_addr1]', '$row2[comp_addr2]', '$_POST[cont_refer]', '$reFileName', '대기', '$_SESSION[user_id]', now(), '$ip', '$user_row[user_id]', '$user_row[agent_seq]', '$row2[comp_corpor_num]', '$user_row[user_hp]', '$_POST[pre_fix_saupja]', '$_POST[after_fix_saupja]', '$_POST[number_saupja]', '$row2[comp_hp]'
+			)
+		";
+
+		mysql_query($insert2);
+
+		if(!empty($_POST[line_num])){
+
+			for($i=1;$i<=$_POST[line_num];$i++) {
+
+				$insert = "
+					insert into np_line
+					select
+						'', $new_cont_seq, sangho, upjong, line_addr, chacksin, hope_num, confirm_num, gaip_num, open_dt, line_stat, line_open_dt, '$_SESSION[use_id]', now(), '$ip', yangdo_cont_seq, yangdo_line_seq, yangdo_nm, '".$_POST["change_req_dt_".$i]."', '".$_POST["change_hope_num_".$i]."', '".$_POST["change_chacksin_".$i]."', '".$_POST["change_sangho_".$i]."', '".$_POST["change_upjong_".$i]."', '".$_POST["change_addr_".$i]."', '".$_POST["stop_restart_".$i]."'
+					from
+						np_line
+					where
+						line_seq = ".$_POST["line_seq_".$i];
+
+				mysql_query($insert);
+			}
+		}
+
+		echo "<script>opener.location.replace('a01_01_01.html'); self.close();\n</script>";
+	}
+
+
+	//상태변경
+	if($_POST[flag] == "cont_appro"){
+		//post_out();
+		if($_SESSION[user_level] < 30){
+			alert("권한이 없습니다.");
+		}
+
+		$update1 = "
+			update np_contract set
+				cont_stat = '$_POST[cont_stat]',
+				cont_refer = '$_POST[cont_refer]'
+			where
+				cont_seq = '$_POST[cont_seq]'
+		";
+		//echo2($update1);
+		mysql_query($update1);
+
+		for($i=1; $i<=$_POST[line_num]; $i++) {
+			$update2 = "
+				update np_line set
+					line_stat = '".$_POST["line_stat_".$i]."',
+					confirm_num = '".$_POST["confirm_num_".$i]."',
+					gaip_num = '".$_POST["gaip_num_".$i]."',
+					open_dt  = '".$_POST["open_dt_".$i]."'
+				where
+					line_seq = '".$_POST["line_seq_".$i]."'
+			";
+			//echo2($update2);
+			mysql_query($update2);
+		}
+
+
+		//exit;
+
+		history(-2);
+	}
+
+
+	//회선삭제
+	if($_POST[flag] == "cont_line_del"){
+
+
+
+		$chk_temp = $_POST[chk];
+		$in_str = "";
+
+		if(!empty($chk_temp)){
+			for($i=0;$i<count($chk_temp);$i++) {
+				//echo $chk_temp[$i]."<br>";
+
+				if($i==0){
+					$in_str = $chk_temp[$i];
+				}else{
+					$in_str = $in_str.",".$chk_temp[$i];
+				}
+			}
+		}
+
+		$delete = "delete from np_line where cont_seq = $_POST[cont_seq] and line_seq in (".$in_str.")";
+		mysql_query($delete);
+
+		history(-1);
+	}
+?>
+
+<?
+	//고객등록
+	if($_POST[flag] == "cust_add"){
+
+		$ip = getenv("REMOTE_ADDR");
+
+		$cust_jumin = $_POST[cust_jumin1]."-".$_POST[cust_jumin2];
+
+		$file=$_FILES['cust_sabon'];
+
+		if($file[name]!=""){
+			$reFileName=upload_file_Check($file, $_file_size, $_ok_file, "../file_upload/sabon/", "file");
+		}
+
+		$tong_file=$_FILES['cust_tongjang'];
+
+		if($tong_file[name]!=""){
+			$tong_file_name=upload_file_Check($tong_file, $_file_size, $_ok_file, "../file_upload/sabon/", "file");
+		}
+
+		$insert1 = "
+			insert into np_cust(
+				cust_seq, cust_nm, cust_jumin, cust_gubun, cust_tel, cust_hp, cust_zipcode, cust_addr1, cust_addr2, cust_email, cust_sabon, cust_memo, cust_use_yn, cust_reg_id, cust_reg_dt, cust_reg_ip, cust_tongjang, cust_relation
+			) values (
+				'', '$_POST[cust_nm]', '$cust_jumin', '$_POST[cust_gubun]', '$_POST[cust_tel]', '$_POST[cust_hp]', '$_POST[cust_zipcode]', '$_POST[cust_addr1]', '$_POST[cust_addr2]', '$_POST[cust_email]', '$reFileName', '$_POST[cust_memo]', 'Y', '$_SESSION[user_id]', now(), '$ip', '$tong_file_name', '$cust_relation'
+			)
+		";
+		mysql_query($insert1);
+
+		$select = "select cust_seq from np_cust order by 1 desc limit 1";
+		$result = mysql_query($select);
+		$row = @mysql_fetch_array($result);
+
+		$insert2 = "
+			insert into np_account(
+				acc_seq, cust_seq, acc_gubun, acc_nm, acc_num, acc_cust_nm, card_year, card_month, acc_zipcode, acc_addr1, acc_addr2, acc_email, acc_reg_id, acc_reg_dt, acc_reg_ip
+			) values (
+				'', $row[cust_seq], '$_POST[acc_gubun]', '$_POST[acc_nm]', '$_POST[acc_num]', '$_POST[acc_cust_nm]', '$_POST[year]', '$_POST[month]', '$_POST[acc_zipcode]', '$_POST[acc_addr1]', '$_POST[acc_addr2]', '$_POST[acc_email]', '$_SESSION[user_id]', now(), '$ip'
+			)
+		";
+		mysql_query($insert2);
+?>
+<script type="text/JavaScript">
+<!--
+	function openerInsert()
+	{
+		opener.document.cont_add.cust_seq.value = "<?echo $row[cust_seq]?>"
+		opener.document.cont_add.cust_nm.value = "<?echo $_POST[cust_nm]?>"
+		opener.document.cont_add.cust_jumin1.value = "<?echo $_POST[cust_jumin1]?>"
+		opener.document.cont_add.cust_jumin2.value = "<?echo $_POST[cust_jumin2]?>"
+		opener.document.cont_add.cust_gubun.value = "<?echo $_POST[cust_gubun]?>"
+		opener.document.cont_add.cust_tel.value = "<?echo $_POST[cust_tel]?>"
+		opener.document.cont_add.cust_hp.value = "<?echo $_POST[cust_hp]?>"
+		opener.document.cont_add.cust_zipcode.value = "<?echo $_POST[cust_zipcode]?>"
+		opener.document.cont_add.cust_addr1.value = "<?echo $_POST[cust_addr1]?>"
+		opener.document.cont_add.cust_addr2.value = "<?echo $_POST[cust_addr2]?>"
+
+		var acc_gubun = "<?echo $_POST[acc_gubun]?>"
+		var acc_nm = "<?echo $_POST[acc_nm]?>"
+		opener.document.frames["comboframe"].location.replace("/include/acc_combo.html?acc_gubun="+acc_gubun+"&acc_nm="+acc_nm+"&form_nm=cont_add");
+
+		opener.document.cont_add.acc_gubun.value = "<?echo $_POST[acc_gubun]?>"
+		opener.document.cont_add.acc_nm.value = "<?echo $_POST[acc_nm]?>"
+		opener.document.cont_add.acc_num.value = "<?echo $_POST[acc_num]?>"
+		opener.document.cont_add.acc_cust_nm.value = "<?echo $_POST[acc_cust_nm]?>"
+		opener.document.cont_add.year.value = "<?echo $_POST[year]?>"
+		opener.document.cont_add.month.value = "<?echo $_POST[month]?>"
+		opener.document.cont_add.acc_zipcode.value = "<?echo $_POST[acc_zipcode]?>"
+		opener.document.cont_add.acc_addr1.value = "<?echo $_POST[acc_addr1]?>"
+		opener.document.cont_add.acc_addr2.value = "<?echo $_POST[acc_addr2]?>"
+		//opener.document.cont_add.acc_refer.value = "<?echo $_POST[acc_refer]?>"
+		opener.document.cont_add.acc_seq.value = "<?echo $_POST[acc_seq]?>"
+
+		if("<?echo $_POST[acc_gubun]?>"=="신용카드"){
+			opener.document.cont_add.acc_num.disabled=false;
+			opener.document.cont_add.acc_cust_nm.disabled=false;
+			opener.document.cont_add.year.disabled=false;
+			opener.document.cont_add.month.disabled=false;
+			opener.document.cont_add.sangdong.disabled=true;
+			opener.document.cont_add.acc_zipcode.disabled=true;
+			opener.document.cont_add.acc_addr1.disabled=true;
+			opener.document.cont_add.acc_addr2.disabled=true;
+			//opener.document.cont_add.acc_refer.disabled=false;
+		}else if("<?echo $_POST[acc_gubun]?>"=="계좌이체"){
+			opener.document.cont_add.acc_num.disabled=false;
+			opener.document.cont_add.acc_cust_nm.disabled=false;
+			opener.document.cont_add.year.disabled=true;
+			opener.document.cont_add.month.disabled=true;
+			opener.document.cont_add.sangdong.disabled=true;
+			opener.document.cont_add.acc_zipcode.disabled=true;
+			opener.document.cont_add.acc_addr1.disabled=true;
+			opener.document.cont_add.acc_addr2.disabled=true;
+			//opener.document.cont_add.acc_refer.disabled=false;
+		}else if("<?echo $_POST[acc_gubun]?>"=="지로"){
+			opener.document.cont_add.acc_num.disabled=true;
+			opener.document.cont_add.acc_cust_nm.disabled=true;
+			opener.document.cont_add.year.disabled=true;
+			opener.document.cont_add.month.disabled=true;
+			opener.document.cont_add.sangdong.disabled=false;
+			opener.document.cont_add.acc_zipcode.disabled=false;
+			opener.document.cont_add.acc_addr1.disabled=false;
+			opener.document.cont_add.acc_addr2.disabled=false;
+			//opener.document.cont_add.acc_refer.disabled=false;
+		}
+		//opener.document.user_add.pwd.focus();
+		self.close();
+	}
+
+	openerInsert();
+//-->
+</script>
+<?
+	}	//end cust_add
+?>
+
+
+<?
+	//고객수정
+	if($_POST[flag] == "cust_edit"){
+
+		$file=$_FILES['cust_sabon'];
+		$file2=$_FILES['cust_tongjang'];
+
+		if($file[name]!="" || $file2[name]!="" ){
+
+			$select = "select cust_sabon from np_cust where cust_seq = '$_POST[cust_seq]' ";
+			$result = mysql_query($select);
+			$row = @mysql_fetch_array($result);
+
+			if($file[name]!=""){
+
+				if($row[cust_sabon]!=""){
+					unlink("../file_upload/sabon/".$row[cust_sabon]);
+				}
+
+				$reFileName=upload_file_Check($file, $_file_size, $_ok_file, "../file_upload/sabon/", "file");
+
+				$update = "update np_cust set cust_sabon = '$reFileName' where cust_seq = '$_POST[cust_seq]' ";
+				mysql_query($update);
+			}
+
+			if($file2[name]!=""){
+
+				if($row[cust_tongjang]!=""){
+					unlink("../file_upload/sabon/".$row[cust_tongjang]);
+				}
+
+				$reFileName=upload_file_Check($file2, $_file_size, $_ok_file, "../file_upload/sabon/", "file");
+
+				$update = "update np_cust set cust_tongjang = '$reFileName' where cust_seq = '$_POST[cust_seq]' ";
+				mysql_query($update);
+			}
+		}
+
+		$update1 = "
+			update np_cust set
+				cust_nm = '$_POST[cust_nm]',
+				cust_gubun = '$_POST[cust_gubun]',
+				cust_tel = '$_POST[cust_tel]',
+				cust_hp = '$_POST[cust_hp]',
+				cust_zipcode = '$_POST[cust_zipcode]',
+				cust_addr1 = '$_POST[cust_addr1]',
+				cust_addr2 = '$_POST[cust_addr2]',
+				cust_email = '$_POST[cust_email]',
+				cust_memo = '$_POST[cust_memo]',
+				cust_relation = '$_POST[cust_relation]'
+			where
+				cust_seq = '$_POST[cust_seq]'
+		";
+
+		$update2 = "
+			update np_account set
+				acc_gubun = '$_POST[acc_gubun]',
+				acc_nm = '$_POST[acc_nm]',
+				acc_num = '$_POST[acc_num]',
+				acc_cust_nm = '$_POST[acc_cust_nm]',
+				card_year = '$_POST[year]',
+				card_month = '$_POST[month]',
+				acc_zipcode = '$_POST[acc_zipcode]',
+				acc_addr1 = '$_POST[acc_addr1]',
+				acc_addr2 = '$_POST[acc_addr2]',
+				acc_email = '$_POST[acc_email]',
+				acc_refer = '$_POST[acc_refer]'
+			where
+				acc_seq = '$_POST[acc_seq]'
+		";
+
+		//echo2($update1);
+		//echo2($update2);
+
+		mysql_query($update1);
+		mysql_query($update2);
+?>
+<script type="text/JavaScript">
+<!--
+	function openerInsert()
+	{
+		opener.document.cont_edit.cust_seq.value = "<?echo $_POST[cust_seq]?>"
+		opener.document.cont_edit.cust_nm.value = "<?echo $_POST[cust_nm]?>"
+		opener.document.cont_edit.cust_jumin1.value = "<?echo $_POST[cust_jumin1]?>"
+		opener.document.cont_edit.cust_jumin2.value = "<?echo $_POST[cust_jumin2]?>"
+		opener.document.cont_edit.cust_gubun.value = "<?echo $_POST[cust_gubun]?>"
+		opener.document.cont_edit.cust_tel.value = "<?echo $_POST[cust_tel]?>"
+		opener.document.cont_edit.cust_hp.value = "<?echo $_POST[cust_hp]?>"
+		opener.document.cont_edit.cust_zipcode.value = "<?echo $_POST[cust_zipcode]?>"
+		opener.document.cont_edit.cust_addr1.value = "<?echo $_POST[cust_addr1]?>"
+		opener.document.cont_edit.cust_addr2.value = "<?echo $_POST[cust_addr2]?>"
+
+		var acc_gubun = "<?echo $_POST[acc_gubun]?>"
+		var acc_nm = "<?echo $_POST[acc_nm]?>"
+		opener.document.frames["comboframe"].location.replace("/include/acc_combo.html?acc_gubun="+acc_gubun+"&acc_nm="+acc_nm+"&form_nm=cont_edit");
+
+		opener.document.cont_edit.acc_gubun.value = "<?echo $_POST[acc_gubun]?>"
+		opener.document.cont_edit.acc_nm.value = "<?echo $_POST[acc_nm]?>"
+		opener.document.cont_edit.acc_num.value = "<?echo $_POST[acc_num]?>"
+		opener.document.cont_edit.acc_cust_nm.value = "<?echo $_POST[acc_cust_nm]?>"
+		opener.document.cont_edit.year.value = "<?echo $_POST[year]?>"
+		opener.document.cont_edit.month.value = "<?echo $_POST[month]?>"
+		opener.document.cont_edit.acc_zipcode.value = "<?echo $_POST[acc_zipcode]?>"
+		opener.document.cont_edit.acc_addr1.value = "<?echo $_POST[acc_addr1]?>"
+		opener.document.cont_edit.acc_addr2.value = "<?echo $_POST[acc_addr2]?>"
+		//opener.document.cont_edit.acc_refer.value = "<?echo $_POST[acc_refer]?>"
+		opener.document.cont_edit.acc_seq.value = "<?echo $_POST[acc_seq]?>"
+
+		if("<?echo $_POST[acc_gubun]?>"=="신용카드"){
+			opener.document.cont_edit.acc_num.disabled=false;
+			opener.document.cont_edit.acc_cust_nm.disabled=false;
+			opener.document.cont_edit.year.disabled=false;
+			opener.document.cont_edit.month.disabled=false;
+			opener.document.cont_edit.sangdong.disabled=true;
+			opener.document.cont_edit.acc_zipcode.disabled=true;
+			opener.document.cont_edit.acc_addr1.disabled=true;
+			opener.document.cont_edit.acc_addr2.disabled=true;
+			//opener.document.cont_edit.acc_refer.disabled=false;
+		}else if("<?echo $_POST[acc_gubun]?>"=="계좌이체"){
+			opener.document.cont_edit.acc_num.disabled=false;
+			opener.document.cont_edit.acc_cust_nm.disabled=false;
+			opener.document.cont_edit.year.disabled=true;
+			opener.document.cont_edit.month.disabled=true;
+			opener.document.cont_edit.sangdong.disabled=true;
+			opener.document.cont_edit.acc_zipcode.disabled=true;
+			opener.document.cont_edit.acc_addr1.disabled=true;
+			opener.document.cont_edit.acc_addr2.disabled=true;
+			//opener.document.cont_edit.acc_refer.disabled=false;
+		}else if("<?echo $_POST[acc_gubun]?>"=="지로"){
+			opener.document.cont_edit.acc_num.disabled=true;
+			opener.document.cont_edit.acc_cust_nm.disabled=true;
+			opener.document.cont_edit.year.disabled=true;
+			opener.document.cont_edit.month.disabled=true;
+			opener.document.cont_edit.sangdong.disabled=false;
+			opener.document.cont_edit.acc_zipcode.disabled=false;
+			opener.document.cont_edit.acc_addr1.disabled=false;
+			opener.document.cont_edit.acc_addr2.disabled=false;
+			//opener.document.cont_edit.acc_refer.disabled=false;
+		}
+		//opener.document.user_add.pwd.focus();
+		self.close();
+	}
+
+	openerInsert();
+//-->
+</script>
+<?
+	}	//end cust_add
+?>
+
+
+<?
+	if($_POST[flag] == "comp_add"){
+
+		$ip = getenv("REMOTE_ADDR");
+
+		$file=$_FILES['comp_sabon'];
+
+		if($file[name]!=""){
+			$reFileName=upload_file_Check($file, $_file_size, $_ok_file, "../file_upload/sabon/", "file");
+		}
+
+		$sin_file=$_FILES['sinbun_sabon'];
+
+		if($sin_file[name]!=""){
+			$sin_file_name=upload_file_Check($sin_file, $_file_size, $_ok_file, "../file_upload/sabon/", "file");
+		}
+
+
+		$insert1 = "
+			insert into np_company (
+				comp_seq, comp_nm, comp_num, comp_num_flag, comp_boss_nm, comp_corpor_num, comp_status, comp_type, comp_tel, comp_fax, comp_hp, comp_zipcode, comp_addr1, comp_addr2, comp_sabon, comp_use_yn, comp_reg_id, comp_reg_dt, comp_reg_ip, comp_refer, sinbun_sabon
+			) values (
+				'', '$_POST[comp_nm]', '$_POST[comp_num]', '$_POST[comp_num_flag]', '$_POST[comp_boss_nm]', '$_POST[comp_corpor_num]', '$_POST[comp_status]', '$_POST[comp_type]', '$_POST[comp_tel]', '$_POST[comp_fax]', '$_POST[comp_hp]', '$_POST[comp_zipcode]', '$_POST[comp_addr1]', '$_POST[comp_addr2]', '$reFileName', 'Y', '$_SESSION[user_id]', now(), '$ip', '$_POST[comp_refer]', '$sin_file_name'
+			)
+		";
+
+		mysql_query($insert1);
+
+		//$select = "select comp_seq from np_company where comp_nm = '$_POST[comp_num]' and comp_boss_nm = '$_POST[comp_boss_nm]' order by 1 desc limit 1";
+		$select = "select comp_seq from np_company order by 1 desc limit 1";
+		$result = mysql_query($select);
+		$row = @mysql_fetch_array($result);
+?>
+<script type="text/JavaScript">
+<!--
+	function openerInsert()
+	{
+		opener.document.cont_add.comp_seq.value = "<?echo $row[comp_seq]?>";
+		opener.document.cont_add.comp_nm.value = "<?echo $_POST[comp_nm]?>";
+		opener.document.cont_add.comp_num.value = "<?echo $_POST[comp_num]?>";
+		opener.document.cont_add.comp_num_flag.value = "<?echo $_POST[comp_num_flag]?>";
+		opener.document.cont_add.comp_boss_nm.value = "<?echo $_POST[comp_boss_nm]?>";
+		opener.document.cont_add.comp_corpor_num.value = "<?echo $_POST[comp_corpor_num]?>";
+		opener.document.cont_add.comp_status.value = "<?echo $_POST[comp_status]?>";
+		opener.document.cont_add.comp_type.value = "<?echo $_POST[comp_type]?>";
+		opener.document.cont_add.comp_tel.value = "<?echo $_POST[comp_tel]?>";
+		opener.document.cont_add.comp_hp.value = "<?echo $_POST[comp_hp]?>";
+		opener.document.cont_add.comp_zipcode.value = "<?echo $_POST[comp_zipcode]?>";
+		opener.document.cont_add.comp_addr1.value = "<?echo $_POST[comp_addr1]?>";
+		opener.document.cont_add.comp_addr2.value = "<?echo $_POST[comp_addr2]?>";
+
+		//opener.document.user_add.pwd.focus();
+		self.close();
+	}
+
+	openerInsert();
+//-->
+</script>
+<?
+	} //end comp_add
+?>
+
+<?
+	if($_POST[flag] == "comp_edit"){
+
+		if($_POST[comp_reg_id] != $_SESSION[user_id]){
+			alert("권한이 없습니다.");
+			exit;
+		}
+
+		$file=$_FILES['comp_sabon'];
+		$file2=$_FILES['sinbun_sabon'];
+
+		if($file[name]!="" || $file2[name]){
+
+			$select = "select comp_sabon, sinbun_sabon from np_company where comp_seq = '$_POST[comp_seq]' ";
+			$result = mysql_query($select);
+			$row = @mysql_fetch_array($result);
+
+			if($file[name]!=""){
+
+				if($row[comp_sabon]!=""){
+					@unlink("../file_upload/sabon/".$row[comp_sabon]);
+				}
+
+				$reFileName=upload_file_Check($file, $_file_size, $_ok_file, "../file_upload/sabon/", "file");
+
+				$update = "update np_company set comp_sabon = '$reFileName' where comp_seq = '$_POST[comp_seq]' ";
+				mysql_query($update);
+			}
+
+			if($file2[name]!=""){
+
+				if($row[sinbun_sabon]!=""){
+					@unlink("../file_upload/sabon/".$row[sinbun_sabon]);
+				}
+
+				$reFileName=upload_file_Check($file2, $_file_size, $_ok_file, "../file_upload/sabon/", "file");
+
+				$update = "update np_company set sinbun_sabon = '$reFileName' where comp_seq = '$_POST[comp_seq]' ";
+				mysql_query($update);
+			}
+
+		}
+
+		$update1 = "
+			update np_company set
+				comp_nm = '$_POST[comp_nm]',
+				comp_num = '$_POST[comp_num]',
+				comp_num_flag = '$_POST[comp_num_flag]',
+				comp_boss_nm = '$_POST[comp_boss_nm]',
+				comp_corpor_num = '$_POST[comp_corpor_num]',
+				comp_status = '$_POST[comp_status]',
+				comp_type = '$_POST[comp_type]',
+				comp_tel = '$_POST[comp_tel]',
+				comp_fax = '$_POST[comp_fax]',
+				comp_hp = '$_POST[comp_hp]',
+				comp_zipcode = '$_POST[comp_zipcode]',
+				comp_addr1 = '$_POST[comp_addr1]',
+				comp_addr2 = '$_POST[comp_addr2]',
+				comp_use_yn = '$_POST[comp_use_yn]',
+				comp_refer = '$_POST[comp_refer]'
+			where
+				comp_seq = '$_POST[comp_seq]'
+		";
+		mysql_query($update1);
+
+
+?>
+<script type="text/JavaScript">
+<!--
+	function openerInsert()
+	{
+		opener.document.cont_edit.comp_seq.value = "<?echo $_POST[comp_seq]?>";
+		opener.document.cont_edit.comp_nm.value = "<?echo $_POST[comp_nm]?>";
+		opener.document.cont_edit.comp_num.value = "<?echo $_POST[comp_num]?>";
+		opener.document.cont_edit.comp_num_flag.value = "<?echo $_POST[comp_num_flag]?>";
+		opener.document.cont_edit.comp_boss_nm.value = "<?echo $_POST[comp_boss_nm]?>";
+		opener.document.cont_edit.comp_corpor_num.value = "<?echo $_POST[comp_corpor_num]?>";
+		opener.document.cont_edit.comp_status.value = "<?echo $_POST[comp_status]?>";
+		opener.document.cont_edit.comp_type.value = "<?echo $_POST[comp_type]?>";
+		opener.document.cont_edit.comp_tel.value = "<?echo $_POST[comp_tel]?>";
+		opener.document.cont_edit.comp_hp.value = "<?echo $_POST[comp_hp]?>";
+		opener.document.cont_edit.comp_zipcode.value = "<?echo $_POST[comp_zipcode]?>";
+		opener.document.cont_edit.comp_addr1.value = "<?echo $_POST[comp_addr1]?>";
+		opener.document.cont_edit.comp_addr2.value = "<?echo $_POST[comp_addr2]?>";
+
+		//opener.document.user_add.pwd.focus();
+		self.close();
+	}
+
+	openerInsert();
+//-->
+</script>
+<?
+	} //end comp_add
+?>
+
+
+<?
+	if($_POST[flag]=="excel_add"){
+
+		$file_to_include = $_FILES[excel][tmp_name];
+
+		require_once '../Excel/reader.php';
+		$data = new Spreadsheet_Excel_Reader();
+		$data->setUTFEncoder('mb');
+		$data->setOutputEncoding('euc-kr');
+		$data->read($file_to_include);
+		error_reporting(E_ALL ^ E_NOTICE);
+
+		//echo $data->sheets[0]['numRows']."<br>";
+
+
+		if($_POST[return_page] == "a01_01_02"){
+
+			echo "<script>\n";
+
+			for ($i = 1; $i <= $data->sheets[0]['numRows']; $i++) {
+
+				if($i>$_POST[line_num]){
+					break;
+				}
+
+				for ($j = 1; $j <= $data->sheets[0]['numCols']; $j++) {
+
+					if($j==1){
+						echo "opener.document.cont_appro.line_stat_".$i.".value='".$data->sheets[0]['cells'][$i][$j]."';\n";
+					}else if($j==2){
+						echo "opener.document.cont_appro.open_dt_".$i.".value='".$data->sheets[0]['cells'][$i][$j]."';\n";
+					}else if($j==3){
+						echo "opener.document.cont_appro.gaip_num_".$i.".value='".$data->sheets[0]['cells'][$i][$j]."';\n";
+					}else if($j==4){
+						echo "opener.document.cont_appro.confirm_num_".$i.".value='".$data->sheets[0]['cells'][$i][$j]."';\n";
+					}else {
+						continue;
+					}
+
+				}
+				//echo "\n";
+			}
+
+			echo "self.close();\n</script>";
+
+
+
+		}else{
+
+			echo "<script>";
+
+			for ($i = 1; $i <= $data->sheets[0]['numRows']; $i++) {
+
+				if($i!=1){
+					echo "opener.addRow(1000);";
+				}
+
+				for ($j = 1; $j <= $data->sheets[0]['numCols']; $j++) {
+
+					if($j==1){
+						echo "opener.document.cont_add.sangho_".$i.".value='".$data->sheets[0]['cells'][$i][$j]."';";
+					}else if($j==2){
+						echo "opener.document.cont_add.upjong_".$i.".value='".$data->sheets[0]['cells'][$i][$j]."';";
+					}else if($j==3){
+						echo "opener.document.cont_add.line_addr_".$i.".value='".$data->sheets[0]['cells'][$i][$j]."';";
+					}else if($j==4){
+						echo "opener.document.cont_add.chacksin_".$i.".value='".$data->sheets[0]['cells'][$i][$j]."';";
+					}else if($j==5){
+						echo "opener.document.cont_add.hope_num_".$i.".value='".$data->sheets[0]['cells'][$i][$j]."';";
+					}else {
+						continue;
+					}
+
+				}
+				//echo "\n";
+			}
+
+			echo "self.close();</script>";
+		}
+
+	}
+
+
+	if($_POST[flag] == "cont_del"){
+		//post_out();
+
+		$select2 = "select * from np_contract where cont_seq = $_POST[cont_seq] ";
+		$result2 = mysql_query($select2);
+		$row2 = @mysql_fetch_array($result2);
+
+		if($_SESSION[user_level] < 90){
+			if($row2[cont_stat]!="대기"){
+				alert("대기 상태만 수정할 수 있습니다.");
+				exit;
+			}
+		}
+
+		$delete = "delete from np_line where cont_seq = $_POST[cont_seq]";
+		mysql_query($delete);
+
+		$delete2 = "delete from np_contract where cont_seq = $_POST[cont_seq]";
+		mysql_query($delete2);
+
+		history(-2);
+
+	}
+?>

@@ -1,0 +1,196 @@
+<?
+	if($_SESSION[s_id]!=""){
+
+	$select="select no, id, name, email, tel, hp, zipcode, addr1, addr2, jumin1, jumin2, regDate, marry, company, job, mailService, level, loginDate from member where id='$_SESSION[s_id]' limit 1";
+	$result=@mysql_query($select);
+	$row=@mysql_fetch_array($result);
+
+	$tel=explode("-",$row[tel]);
+	$hp=explode("-",$row[hp]);
+?>
+
+
+<table width="820" border="0" cellspacing="0" cellpadding="0">
+  <form name=memberAdd method=post action="memberEdit.html">
+  <input type=hidden name=flag value="memberModify">
+  <tr>
+	<!--
+    <td width="200" align="center" valign="top"><table width="170"  border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td height="24">&nbsp;</td>
+      </tr>
+      <tr>
+        <td><img src="images/Stit_member.jpg" width="170" height="58"></td>
+      </tr>
+      <tr>
+        <td><img src="images/Stit_s01.jpg" width="170" height="23"></td>
+      </tr>
+      <tr>
+        <td><img src="images/Stit_bottom.jpg" width="170" height="40"></td>
+      </tr>
+    </table></td>
+	-->
+    <td valign="top"><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td height="24" align="right"><span class="style1"><!--- Home &gt; 회원정보수정--> </span>&nbsp;&nbsp;&nbsp;</td>
+      </tr>
+      <tr>
+        <td width=100% align=center><table width="620" border="0" cellpadding="0" cellspacing="0" background="images/bg_center.jpg">
+          <tr>
+            <td width="620"><img src="images/tit_member2.jpg" width="620" height="56"></td>
+          </tr>
+          <tr>
+            <td align="center"><img src="images/tit_s_member2.jpg" width="560" height="47"></td>
+          </tr>
+          <tr>
+            <td height="10"></td>
+          </tr>
+          <tr>
+            <td align="center"><table width="560" border="0" cellpadding="0" cellspacing="0" bgcolor="BDD1B8">
+              <tr>
+                <td><table width="560" border="0" cellspacing="1" cellpadding="0">
+
+				  <tr>
+                    <td width="110" height="26" align="right" bgcolor="EDF9ED" class="style2"><strong>* ID&nbsp;</strong></td>
+                    <td align="left" valign="middle" bgcolor="#FFFFFF" class="style2">&nbsp;
+						<input name="id" type="text" size="20" style="ime-mode:disabled" readonly class="form3" value="<?echo $row[id]?>">
+					</td>
+                  </tr>
+				  <tr>
+                    <td height="26" align="right" bgcolor="EDF9ED" class="style2"><strong><strong>* </strong>비밀번호&nbsp;</strong></td>
+                    <td align="left" valign="middle" bgcolor="#FFFFFF" class="style2">&nbsp;
+						<input type="password" name="passwd" type="text" size="12" class="form3" value="<?echo $row[passwd]?>">
+					</td>
+                  </tr>
+                  <tr>
+                    <td height="26" align="right" bgcolor="EDF9ED" class="style2"><strong><strong>* </strong>비밀번호확인&nbsp;</strong></td>
+                    <td align="left" valign="middle" bgcolor="#FFFFFF" class="style2">&nbsp;
+						<input type="password" name="passwd2" type="text" size="12" class="form3">
+					</td>
+                  </tr>
+                  <tr>
+                    <td width="110" height="26" align="right" bgcolor="EDF9ED" class="style2"><strong>* 한글명&nbsp;</strong></td>
+                    <td align="left" valign="middle" bgcolor="#FFFFFF" class="style2">&nbsp;
+						<input type="text" name="name" size="20" style="ime-mode:active" class="form3" value="<?echo $row[name]?>" readonly>
+					</td>
+                  </tr>
+                  <tr>
+                    <td height="26" align="right" bgcolor="EDF9ED" class="style2"><strong><strong>* </strong>주민등록번호&nbsp;</strong></td>
+                    <td align="left" valign="middle" bgcolor="#FFFFFF" class="style2">&nbsp;
+						<input type="text" name="jumin1" size="6" maxlength=6 readonly value="<?echo $row[jumin1]?>" class="form3"> - 
+						<input type="text" name="jumin2" size="7" maxlength=7 readonly value="<?echo $row[jumin2]?>" class="form3">
+                  </tr>
+				  <tr>
+                    <td height="26" align="right" bgcolor="EDF9ED" class="style2"><strong><strong>* </strong>전화번호&nbsp;</strong></td>
+                    <td align="left" valign="middle" bgcolor="#FFFFFF" class="style2">&nbsp;
+						<input type="text" name="tel1" size="4" maxlength=4 onkeyPress="if ((event.keyCode<48) || (event.keyCode>57)) event.returnValue=false;" style="ime-mode:disabled" class=form3 value="<?echo $tel[0]?>"> - 
+						<input type="text" name="tel2" size="4" maxlength=4 onkeyPress="if ((event.keyCode<48) || (event.keyCode>57)) event.returnValue=false;" style="ime-mode:disabled" class=form3 value="<?echo $tel[1]?>"> - 
+						<input type="text" name="tel3" size="4" maxlength=4 onkeyPress="if ((event.keyCode<48) || (event.keyCode>57)) event.returnValue=false;" style="ime-mode:disabled" class=form3 value="<?echo $tel[2]?>">
+					</td>
+                  </tr>
+
+				  <!--
+                  <tr>
+                    <td align="right" bgcolor="EDF9ED" class="style2"><strong><strong>* </strong>생년월일&nbsp;</strong></td>
+                    <td align="left" valign="middle" bgcolor="#FFFFFF" class="style2">&nbsp;<input name="textfield1152" type="text" size="6">
+                      년 
+                        <select name="select2">
+						</select>
+                        월 
+                        <select name="select3">
+                        </select>
+                        일
+                        <select name="select">
+                          <option>양력</option>
+                          <option>음력</option>
+                        </select>                        </td>
+                  </tr>
+				  -->
+
+                  <tr>
+                    <td height="26" align="right" bgcolor="EDF9ED" class="style2"><strong><strong>* </strong>집주소&nbsp;</strong></td>
+                    <td align="left" valign="middle" bgcolor="#FFFFFF" class="style2"><table width="440" border="0" cellspacing="0" cellpadding="0">
+                      <tr>
+                        <td height="22">&nbsp;
+							<input type="text" name="zipcode" size="7" maxlength=7 readonly class="form3" onclick="postOpen()" value="<?echo $row[zipcode]?>">&nbsp;
+							<input type=button value="우편번호검색" onclick="postOpen()" class=button1>
+                      </tr>
+                      <tr>
+                        <td height="22">&nbsp;
+							<input type="text" name="addr1" size="50" maxlength=100 class=form3 value="<?echo $row[addr1]?>">
+						</td>
+                      </tr>
+                      <tr>
+                        <td height="22">&nbsp;
+							<input type="text" name="addr2" size="50" style="ime-mode:active" class=form3 value="<?echo $row[addr2]?>">
+						</td>
+                      </tr>
+                    </table></td>
+                  </tr>
+				  <tr>
+                    <td height="26" align="right" bgcolor="EDF9ED" class="style2"><strong><strong>* </strong>E-mail&nbsp;</strong></td>
+                    <td align="left" valign="middle" bgcolor="#FFFFFF" class="style2">&nbsp;
+						<input type="text" name="email" size="37" style="ime-mode:disabled" class=form3 value="<?echo $row[email]?>"> <br>
+						&nbsp;&nbsp;4EDU의 이메일 서비스를 받으시겠습니까? &nbsp;&nbsp;
+						예<input type="radio" name="mailService" align=absbottom value='1' <?if($row[mailService]=='1'){echo "checked";}?>>
+						아니오<input type="radio" name="mailService" value='0' <?if($row[mailService]=='0'){echo "checked";}?>>
+					</td>
+                  </tr>
+
+
+                  <tr>
+                    <td height="26" align="right" bgcolor="EDF9ED" class="style2"><strong><strong> </strong>휴대폰번호&nbsp;</strong></td>
+                    <td align="left" valign="middle" bgcolor="#FFFFFF" class="style2">&nbsp;
+						<input type="text" name="hp1" size="4" onkeyPress="if ((event.keyCode<48) || (event.keyCode>57)) event.returnValue=false;" style="ime-mode:disabled" class=form3 value="<?echo $hp[0]?>"> - 
+						<input type="text" name="hp2" size="4" onkeyPress="if ((event.keyCode<48) || (event.keyCode>57)) event.returnValue=false;" style="ime-mode:disabled" class=form3 value="<?echo $hp[1]?>"> - 
+						<input type="text" name="hp3" size="4" onkeyPress="if ((event.keyCode<48) || (event.keyCode>57)) event.returnValue=false;" style="ime-mode:disabled" class=form3 value="<?echo $hp[2]?>">
+					</td>
+                  </tr>
+				  
+                  <tr>
+                    <td height="26" align="right" bgcolor="EDF9ED" class="style2"><strong><strong> </strong>소속구분&nbsp;</strong></td>
+                    <td align="left" valign="middle" bgcolor="#FFFFFF" class="style2">&nbsp;
+						<select name="job" size="1" class=mfont style="width:145">
+							<option value="">선 택</option>
+							<?for($i=1;$i<sizeof($_job);$i++){?><option value="<?echo $i?>" <?if($row[job]==$i){echo "selected";}?>><?echo $_job[$i]?></option><?}?>	
+						</select>
+					</td>
+                  </tr>
+				  <!--
+                  <tr>
+                    <td height="26" align="right" bgcolor="EDF9ED" class="style2"><strong><strong>* </strong>추천인E-mail&nbsp;</strong></td>
+                    <td align="left" valign="middle" bgcolor="#FFFFFF" class="style2">&nbsp;<input name="textfield1152222" type="text" size="12"> 
+                      @ 
+                        <input name="textfield1152223" type="text" size="20"></td>
+                  </tr>
+				  -->
+                </table></td>
+              </tr>
+            </table>              </td>
+          </tr>
+          
+          <tr>
+            <td align="center">&nbsp;</td>
+          </tr>
+          <tr>
+            <td align="center">
+				<!--<img src="images/btn_mod.jpg" width="99" height="26">&nbsp;&nbsp;<img src="images/btn_cancle.jpg" width="99" height="26">-->
+				<input type=button value=" 회원 정보 수정 " onclick="memberCheck()" class=button1 style=cursor:hand>&nbsp;&nbsp;
+                <input type=button value="취소" class=button1 onclick="history.go(-1);">
+			</td>
+          </tr>
+          <tr>
+            <td><img src="images/bottom_center.jpg" width="620" height="35"></td>
+          </tr>
+        </table></td>
+      </tr>
+    </table></td>
+  </tr>
+  </form>
+</table>
+<br>
+<?
+	}else{
+		include "main.html";
+	}
+?>

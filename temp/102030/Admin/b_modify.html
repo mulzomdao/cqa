@@ -1,0 +1,345 @@
+<?
+	$category=$_GET['category'];
+	$no=$_GET['no'];
+
+	$select_sql="select * from boardAdmin where no=$no";
+	//echo "$select_sql";
+	$boardAdmin=mysql_query($select_sql);
+	$rows=mysql_fetch_array($boardAdmin);
+
+	$board=$rows[board];
+	$boardName=$rows[boardName];
+	//$level=$rows[level];
+	$skin=$rows[skin];
+	$bgColor=$rows[bgColor];
+	$maxNum=$rows[maxNum];
+	$maxPage=$rows[maxPage];
+	$width=$rows[width];
+	$tail=$rows[tail];
+	$fileYes=$rows[fileYes];
+	$imageYes=$rows[imageYes];
+	$imageYes2=$rows[imageYes2];
+	$imageYes3=$rows[imageYes3];
+	$html=$rows[html];
+	$fileSize=$rows[fileSize];
+	$noFuck=$rows[noFuck];
+	$noScript=$rows[noScript];
+	$noFile=$rows[noFile];
+	$adminId=$rows[adminId];
+	$prodBoard=$rows[prodBoard];
+	$regDate=$rows[regDate];
+
+	$top=$rows[top];
+	$bottom=$rows[bottom];
+	$section=$rows[section];
+	$style=$rows[style];
+	$linkpage=$rows[linkpage];
+	$open=$rows[open];
+?>
+
+<table width=100%>
+	<tr>
+		<td height=30 width=30%><b>게시판 수정</b></td>
+		<td width="*" align=right valign=bottom >
+			
+<?
+	$select_next="select no from boardAdmin where no>$rows[no] order by no limit 1";
+	$select_prev="select no from boardAdmin where no<$rows[no] order by no desc limit 1";
+
+	$next = mysql_query($select_next);
+	$prev = mysql_query($select_prev);
+
+	//echo "select p.prodCode from product p, prodCategory pc where p.prodCode>'$prodCode' and pc.category='$category' limit 1";
+	$next_result = mysql_fetch_array($next);
+	$prev_result = mysql_fetch_array($prev);
+
+	//index.html?main=b_modify.html&no=40&category=05-01-41
+?>		
+
+<?
+	if($prev_result[no]!=""){
+		echo "<a href='index.html?main=b_modify.html&category=$category&no=$prev_result[no]'>이전게시판▼</a>";
+	}else{
+		echo "이전게시판▼";
+	}
+?>
+				&nbsp;&nbsp;<a href='index.html?main=b_list.html<?queryString($QUERY_STRING);?>'>리스트</a>&nbsp;
+<?
+	if($next_result[no]!=""){
+		echo "<a href='index.html?main=b_modify.html&category=$category&no=$next_result[no]'>▲다음게시판</a>";
+	}else{
+		echo "▲다음게시판";
+	}
+?>
+		</td>
+	</tr>
+</table>
+
+<table border=1 width=100% cellpadding=0 cellspacing=0>
+	<tr>
+		<td>
+			<table width=100% cellpadding=0 cellspacing=0 border=0>
+				<form method=post>
+				<input type=hidden name=flag value=modify>
+				<input type=hidden name=category value=<?echo $category?>>
+				<input type=hidden name=no value=<?echo $no?>>
+				<tr>
+					<td width=50% valign=top>
+						<table width=100% cellpadding=1 cellspacing=0 border=0>
+
+							<tr>
+								<td width=40% align=right>게시판 Table명 &nbsp;</td>
+								<td width=60% colspan=3 valign=bottom>
+									<input type=text class=form2 name=board value="<?echo $board?>" readonly>
+								</td>
+							</tr>
+							<tr>
+								<td align=right>게시판 관리자 선택 &nbsp;</td>
+								<td>
+									<select name=adminId class=form2>
+<?
+	$admin_select=mysql_query("select no, id, name from member where level > 2");
+
+	while($admin_object = mysql_fetch_object($admin_select)){
+		if($admin_object->id==$adminId){
+			$selected="selected";
+		}else{
+			$selected="";
+		}
+		echo "<option value='$admin_object->id' $selected>$admin_object->name</option>";
+	}
+?>					
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td align=right>게시판 이름 &nbsp;</td>
+								<td>
+									<input type=text class=form2 name=boardName style="ime-mode:active" value="<?echo $boardName?>">
+								</td>
+							</tr>
+							<tr>
+								<td align=right>쓰기레벨 &nbsp;</td>
+								<td>
+									<input type=text class=form2 name=writeLevel size=2 maxlength=1 value="<?echo $rows[writeLevel];?>">
+								</td>
+							</tr>
+							<tr>
+								<td align=right>읽기레벨 &nbsp;</td>
+								<td>
+									<input type=text class=form2 name=readLevel size=2 maxlength=1 value="<?echo $rows[readLevel];?>">
+								</td>
+							</tr>
+							<tr>
+								<td align=right>게시판스킨 &nbsp;</td>
+								<td>
+									<input type=text class=form2 name=skin value="<?echo $skin?>">
+								</td>
+							</tr>
+							<tr>
+								<td align=right>배경색깔 &nbsp;</td>
+								<td>
+									<input type=text class=form2 name=bgColor value="<?echo $bgColor?>">
+								</td>
+							</tr>
+							<tr>
+								<td align=right>페이지당글수 &nbsp;</td>
+								<td>
+									<input type=text class=form2 name=maxNum size=2 maxlength=2 onkeyPress="if ((event.keyCode<48) || (event.keyCode>57)) event.returnValue=false;" style="ime-mode:disabled" value="<?echo $maxNum?>">
+								</td>
+							</tr>
+							<tr>
+								<td align=right>블록당페이지수 &nbsp;</td>
+								<td>
+									<input type=text class=form2 name=maxPage size=2 maxlength=2 onkeyPress="if ((event.keyCode<48) || (event.keyCode>57)) event.returnValue=false;" style="ime-mode:disabled" value="<?echo $maxPage?>">
+								</td>
+							</tr>
+							<tr>
+								<td align=right>게시판넓이 &nbsp;</td>
+								<td>
+									<input type=text class=form2 name=width size=5 maxlength=4 onkeyPress="if ((event.keyCode<48) || (event.keyCode>57)) event.returnValue=false;" style="ime-mode:disabled" value="<?echo $width?>">
+								</td>
+							</tr>
+							<tr>
+								<td align=right>Top &nbsp;</td>
+								<td>
+									<input type=text class=form2 name=top style="ime-mode:disabled" value="<?echo $top?>"><br>
+									<font color=red>※ 경로 "/boardImg/boardInclude/" </font>
+								</td>
+							</tr>
+							<tr>
+								<td align=right>Bottom &nbsp;</td>
+								<td>
+									<input type=text class=form2 name=bottom style="ime-mode:disabled" value="<?echo $bottom?>"> <br>
+									<font color=red>※ 경로 "/boardImg/boardInclude/" </font>
+								</td>
+							</tr>
+							
+							<tr>
+								<td align=right>게시판종류 &nbsp;</td>
+								<td>
+									<select name=style class=form2>
+										<option value="1" <?if($style=="1"){echo "selected";}?>>일반게시판</option>
+										<option value="2" <?if($style=="2"){echo "selected";}?>>방명록</option>
+										<option value="3" <?if($style=="3"){echo "selected";}?>>갤러리</option>
+										<option value="4" <?if($style=="4"){echo "selected";}?>>공지사항</option>
+										<!--<option value="5" <?if($style=="5"){echo "selected";}?>>제품게시판</option>-->
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td align=right>업로드 제한용량 &nbsp;</td>
+								<td>
+									<input type=text class=form2 name=fileSize size=1 maxlength=1 onkeyPress="if ((event.keyCode<48) || (event.keyCode>57)) event.returnValue=false;" style="ime-mode:disabled" value="<?echo $fileSize?>">M
+								</td>
+							</tr>
+							<tr>
+								<td align=right>보기페이지하단 &nbsp;</td>
+								<td>
+									<select name=showTail class=form2>
+										<option value="0" <?if($rows[showTail]=="0"){echo "selected";}?>>없음</option>
+										<option value="1" <?if($rows[showTail]=="1"){echo "selected";}?>>관련글</option>
+										<option value="2" <?if($rows[showTail]=="2"){echo "selected";}?>>리스트</option>
+									</select>
+								</td>
+							</tr>
+
+						</table>
+					</td>
+					<td width=50% valign=top>
+						<table width=100% cellpadding=1 cellspacing=0 border=0>
+							<tr>
+								<td align=right width=40%>꼬리글사용여부 &nbsp;</td>
+								<td width=60%>
+									<input type=checkbox name=tail value=1 <?if($tail==1){echo "checked";}?>>
+								</td>
+							</tr>
+							<tr>
+								<td align=right>파일업로드 &nbsp;</td>
+								<td>
+									<input type=checkbox name=fileYes value=1 <?if($fileYes==1){echo "checked";}?>>
+								</td>
+							</tr>
+							<tr>
+								<td align=right>파일업로드2 &nbsp;</td>
+								<td>
+									<input type=checkbox name=fileYes2 value=1 <?if($rows[fileYes2]==1){echo "checked";}?>>
+								</td>
+							</tr>
+							<tr>
+								<td align=right>파일업로드3 &nbsp;</td>
+								<td>
+									<input type=checkbox name=fileYes3 value=1 <?if($rows[fileYes3]==1){echo "checked";}?>>
+								</td>
+							</tr>
+							<tr>
+								<td align=right>이미지업로드1 &nbsp;</td>
+								<td>
+									<input type=checkbox name=imageYes value=1 <?if($imageYes==1){echo "checked";}?>>
+								</td>
+							</tr>
+							<tr>
+								<td align=right>이미지업로드2 &nbsp;</td>
+								<td>
+									<input type=checkbox name=imageYes2 value=1 <?if($imageYes2==1){echo "checked";}?>>
+								</td>
+							</tr>
+							<tr>
+								<td align=right>이미지업로드3 &nbsp;</td>
+								<td>
+									<input type=checkbox name=imageYes3 value=1 <?if($imageYes3==1){echo "checked";}?>>
+								</td>
+							</tr>
+			<!--
+							<tr>
+								<td align=right>제품게시판여부 &nbsp;</td>
+								<td>
+									<input type=checkbox name=prodBoard value=1>
+								</td>
+							</tr>
+			-->
+							<tr>
+								<td align=right>HTML &nbsp;</td>
+								<td>
+									<input type=checkbox name=html value=1 <?if($html==1){echo "checked";}?>>
+								</td>
+							</tr>
+							
+							<tr>
+								<td align=right>Link Page &nbsp;</td>
+								<td>
+									<input type=checkbox name=linkpage value=1 <?if($linkpage==1){echo "checked";}?>>
+								</td>
+							</tr>
+							<tr>
+								<td align=right>비밀글 &nbsp;</td>
+								<td>
+									<input type=checkbox name=secret value=1 <?if($rows[secret]==1){echo "checked";}?>>
+								</td>
+							</tr>
+							<tr>
+								<td align=right>추천 &nbsp;</td>
+								<td>
+									<input type=checkbox name=o value=1 <?if($rows[o]==1){echo "checked";}?>>
+								</td>
+							</tr>
+							<tr>
+								<td align=right>반대 &nbsp;</td>
+								<td>
+									<input type=checkbox name=x value=1 <?if($rows[x]==1){echo "checked";}?>>
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+
+				<tr>
+					<td colspan=2 width=100%>
+						<table width=100% cellpadding=1 cellspacing=0 border=0>
+							<tr>
+								<td align=right>분류 &nbsp;</td>
+								<td>
+									<input type=text class=form2 name=section size=100 value="<?echo $section?>" style="width:620"><br>
+									('|' 로 구분. 대소문자구별안함. 필요없을시 공백)
+								</td>
+							</tr>
+							<tr>
+								<td align=right width=20%>불량단어색출 &nbsp;</td>
+								<td width=80%>
+									<textarea  name=noFuck cols=100 rows=3 class=form2><?echo $noFuck?></textarea>
+									<br>('|' 로 구분. 대소문자구별안함. 필요없을시 공백)
+								</td>
+							</tr>
+							<tr>
+								<td align=right>특정스크립트막기 &nbsp;</td>
+								<td>
+									<textarea  name=noScript cols=100 rows=3 class=form2><?echo $noScript?></textarea>
+									<br>('|' 로 구분. 대소문자구별안함. 필요없을시 공백)
+								</td>
+							</tr>
+							<tr>
+								<td align=right>업로드확장자막기 &nbsp;</td>
+								<td>
+									<textarea  name=noFile cols=100 rows=3 class=form2><?echo $noFile?></textarea>
+									<br>('|' 로 구분. 대소문자구별안함. 필요없을시 공백)
+								</td>
+							</tr>
+							<tr height=30>
+								<td colspan=4 align=center>
+									<input type=button class=button class=form2 onclick="boardAdd(this.form);" value="  확인  ">
+									<input type=reset value="  취소  " class=button>
+								</td>
+							</tr>
+
+						</table>
+					</td>
+				</tr>
+				
+				
+				
+				</form>
+			</table>
+		</td>
+	</tr>
+</table>
+<br>

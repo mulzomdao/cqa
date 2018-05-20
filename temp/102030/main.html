@@ -1,0 +1,228 @@
+<table width="820" border="0" cellspacing="0" cellpadding="0">
+  <tr> 
+    <td width="20" align="center" valign="top">&nbsp;</td>
+    <td valign="top">
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr> 
+          <td height="3" colspan="3"></td>
+        </tr>
+        <tr align="center"> 
+          <td colspan="3"><object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,29,0" width="798" height="141">
+            <param name="movie" value="images/banner.swf">
+            <param name="quality" value="high">
+            <embed src="images/banner.swf" quality="high" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" width="798" height="141"></embed>
+          </object></td>
+        </tr>
+        <tr> 
+          <td height="8" colspan="3"></td>
+        </tr>
+        <tr> 
+          <td colspan="3"><a href="index.html?main=boardList.html&board=b_commu01"><img src="images/title_chinanews.gif" width="800" height="34" border=0></a></td>
+        </tr>
+        <tr> 
+          <td colspan="3"> 
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr> 
+                <td align="center" valign="middle" width=330><img src="images/image1.jpg" width="217" height="95"></td>
+				<td width="*" valign=top>
+					<table width=100% cellpadding=0 cellspacing=0 border=0>
+
+<?
+	/*************************중국정보**************************/
+	$select1="select no, title, regDate from b_commu01 order by no desc limit 4";
+	$result1=mysql_query($select1);
+	$noticeNo=0;
+	while($rows1=mysql_fetch_array($result1)){
+		$title1=short_str(stripslashes($rows1[title]), 34);
+		
+?>
+						<tr>
+							<td width="452" height="28"><img src="images/arrow.jpg" width="14" height="5"><a href="index.html?main=boardView.html&board=b_commu01&boardNo=<?echo $rows1[no]?>"><?echo $title1?></a> <?if($rows1[regDate]>$_yesterDay){?><img src="images/icon_new.jpg" width="30" height="11"><?}?></td>
+						</tr>
+						<tr> 
+							<td background="images/spotline.jpg" height="1"></td>
+						</tr>
+<?}?>
+					</table>
+
+				</td>
+
+            </table>
+          </td>
+        </tr>
+        <tr> 
+          <td height="12" colspan="3"></td>
+        </tr>
+        <tr> 
+          <td valign=top> 
+            <table width="393" border="0" cellspacing="0" cellpadding="0">
+              <tr> 
+                <td height="42" valign="top"><a href="index.html?main=boardList.html&board=b_jung01"><img src="images/tit_life.jpg" width="393" height="39" border=0></a></td>
+              </tr>
+
+<?
+	/*************************생활중국어**************************/
+	$select="select readLevel from boardAdmin where board='b_jung01' ";
+	$result=mysql_query($select);
+	$row=mysql_fetch_array($result);
+
+	$select1="select no, title, regDate from b_jung01 order by no desc limit 8";
+	$result1=mysql_query($select1);
+	while($rows1=mysql_fetch_array($result1)){
+		$title1=short_str(stripslashes($rows1[title]), 34);
+		
+?>
+              <tr> 
+                <td align="right" colspan="3"> 
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr> 
+                      <td width="20" align="right"><img src="images/arrow.jpg" width="14" height="5"></td>
+                      <td> 
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                          <tr> 
+                            <td width="12">&nbsp;</td>
+
+							<?if($_SESSION[s_level]>=$row[readLevel] || $row[readLevel]==0){?>
+                            <td align="left"><a href="index.html?main=boardView.html&board=b_jung01&boardNo=<?echo $rows1[no]?>"><?echo $title1?></a><?if($rows1[regDate]>$_yesterDay){?><img src="images/icon_new.jpg" width="30" height="11"><?}?></td>
+							<?}else{?>
+							<td align="left"><a href="javascript:alert('<?echo $_memberLevel[$row[readLevel]]?> 이상 읽을 수 있습니다.');"><?echo $title1?></a><img src="images/icon_new.jpg" width="30" height="11"></td>
+							<?}?>
+                          </tr>
+                        </table>
+                      </td>
+                      <td width="68">&nbsp;</td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr> 
+                <td background="images/spotline.jpg" height="1"></td>
+              </tr>
+
+<?}?>
+             
+            </table>
+          </td>
+          <td width="15">&nbsp;</td>
+          <td valign=top> 
+            <table width="393" border="0" cellspacing="0" cellpadding="0">
+              <tr> 
+                <td height="42" valign="top"><a href="index.html?main=boardList.html&board=b_jung02"><img src="images/tit_trade.jpg" width="393" height="39" border=0></a></td>
+              </tr>
+<?
+	/*************************무역중국어**************************/
+	$select1="select no, title, regDate from b_jung02 order by no desc limit 8";
+	$result1=mysql_query($select1);
+	$noticeNo=0;
+	while($rows1=mysql_fetch_array($result1)){
+		$title1=short_str(stripslashes($rows1[title]), 34);
+?>
+              <tr> 
+                <td align="right" colspan="3"> 
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr> 
+                      <td width="20" align="right"><img src="images/arrow.jpg" width="14" height="5"></td>
+                      <td> 
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                          <tr> 
+                            <td width="12">&nbsp;</td>
+                            <td align="left"><a href="index.html?main=boardView.html&board=b_jung02&boardNo=<?echo $rows1[no]?>"><?echo $title1?></a><?if($rows1[regDate]>$_yesterDay){?><img src="images/icon_new.jpg" width="30" height="11"><?}?></td>
+                          </tr>
+                        </table>
+                      </td>
+                      <td width="68">&nbsp;</td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr> 
+                <td background="images/spotline.jpg" height="1"></td>
+              </tr>
+<?}?>
+            </table>
+          </td>
+        </tr>
+        <tr> 
+          <td colspan="3">&nbsp;</td>
+        </tr>
+        <tr> 
+          <td valign=top>
+            <table width="393" border="0" cellspacing="0" cellpadding="0">
+              <tr> 
+                <td height="42" valign="top"><a href="index.html?main=boardList.html&board=b_jung03"><img src="images/tit_voca.jpg" width="393" height="39" border=0></a></td>
+              </tr>
+<?
+	/*************************단어**************************/
+	$select1="select no, title, regDate from b_jung03 order by no desc limit 8";
+	$result1=mysql_query($select1);
+	$noticeNo=0;
+	while($rows1=mysql_fetch_array($result1)){
+		$title1=short_str(stripslashes($rows1[title]), 34);
+?>
+              <tr> 
+                <td align="right" colspan="3"> 
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr> 
+                      <td width="20" align="right"><img src="images/arrow.jpg" width="14" height="5"></td>
+                      <td> 
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                          <tr> 
+                            <td width="12">&nbsp;</td>
+                            <td align="left"><a href="index.html?main=boardView.html&board=b_jung03&boardNo=<?echo $rows1[no]?>"><?echo $title1?></a><?if($rows1[regDate]>$_yesterDay){?><img src="images/icon_new.jpg" width="30" height="11"><?}?></td>
+                          </tr>
+                        </table>
+                      </td>
+                      <td width="68">&nbsp;</td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr> 
+                <td background="images/spotline.jpg" height="1"></td>
+              </tr>
+<?}?>
+            </table>
+          </td>
+          <td>&nbsp;</td>
+          <td>
+            <table width="393" border="0" cellspacing="0" cellpadding="0">
+              <tr> 
+                <td height="42" valign="top"><a href="index.html?main=boardList.html&board=b_jung04"><img src="images/tit_gram.jpg" width="392" height="39" border=0></a></td>
+              </tr>
+<?
+	/*************************문법**************************/
+	$select1="select no, title, regDate from b_jung04 order by no desc limit 8";
+	$result1=mysql_query($select1);
+	$noticeNo=0;
+	while($rows1=mysql_fetch_array($result1)){
+		$title1=short_str(stripslashes($rows1[title]), 34);
+?>
+              <tr> 
+                <td align="right" colspan="3"> 
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr> 
+                      <td width="20" align="right"><img src="images/arrow.jpg" width="14" height="5"></td>
+                      <td> 
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                          <tr> 
+                            <td width="12">&nbsp;</td>
+                            <td align="left"><a href="index.html?main=boardView.html&board=b_jung04&boardNo=<?echo $rows1[no]?>"><?echo $title1?></a><?if($rows1[regDate]>$_yesterDay){?><img src="images/icon_new.jpg" width="30" height="11"><?}?></td>
+                          </tr>
+                        </table>
+                      </td>
+                      <td width="68">&nbsp;</td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr> 
+                <td background="images/spotline.jpg" height="1"></td>
+              </tr>
+<?}?>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>

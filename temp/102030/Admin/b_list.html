@@ -1,0 +1,66 @@
+<?
+	$select_sql="select b.no, b.board, b.boardName, b.adminId, b.regDate, b.style, b.readLevel, b.writeLevel, m.name from boardAdmin b, member m where b.adminId=m.id order by b.board asc";
+	$select_query=mysql_query($select_sql);
+
+	$rows=mysql_num_rows($select_query);
+?>
+<table>
+	<tr>
+		<td   height=30><b>게시판 리스트</b></td>
+	</tr>
+</table>
+<table border=1 width=100% cellpadding=0 cellspacing=0>
+	<tr>
+		<td>
+			<table width=100% cellpadding=0 cellspacing=1>
+				<tr height=20 align=center bgcolor=#eeeeee>
+					<td ><b>번호</b></td>
+					<td ><b>테이블명</b></td>
+					<td ><b>게시판이름</b></td>
+					<td ><b>게시판종류</b></td>
+					<td ><b>게시판관리자</b></td>
+					<td ><b>읽기</b></td>
+					<td ><b>쓰기</b></td>
+					<td ><b>등록일</b></td>
+					<td width=40><b>보기</b></td>
+					<td width=60><b>내용삭제</b></td>
+					<td width=40><b>삭제</b></td>
+				</tr>
+<?
+	while($boardAdmin_object=mysql_fetch_object($select_query)){
+		$no=$boardAdmin_object->no;
+		$board=$boardAdmin_object->board;
+		$boardName=$boardAdmin_object->boardName;
+		$adminId=$boardAdmin_object->adminId;
+		$regDate=$boardAdmin_object->regDate;
+		$name=$boardAdmin_object->name;
+?>
+				<tr align=center height=19 align=center onmouseover="this.style.backgroundColor='#f7f7f7'" onmouseout="this.style.backgroundColor=''">
+					<td><?echo $rows?></td>
+					<td><?echo $board?></td>
+					<td><a href="index.html?main=b_modify.html&no=<?echo $no;?>&category=<?echo $category;?>"><?echo $boardName?></a></td>
+					<td><?echo $_boardStyle[$boardAdmin_object->style]?></td>
+					<td><?echo $name?>(<?echo $adminId?>)</td>
+					<td><?echo $boardAdmin_object->readLevel?></td>
+					<td><?echo $boardAdmin_object->writeLevel?></td>
+					<td><?echo substr($regDate, 0, 10)?></td>
+					<td>
+						<input type=button value="보기" onclick="window.open('../index.html?main=boardList.html&board=<?echo $board?>', '_board') " class=button3>
+					</td>
+					<td>
+						<input class=button3 type=button name=del value="DEL" onclick="javascript:var bool=confirm('내용을 삭제하시겠습니까 ?'); if(bool) location.href='b_edit.html?flag=mainDel&no=<?echo $no?>&board=<?echo $board?>';">
+					</td>
+					<td>
+						<!--<a href="javascript:var bool=confirm('정말 삭제하시겠습니까 ?'); if(bool) location.href='b_edit.html?flag=del&no=<?echo $no?>&board=<?echo $board?>&category=<?echo $category?>';">삭제</a>-->
+						<input class=button3 type=button name=mainDel value="DEL" onclick="javascript:var bool=confirm('삭제하시겠습니까 ?'); if(bool) location.href='b_edit.html?flag=del&no=<?echo $no?>&board=<?echo $board?>';">
+					</td>
+				</tr>
+<?
+		$rows=$rows-1;
+	}
+?>
+			</table>
+		</td>
+	</tr>
+</table>
+<br>

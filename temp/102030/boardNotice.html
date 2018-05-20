@@ -1,0 +1,215 @@
+<?
+	include "Admin/connect.html";
+	include "Admin/function.html";
+	include "Admin/variable.html";
+	include "boardFunction.html";
+
+	if($_POST[board]){$board=$_POST[board];}elseif($_GET[board]){$board=$_GET[board];}
+	if($_POST[boardNo]){$boardNo=$_POST[boardNo];}elseif($_GET[boardNo]){$boardNo=$_GET[boardNo];}
+
+	board_exist($board, $db_name);
+	if(!$board_exist) echo "<script>alert('관련테이블이 없습니다.');history.go(-1);</script>";
+	
+	board_option($board);
+
+	/*
+	if($level>$_SESSOIN[s_level] && $level!=0){
+		echo "<script>alert('님께서는 사용할수 없는 회원등급입니다.');history.go(-1);</script>";
+	}
+	*/
+
+	$update="update $board set count=count+1 where no=$boardNo";
+	//echo $update;
+	@mysql_query($update);
+
+	$boardMain=$board."_main";
+
+	$select="select b.no, b.id, b.name, b.email, b.title, b.html, b.regDate, b.count, b.sameNo, b.file, b.fileSize, b.userImage, b.userImage2, b.userImage3, b.imageSize, b.fileDown, b.ip, b.o, b.x, b.section, bm.main from $board b, $boardMain bm where bm.boardNo=$boardNo and b.no=$boardNo limit 1";
+	//echo $select;
+	$result=@mysql_query($select);
+	$row=@mysql_fetch_array($result);
+
+	$title=short_str($row[title], 90);
+
+	//no, b.id, b.name, b.passwd, b.email, b.title, b.html, b.regDate, b.count, b.depth, b.sameNo, b.file, b.filesize, b.userimage, b.imagesize, b.filedown, b.ip, b.prodNo, b.no, b.boardNo, b.main 
+	if(is_file("boardImg/boardInclude/$boardTop")){
+		include "boardImg/boardInclude/$boardTop";
+	}
+	$width=$width-40;
+?>
+<body leftmargin=0 topmargin=0>
+<link href="include/main.css" rel="stylesheet" type="text/css">
+<script LANGUAGE="JavaScript1.2" SRC="javascript.js"></script>
+<script LANGUAGE="JavaScript1.2" SRC="boardScript.js"></script>
+<table width="<?echo $width?>" cellspacing=0 cellpadding=0 align=center>
+	<tr>
+		<td align=center valign=top>
+			<table width="<?echo $width?>" cellspacing=0 cellpadding=0 align=center>
+				<tr height=40>
+					<td>
+						<img src="boardImg/<?echo $skin?>/icon01.gif" border="0" align=absmiddle> 
+                        <font color="#666666"><b><?echo $boardName?></b>
+					</td>
+	
+				</tr>
+			</table>
+
+			<table width="<?echo $width?>" cellspacing=0 cellpadding=0 align=center>
+				<tr bgcolor="#444444" height="1"><td colspan=2></td></tr>
+
+				<tr bgcolor="#eeeeee" height="5"><td colspan=2></td></tr>
+				<tr bgcolor="#eeeeee" align=center>
+					<td colspan=2 width=100%><b><?echo stripslashes($title);?></b></td>
+				</tr>
+				<tr bgcolor="#eeeeee" height="3"><td colspan=2></td></tr>
+				<tr><td height=2></td></tr>
+
+				<tr height=16>
+					<td width=50%>&nbsp;등록일 : <?echo $row[regDate];?></td>
+					<!--<td align=right width=50%>ip : <?echo $row[ip];?>&nbsp;</td>-->
+				</tr>
+
+				<tr height=16>
+					<td>&nbsp;작성자 : <?echo $row[name]?> <?if($row[email]!="") echo "(<a href='mailto:".$row[email]."'>".$row[email]."</a>)";?></td>
+					<td align=right>조회수 : <?echo $row[count]?>&nbsp;</td>
+				</tr>
+				<tr>
+<?
+	if($_SESSION[s_level]>7){
+	$align="right";
+?>
+					<td>&nbsp;아이디 : <?if($row[id]!=""){echo $row[id];}else{echo "guest";}?></td>
+<?}?>
+<?if($row[file]){?>
+					<td align=<?echo $align?>>&nbsp;파일 : <a href="./fileUpload/<?echo $row[file]?>" target=blank><?echo $row[file]?></a></td>
+<?}?>										
+				</tr>
+<?if($oo=="1"){?>
+				<tr height=16>
+					<td>&nbsp;추천 : <?echo $row[o]?></td>
+					<td align=right>반대 : <?echo $row[x]?>&nbsp;</td>
+				</tr>
+<?}?>
+
+				<tr bgcolor="#CCCCCC"><td height=1 colspan=2></td></tr>
+				<tr>
+					<td align=center width=100% colspan=2>
+						<table cellspacing=10 width=100% height=100>
+<?
+	if($row[userImage]){
+		
+		$imgSize1 = getimagesize("./imgUpload/$row[userImage]");
+		//echo $imgSize1[0];
+
+		if($imgSize1[0]>($width-40)){
+			$imgWidth=($width-40);
+		}else{
+			$imgWidth=$imgSize1[0];
+		}
+?>		
+							<tr>
+								<td align=center>
+									<a href="javascript:void(window.open('boardImg.html?img_name=<?echo $row[userImage]?>','pic_pop','width=<?echo $imgSize1[0]?>, height=<?echo $imgSize1[1]?>, scrollbars=no'))"><img src="./imgUpload/<?echo $row[userImage]?>" width="<?echo $imgWidth?>" border=0></a>
+								</td>
+							</tr>
+<?
+	}
+?>
+<?
+	if($row[userImage2]){
+		
+		$imgSize1 = getimagesize("./imgUpload2/$row[userImage2]");
+
+		//echo $imgSize1[0];
+
+		if($imgSize1[0]>($width-40)){
+			$imgWidth=($width-40);
+		}else{
+			$imgWidth=$imgSize1[0];
+		}
+?>		
+							<tr>
+								<td align=center>
+									<a href="javascript:void(window.open('boardImg.html?img_name2=<?echo $row[userImage2]?>','pic_pop','width=<?echo $imgSize1[0]?>, height=<?echo $imgSize1[1]?>, scrollbars=no'))"><img src="./imgUpload2/<?echo $row[userImage2]?>" width="<?echo $imgWidth?>" border=0></a>
+								</td>
+							</tr>
+<?
+	}
+?>
+<?
+	if($row[userImage3]){
+		
+		$imgSize1 = getimagesize("./imgUpload3/$row[userImage3]");
+
+		//echo $imgSize1[0];
+
+		if($imgSize1[0]>($width-40)){
+			$imgWidth=($width-40);
+		}else{
+			$imgWidth=$imgSize1[0];
+		}
+?>		
+							<tr>
+								<td align=center>
+									<a href="javascript:void(window.open('boardImg.html?img_name3=<?echo $row[userImage3]?>','pic_pop','width=<?echo $imgSize1[0]?>, height=<?echo $imgSize1[1]?>, scrollbars=no'))"><img src="./imgUpload3/<?echo $row[userImage3]?>" width="<?echo $imgWidth?>" border=0></a>
+								</td>
+							</tr>
+<?
+	}
+
+	if($row[html]=="1"){
+		$boardMain2=$row[main];
+		$boardMain2=stripslashes($boardMain2);
+		
+		//$boardMain2=nl2br($boardMain2);
+		//$boardMain2=str_replace("><br />", ">", $boardMain2);
+		
+	}else{
+		$boardMain2=stripslashes($row[main]);
+		$boardMain2=htmlspecialchars($boardMain2);
+		//$boardMain2=autoLink($boardMain2);
+		$boardMain2=nl2br($boardMain2);
+	}
+?>
+							<tr>
+								<td width=100% valign=top><?echo $boardMain2?></td>
+							</tr>
+
+						</table>
+					</td>
+				</tr>
+
+<?
+	if($oo=="1"){
+		$ip=getenv("REMOTE_ADDR");
+		//$_SESSION[s_ox]=$ip.$_GET[board].$_GET[boardNo];
+?>
+				<tr>
+					<td align=center colspan=2 height=25>
+<?
+		if($_SESSION[s_ox]==$ip.$board.$boardNo){
+?>
+						<a href="javascript:alert('이미 투표 하셨습니다.');">추천</a>
+						<?if($xx=="1"){?>&nbsp;<a href="javascript:alert('이미 투표 하셨습니다.');">반대</a><?}?>
+<?
+		}else{
+?>
+						<a href="javascript:var bool=confirm('추천 하시겠습니까 ?'); if(bool) location.href='boardEdit.html?main=<?echo $main?>&category=<?echo $category?>&flag=oo&board=<?echo $board?>&boardNo=<?echo $boardNo?>';">추천</a>
+						<?if($xx=="1"){?>&nbsp;<a href="javascript:var bool=confirm('반대 하시겠습니까 ?'); if(bool) location.href='boardEdit.html?main=<?echo $main?>&category=<?echo $category?>&flag=xx&board=<?echo $board?>&boardNo=<?echo $boardNo?>';">반대</a><?}?>
+<?
+		}							
+?>
+					</td>
+				</tr>
+<?
+	}	
+?>
+
+				<tr bgcolor="#CCCCCC"><td height=1 colspan=2></td></tr>
+			</table>
+
+		</td>
+	</tr>
+</table>
+
+                                                                                                                                                                                                                              </body>

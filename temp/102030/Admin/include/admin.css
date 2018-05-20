@@ -1,0 +1,23 @@
+td {font-size:9pt}
+
+body { font-family : "µ¸¿ò", ±¼¸², Verdana, Helvetica;}
+.lfont	 {font-family: "µ¸¿ò"; font-size: 11pt;}
+.sfont {font-family: "µ¸¿ò"; font-size: 8pt;}
+.ksmanse {font-family: "µ¸¿ò"; font-size: 8pt;}
+.mfont	 {font-family: "µ¸¿ò"; font-size: 10pt;}
+.cont	 {font-family: "µ¸¿ò"; font-family : "µ¸¿ò", ±¼¸², Verdana, Helvetica; font-size: 9pt; line-height: 12pt; }
+.input {font-family: "µ¸¿ò"; font-size: 9pt; }
+.white {font-family: "µ¸¿ò"; font-size: 9pt; color:#ffffff}
+
+A:link, A:active, A:visited {font-family : "µ¸¿ò", ±¼¸², Verdana, Helvetica; font-size: 9pt; color: #333399; text-decoration: none; }
+A:hover {font-size: 9pt;	color:#009AFF; text-decoration: none;}
+
+.noborder {font-family: "µ¸¿ò"; BORDER-BOTTOM: 0px solid #444444; BORDER-LEFT: 0px solid #444444; BORDER-RIGHT: 0px solid #444444; BORDER-TOP: 0px solid #444444}
+
+.form1  {font-family: "µ¸¿ò"; FONT-SIZE: 10pt; Background: #FFFFFF; BORDER-BOTTOM: #000000 1px solid; BORDER-LEFT: #000000 1px solid; BORDER-RIGHT: #000000 1px solid; BORDER-TOP: #000000 1px solid;}
+.form2  {font-family: "µ¸¿ò"; FONT-SIZE: 9pt; Background: #FFFFFF; BORDER-BOTTOM: #000000 1px solid; BORDER-LEFT: #000000 1px solid; BORDER-RIGHT: #000000 1px solid; BORDER-TOP: #000000 1px solid;}
+
+.button {font-family: "µ¸¿ò"; font-size: 9pt; color: #000000; background-color: #dddddd; border: 1px #000000 solid; height: 20px; cursor:hand}
+.button1 {font-family: "µ¸¿ò"; font-size: 9pt; color: #ffffff; background-color: #888888; border: 1px #000000 solid; height: 20px; cursor:hand}
+.sfont2 {font-family: "µ¸¿ò"; font-size: 9pt; color: #ffffff; background-color: #888888; border: 1px #000000 solid; height: 18px; cursor:hand}
+.button3 {font-family: "µ¸¿ò"; font-size: 8pt; color: #000000; background-color: #dddddd; border: 1px #000000 solid; height: 18px; cursor:hand}

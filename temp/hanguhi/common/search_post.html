@@ -1,0 +1,140 @@
+<?
+	session_start();
+	include "../inc/connect.html";
+	include "../inc/function.html";
+	include "../inc/variable.html";
+	//include "../inc/session.html";
+
+	/*
+	if($_SESSION[user_level]<20){
+		alert("권한이 없습니다.");
+	}
+	*/
+
+	if($_GET[dong] != ""){
+
+		$select = "select * from np_zipcode where dong like '%$_GET[dong]%'  order by 1 asc";
+
+		//echo $select;
+		$result=@mysql_query($select);
+		$total = mysql_num_rows($result);
+	}
+
+?>
+
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+	<title>NetPlus</title>
+	<link href="/css/style2.css" rel="stylesheet" type="text/css">
+	<script language="javascript" src="/js/script.js"></script>
+</head>
+<script type="text/JavaScript">
+<!--
+	function insert(in1,in2)
+	{
+		opener.document.<?echo $_GET[form_nm]?>.<?echo $_GET[zipcode_nm]?>.value = in1;
+		opener.document.<?echo $_GET[form_nm]?>.<?echo $_GET[addr1_nm]?>.value = in2;
+		opener.document.<?echo $_GET[form_nm]?>.<?echo $_GET[addr2_nm]?>.focus();
+		self.close();
+	}
+
+	function check_str(){
+		if(post_form.dong.value==""){
+			alert("동성명을 적어주세요");
+			post_form.dong.focus();
+		}else{
+			post_form.submit();
+		}
+	}
+
+//-->
+</script>
+
+<BODY BGCOLOR=#FFFFFF LEFTMARGIN=0 TOPMARGIN=0 MARGINWIDTH=0 MARGINHEIGHT=0 height=100% align="left" onload="post_form.dong.focus()">
+
+<table width="600" border="0" cellpadding="0" cellspacing="0" align=center align=center>
+	<tr>
+		<td width="600" valign="bottom" class="tlt1" height="30"><img src="/images/icon02.gif">
+			<b>우편번호 찾기</b>
+		</td>
+	</tr>
+</table>
+
+<table width="600" border="1" cellpadding="2" cellspacing="0" bordercolor="#CCCCCC" bgcolor="#ffffff" align=center>
+
+<form action="search_post.html" method=get name=post_form>
+
+<input type=hidden name=form_nm value=<?echo $_GET[form_nm]?>>
+<input type=hidden name=zipcode_nm value=<?echo $_GET[zipcode_nm]?>>
+<input type=hidden name=addr1_nm value=<?echo $_GET[addr1_nm]?>>
+<input type=hidden name=addr2_nm value=<?echo $_GET[addr2_nm]?>>
+
+	<tr>
+		<td>
+			<table border=1 cellpadding=1 cellspacing=0 width=100% style="border-collapse:collapse" bordercolor=#CCCCCC>
+				<tr>
+					<td width="122" class="bold">동성명</td>
+					<td width="*" class="center">
+						<input type="text" name="dong" size="15" value="<?echo $_GET[dong]?>" onFocus="this.value=''" style="width:463; ime-mode:active" onKeyDown="if(event.keyCode==13){check_str();}">
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+
+</form>
+</table>
+
+<table width="600" border="0" bordercolor="DDECFC" cellpadding=0 cellspacing=0 align=center>
+	<tr>
+		<td align="right" height=27>
+			<img src="/images/bt_inquiry.gif"  value="조회" style="cursor:hand" onclick="check_str();">
+			<img src="/images/bt_close.gif" border=0 onclick="self.close();" style="cursor:hand">
+		</td>
+	</tr>
+</table>
+
+<table width="600" border="1" cellpadding="2" cellspacing="0" bordercolor="#CCCCCC" bgcolor="#ffffff" align=center>
+	<tr>
+		<td>
+			<div id="bottomright" style="position: RELATIVE; z-index: 1; overflow:scroll; overflow-x:hidden; width: 593; height:222px; left: 0px; top: 0px; visibility: visible;" align="left">
+			<table border=1 cellpadding=1 cellspacing=0 width=100% style="border-collapse:collapse" bordercolor=#CCCCCC>
+				<tr height=20>
+					<td width="40" class="bold">번호</td>
+					<td width="80" class="bold">우편번호</td>
+					<td width="*" class="bold">주소</td>
+				</tr>
+
+<?
+	if($total>0){
+		$num = $total;
+
+		while($rows = @mysql_fetch_array($result)){
+			$in2 = "$rows[sido] $rows[gugun] $rows[dong] $rows[bunji]";
+
+?>
+				<tr align=center height=20 style="vertical-align:bottom;">
+					<td class="center"><?echo $num?></td>
+					<td class="center"><?echo $rows[zipcode]?></td>
+					<td class="left"><a href="javascript:insert('<? echo $rows[zipcode]; ?>','<? echo $in2; ?>');"><?echo $in2?></td>
+				</tr>
+
+<?
+			$num--;
+		}
+	}else{
+		echo "<tr><td colspan=20 align=center height=20 valign=bottom>검색 내용이 없습니다.</td></tr>";
+	}
+?>
+			</table>
+			<div>
+		</td>
+	</tr>
+</table>
+
+
+
+
+</body>
+</html>

@@ -1,9 +1,46 @@
-<!--
-*
-*  INSPINIA - Responsive Admin Theme
-*  version 2.7.1
-*
--->
+<?
+    session_start();
+    include "lib/session.php";
+    include "lib/connect.php";
+    include "lib/variable.php";
+    include "lib/function.php";
+
+    if ($_GET[board_id] != "") {
+        $filter .= "and board_id like '%$_GET[board_id]%'";
+    }
+    if ($_GET[board_name] != "") {
+        $filter .= "and board_name like '%$_GET[board_name]%'";
+    }
+    if ($_GET[manager_id] != "") {
+        $filter .= "and manager_id like '%$_GET[manager_id]%'";
+    }
+    if ($_GET[reg_id] != "") {
+        $filter .= "and reg_id like '%$_GET[reg_id]%'";
+    }
+
+    $query = "
+        select count(*) total 
+          from cqa_board_manager
+         where use_flag = 'Y' $filter
+    ";
+	$result = mysqli_query($connect, $query);
+    $row = mysqli_fetch_array($result);
+    $total = $row['total'];
+
+    $query = "
+        select board_id
+             , board_name
+             , manager_id
+             , board_explain
+             , use_flag
+             , reg_id
+             , date_format(a.reg_date, '%Y-%m-%d') reg_date 
+          from cqa_board_manager a
+         where use_flag = 'Y' $filter
+         order by reg_date desc
+    ";    
+    $result = mysqli_query($connect, $query);
+?>
 
 <!DOCTYPE html>
 <html>
@@ -48,45 +85,50 @@
                     </div>
                     <div class="ibox-content" style="padding: 15px">
                         <div class="row">
-                            <div class="col-sm-3" style="padding-left: 15px; padding-right: 5px">
-                                <div class="form-group">
-                                    <div class="input-group"><input type="text" class="form-control input-sm" placeholder="게시판ID">
-                                        <span class="input-group-btn">
-                                            <a type="button" class="btn btn-sm btn-white"><i class="fa fa-search"></i></a> 
-                                        </span>
+                            
+			                <form role="form" id="board_manager_list" action="board_manager_list.php" method="get">
+                                <div class="col-sm-3" style="padding-left: 15px; padding-right: 5px">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control input-sm" placeholder="게시판ID" id="board_id" name="board_id" value="<?echo $_GET[board_id]?>">
+                                            <span class="input-group-btn" style="vertical-align: top">
+                                                <button type="submit" class="btn btn-sm btn-white"><i class="fa fa-search"></i></button> 
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-3" style="padding-left: 5px; padding-right: 5px">
-                                <div class="form-group">                        
-                                    <div class="input-group">
-                                    <input type="text" class="form-control input-sm" placeholder="게시판명">
-                                        <span class="input-group-btn">
-                                            <a type="button" class="btn btn-sm btn-white"><i class="fa fa-search"></i></a> 
-                                        </span>
-                                    </div>       
-                                </div>
-                            </div>
-                            <div class="col-sm-3" style="padding-left: 5px; padding-right: 5px">
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control input-sm" placeholder="관리자">
-                                        <span class="input-group-btn">
-                                            <a type="button" class="btn btn-sm btn-white"><i class="fa fa-search"></i></a> 
-                                        </span>
+                                <div class="col-sm-3" style="padding-left: 5px; padding-right: 5px">
+                                    <div class="form-group">                        
+                                        <div class="input-group">
+                                        <input type="text" class="form-control input-sm" placeholder="게시판명" id="board_name" name="board_name" value="<?echo $_GET[board_name]?>">
+                                            <span class="input-group-btn" style="vertical-align: top">
+                                                <button type="submit" class="btn btn-sm btn-white"><i class="fa fa-search"></i></button> 
+                                            </span>
+                                        </div>       
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-3" style="padding-left: 5px; padding-right: 12px">
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control input-sm" placeholder="등록자">
-                                        <span class="input-group-btn">
-                                            <a type="button" class="btn btn-sm btn-white"><i class="fa fa-search"></i></a> 
-                                        </span>
+                                <div class="col-sm-3" style="padding-left: 5px; padding-right: 5px">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control input-sm" placeholder="관리자" id="manager_id" name="manager_id" value="<?echo $_GET[manager_id]?>">
+                                            <span class="input-group-btn" style="vertical-align: top">
+                                                <button type="submit" class="btn btn-sm btn-white"><i class="fa fa-search"></i></button> 
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                                <div class="col-sm-3" style="padding-left: 5px; padding-right: 12px">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control input-sm" placeholder="등록자" id="reg_id" name="reg_id" value="<?echo $_GET[reg_id]?>">
+                                            <span class="input-group-btn" style="vertical-align: top">
+                                                <button type="submit" class="btn btn-sm btn-white"><i class="fa fa-search"></i></button> 
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
                         </div>
                         
                         <table class="footable table table-stripped toggle-arrow-tiny" style="margin-bottom: 0px">
@@ -102,48 +144,28 @@
                             </tr>
                             </thead>
                             <tbody>
+<?
+    while ($rows = mysqli_fetch_array($result)) {
+?>
                             <tr class="text-center">
-                                <td>3</td>
-                                <td><a href="board_manager_edit.php">free</a></td>
-                                <td>자유게시판</td>
-                                <td>admin</td>
-                                <td>admin</td>
-                                <td>2018-03-06</td>
+                                <td><?echo $total?></td>
+                                <td><a href="board_manager_edit.php?board_id=<?echo $rows[board_id]?>"><?echo $rows[board_id]?></a></td>
+                                <td><?echo $rows[board_name]?></td>
+                                <td><?echo $rows[manager_id]?></td>
+                                <td><?echo $rows[reg_id]?></td>
+                                <td><?echo $rows[reg_date]?></td>
                                 <td class="text-right">
                                     <div class="btn-group">
-                                        <a type="button" class="btn btn-xs btn-white" href="board_manager_edit.php">View</a>
+                                        <a type="button" class="btn btn-xs btn-white" href="board_manager_edit.php">BoardView</a>
+                                        <a type="button" class="btn btn-xs btn-white" href="board_manager_edit.php?board_id=<?echo $rows[board_id]?>">Edit</a>
                                         <a type="button" class="btn btn-xs btn-white" href="#">Delete</a>
                                     </div>
                                 </td>
                             </tr>
-                            <tr class="text-center">
-                                <td>2</td>
-                                <td><a href="board_manager_edit.php">notice</a></td>
-                                <td>공지사항</td>
-                                <td>admin</td>
-                                <td>admin</td>
-                                <td>2018-03-06</td>
-                                <td class="text-right">
-                                    <div class="btn-group">
-                                        <a type="button" class="btn btn-xs btn-white" href="board_manager_edit.php">View</a>
-                                        <a type="button" class="btn btn-xs btn-white" href="#">Delete</a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr class="text-center">
-                                <td>1</td>
-                                <td><a href="board_manager_edit.php">news</a></td>
-                                <td>뉴스</td>
-                                <td>admin</td>
-                                <td>admin</td>
-                                <td>2018-03-06</td>
-                                <td class="text-right">
-                                    <div class="btn-group">
-                                        <a type="button" class="btn btn-xs btn-white" href="board_manager_edit.php">View</a>
-                                        <a type="button" class="btn btn-xs btn-white" href="#">Delete</a>
-                                    </div>
-                                </td>
-                            </tr>
+<?
+        $total--;
+    }
+?>                            
                             </tbody>
                             <tfoot>
                             <tr>
@@ -188,28 +210,27 @@
     <script>
         $(document).ready(function() {
 
+            $("#board_manager_list").validate({
+                rules: {
+                    board_id: {
+                        minlength: 2,
+                        maxlength: 20
+                    }, board_name: {
+                        minlength: 2,
+                        maxlength: 20
+                    }, manager_id: {
+                        minlength: 2,
+                        maxlength: 20
+                    }, reg_id: {
+                        minlength: 2,
+                        maxlength: 20
+                    }
+                }, submitHandler: function (form) {
+                    form.submit();
+                }
+            });
+
             $('.footable').footable();
-
-            $('#date_added').datepicker({
-                format: "yyyy-mm-dd",
-                language: "kr",
-                todayBtn: "linked",
-                keyboardNavigation: false,
-                forceParse: false,
-                calendarWeeks: true,
-                autoclose: true
-            });
-
-            $('#date_modified').datepicker({
-                format: "yyyy-mm-dd",
-                language: "kr",
-                todayBtn: "linked",
-                keyboardNavigation: false,
-                forceParse: false,
-                calendarWeeks: true,
-                autoclose: true
-            });
-
         });
     </script>
 </body>

@@ -1,0 +1,249 @@
+<?
+	session_start();
+	include "Admin/connect.html";
+	include "Admin/variable.html";
+
+	$flag=$_POST[flag];
+	if(empty($flag)){$flag=$_GET[flag];}
+
+	if($flag=="memberAdd"){
+		$id=$_POST[id];
+		$passwd=$_POST[passwd];
+		$name=$_POST[name];
+		$jumin1=$_POST[jumin1];
+		$jumin2=$_POST[jumin2];
+		$tel1=$_POST[tel1];
+		$tel2=$_POST[tel2];
+		$tel3=$_POST[tel3];
+		$zipcode=$_POST[zipcode];
+		$addr1=$_POST[addr1];
+		$addr2=$_POST[addr2];
+		$email=$_POST[email];
+		$mailService=$_POST[mailService];
+		$hp1=$_POST[hp1];
+		$hp2=$_POST[hp2];
+		$hp3=$_POST[hp3];
+		$marry=$_POST[marry];
+		$job=$_POST[job];
+		
+		if($tel1!="" && $tel2!="" && $tel3!=""){
+			$tel=$tel1."-".$tel2."-".$tel3;
+		}
+		
+		if($hp1!="" && $hp2!="" && $hp3!=""){
+			$hp=$hp1."-".$hp2."-".$hp3;
+		}
+
+		$category=$_POST[category];
+		
+		$select="select no from member where jumin1='$jumin1' and jumin2='$jumin2' limit 1";
+		$result=@mysql_query($select);
+		$num=@mysql_num_rows($result);
+
+		if($num>0){
+			echo "<script>alert('등록된 주민번호입니다.');history.go(-1);</script>";
+			exit;
+		}
+		
+		$insert1="insert into member(id, passwd, name, jumin1, jumin2, tel, zipcode, addr1, addr2, email, mailService, hp, marry, company, job, level, regDate, loginDate) values('$id', '$passwd', '$name', '$jumin1', '$jumin2', '$tel', '$zipcode', '$addr1', '$addr2', '$email', '$mailService', '$hp', '$marry', '$_POST[company]', '$job', '1', now(), now())";
+
+		echo $insert1;
+		
+		@mysql_query($insert1);
+
+		session_register("s_name");
+		session_register("s_id");
+		session_register("s_email");
+		session_register("s_level");
+		
+		$_SESSION[s_name]=$name;
+		$_SESSION[s_id]=$id;
+		$_SESSION[s_email]=$email;
+		$_SESSION[s_level]='1';
+
+		$from="디씨스넷 <".$_email.">";
+		$mailto=$email." <".$email.">";
+		$subject="디씨스넷에 회원이 되신것을 축하 드립니다.";
+		
+		$add_headers="from : ".$from."\n";
+		$add_headers.="reply-to : ".$webmaster_email."\n";
+		$add_headers.="Content-Type: text/html;Charset=EUC-KR";
+		
+		/*
+		if ($welcome_mail_file=="") $welcome_mail_file="mailing/member.html";
+		
+		$contents="";
+		$filea=file($welcome_mail_file);
+		for ($k=0;$k<sizeof($filea);$k++){
+			$contents.=$filea[$k];
+		}
+		
+		
+		$contents=str_replace("#name", $name, $contents);
+		$contents=str_replace("#id", $id, $contents);
+		$contents=str_replace("#passwd", $passwd, $contents);
+		$contents=str_replace("#domain", $_domain, $contents);
+
+		mail($mailto, $subject, $contents, $add_headers);
+		*/
+
+		//echo $contents;
+		
+		echo "<script>alert('회원가입 되었습니다. 감사합니다.'); location.replace('index.html')</script>";
+	}
+
+	if($flag=="memberModify"){
+		$passwd=$_POST[passwd];
+		$tel1=$_POST[tel1];
+		$tel2=$_POST[tel2];
+		$tel3=$_POST[tel3];
+		$zipcode=$_POST[zipcode];
+		$addr1=$_POST[addr1];
+		$addr2=$_POST[addr2];
+		$email=$_POST[email];
+		$mailService=$_POST[mailService];
+		$hp1=$_POST[hp1];
+		$hp2=$_POST[hp2];
+		$hp3=$_POST[hp3];
+		$marry=$_POST[marry];
+		$job=$_POST[job];
+
+		$tel=$tel1."-".$tel2."-".$tel3;
+		if($hp1!="" && $hp2!="" && $hp3!=""){
+			$hp=$hp1."-".$hp2."-".$hp3;
+		}
+
+		$update="update member set passwd='$passwd', tel='$tel', zipcode='$zipcode', addr1='$addr1', addr2='$addr2', email='$email', mailService='$mailService', hp='$hp', marry='$marry', job='$job' where id='$id' ";
+		@mysql_query($update);
+
+		echo "<script>alert('회원정보를 수정하였습니다.');location.replace('index.html?main=memberModify.html');</script>";
+	}
+
+	if($flag=="memberLogin"){
+		$reUri=$_POST[reUri];	
+		$repage=$_POST[repage];
+
+		$id=$_POST[id];
+		$passwd=$_POST[passwd];
+
+		$url=parse_url($refer);
+		$select="select id, name, email, jumin1, jumin2, level from member where id='$id' and passwd='$passwd' limit 1";
+
+		//echo $select;
+		$result=@mysql_query($select);
+		$num=@mysql_num_rows($result);
+
+		if($num>0){
+			$row=@mysql_fetch_array($result);
+			
+			session_register("s_name");
+			session_register("s_id");
+			session_register("s_email");
+			session_register("s_level");
+		
+			$_SESSION[s_name]=$row[name];
+			$_SESSION[s_id]=$row[id];
+			$_SESSION[s_email]=$row[email];
+			$_SESSION[s_level]=$row[level];
+			$_SESSION[s_jumin]=$row[jumin1].$row[jumin2];
+
+			$jumin=$row[jumin1].$row[jumin2];
+
+			$update="update member set loginDate=now() where id='$id' ";
+			@mysql_query($update);
+
+			if($repage!=""){
+				echo "<script>document.location.replace('index.html?$repage')</script>";
+			}else{
+				echo "<script>document.location.replace('index.html');</script>";
+			}
+			
+		}else{
+			echo "<script>alert('아이디나 비밀번호가 맞지 않습니다.'); history.go(-1);</script>";
+			exit;
+		}
+	}
+
+	if($flag=="idpass"){
+		//$reUri=$_POST[reUri];	
+		$name=$_POST[name];
+		$jumin1=$_POST[jumin1];
+		$jumin2=$_POST[jumin2];
+
+		$url=parse_url($refer);
+		$select="select id, passwd from member where name='$name' and jumin1='$jumin1' and jumin2='$jumin2' limit 1";
+
+		$result=@mysql_query($select);
+		$num=@mysql_num_rows($result);
+
+		if($num>0){
+			$row=@mysql_fetch_array($result);
+			
+			echo "<script>alert('$name 님의 아이디는 $row[id] 비밀번호는 $row[passwd] 입니다.'); history.go(-1);</script>";
+
+		}else{
+			echo "<script>alert('등록된 정보가 없습니다. '); history.go(-1);</script>";
+			exit;
+		}
+	}
+
+	if($flag=="memberLogout"){
+
+		session_unregister(s_name);
+		session_unregister(s_id);
+		session_unregister(s_email);
+		session_unregister(s_level);
+
+		//session_destroy();
+		echo "<script>alert('로그아웃 하였습니다.');document.location.replace('index.html');</script>";
+	}
+
+	if($flag=="memberDel"){
+		
+		$select="select tel, zipcode, addr1, addr2, jumin1, jumin2 from member where id='$_SESSION[s_id]'";
+		$result=@mysql_query($select);
+		$row=@mysql_fetch_array($result);
+
+		$insert="insert into leave(id, name, email, tel, zipcode, addr1, addr2, jumin1, jumin2, cause_num, leveDate) values('$_SESSION[s_id]', '$_SESSION[s_name]', '$_SESSION[s_email]', '$row[tel]', '$row[zipcode]', '$row[addr1]', '$row[addr2]', '$row[jumin1]', '$row[jumin2]', '$_POST[causeNum]', now()) ";
+		//echo $insert."<br>";
+		
+		@mysql_query($insert);
+
+		//no, id, name, email, tel, zipcode, jumin1, jumin2, job, cause_num, leveDate  
+
+		$delete="delete from member where id='$_SESSION[s_id]' ";
+		//echo $delete;
+		
+		@mysql_query($delete);
+
+		session_unregister(s_name);
+		session_unregister(s_id);
+		session_unregister(s_email);
+		session_unregister(s_level);
+		
+		echo "<script>alert('그동안 이용해주셔서 감사합니다.');document.location.replace('index.html');</script>";
+	}
+
+?>
+
+<?
+	if($_POST[flag]=="submitAdd"){
+		//no, classNo, id, price, regist, memo, etc
+		
+		$select="select no from admission where id='$_SESSION[s_id]' and classNo='$_POST[classNo]' ";
+		$result=mysql_query($select);
+
+		$num=mysql_num_rows($result);
+
+		if($num>0){
+			echo "<script>alert('이미 신청 하셨습니다.');history.go(-1);</script>";
+		}else{
+			
+			$insert="insert into admission(classNo, id, name, price, regDate) values('$_POST[classNo]', '$_SESSION[s_id]', '$_SESSION[s_name]', '$_POST[price]', now())";
+			//echo $insert;
+			mysql_query($insert);
+
+			echo "<script>alert('등록 신청 하였습니다.');location.replace('mypage.htm');</script>";
+		}
+	}
+?>

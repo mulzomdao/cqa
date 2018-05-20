@@ -1,0 +1,178 @@
+<?
+	session_start();
+	include "inc/connect.html";
+	include "inc/function.html";
+	include "inc/variable.html";
+
+	if($_POST[flag] == "login"){
+
+		$select = "
+			select
+				a.user_id,
+				a.user_nm,
+				a.user_level,
+				a.user_jumin,
+				a.user_hp,
+				b.agent_seq,
+				b.agent_nm
+			from
+				np_user a, np_agent b
+			where
+				a.agent_seq = b.agent_seq
+				and a.user_id = '$_POST[user_id]'
+				and a.pwd = '$_POST[pwd]'
+				and a.user_use_yn = 'Y'
+				and b.agent_use_yn = 'Y'
+				and a.user_stat = '승인'
+		";
+
+		$result = mysql_query($select);
+		$num = mysql_num_rows($result);
+
+		if ( $num > 0 ) {	// 회원인 경우
+			$row = @mysql_fetch_array($result);
+
+			session_register("user_id");
+			session_register("user_nm");
+			session_register("user_level");
+			session_register("user_level_nm");
+			session_register("user_jumin");
+			session_register("user_hp");
+			session_register("agent_seq");
+			session_register("agent_nm");
+
+			$_SESSION[user_id] = $row[user_id];
+			$_SESSION[user_nm] = $row[user_nm];
+			$_SESSION[user_level] = $row[user_level];
+			$_SESSION[user_level] = $row[user_level];
+			$_SESSION[user_jumin] = $row[user_jumin];
+			$_SESSION[user_hp] = $row[user_hp];
+			$_SESSION[agent_seq] = $row[agent_seq];
+			$_SESSION[agent_nm] = $row[agent_nm];
+
+			if($_SESSION[power_cd]==""){
+				$_SESSION[power_cd]=="10";
+			}
+
+			$ip = getenv("REMOTE_ADDR");
+
+			$insert = "
+				insert into np_login (
+					login_seq, user_id, user_nm, user_level, login_dt, login_ip
+				) values (
+					'', '$row[user_id]', '$row[user_nm]', '$row[user_level]', now(), '$ip'
+				)";
+
+			//echo $insert;
+			mysql_query($insert);
+			replace("main.html");
+			exit;
+
+		} else {	//로그인이 실패했을경우
+			alert("아이디나 비밀번호를 확인해 주세요.");
+			exit;
+		} // if end
+	}
+
+	if ( $_GET[flag] == "logout" ) {
+
+		session_destroy();
+		alert("로그아웃 되었습니다.", "index.html");
+		exit;
+	}
+
+
+	if($_POST[flag]=="send_mail"){
+
+		$from="<".$_POST[sendEmail].">";
+		$mailto=$_POST[email]." <".$_POST[email].">";
+		$subject=$_POST[title];
+
+		$add_headers="from : ".$from."\n";
+		$add_headers.="reply-to : ".$from."\n";
+
+		if($_POST[html]=="1"){
+			$add_headers.="Content-Type: text/html;Charset=EUC-KR";
+		}
+
+		$content=stripslashes($_POST[content]);
+		//$content=$_POST[content];
+
+		mail($mailto, $subject, $content, $add_headers);
+
+		echo "<script>setTimeout('self.close();', 2000);</script><link href=css/common.css rel=stylesheet type='text/css'><table align=center width=100% height=280><tr><td align=center><b>메일을 보냈습니다...</b></td></tr></table>";
+	}
+
+	if($_POST[flag]=="user_add"){
+
+
+		$ip = getenv("REMOTE_ADDR");
+
+		$user_jumin = $_POST[jumin1]."-".$_POST[jumin2];
+
+		$insert = "
+			insert into np_user(
+				user_id, pwd, agent_seq, user_nm, user_level, user_jumin, user_posit, user_tel, user_hp, user_zipcode, user_addr1, user_addr2, user_email, user_use_yn, user_refer, user_reg_id, user_reg_dt, user_reg_ip, user_comp_tel, user_stat
+			) values (
+				'$_POST[user_id]', '$_POST[pwd]', '$_POST[agent_seq]', '$_POST[user_nm]', '10', '$user_jumin', '$_POST[user_posit]', '$_POST[user_tel]', '$_POST[user_hp]', '$_POST[user_zipcode]', '$_POST[user_addr1]', '$_POST[user_addr2]', '$_POST[user_email]', 'Y', '$_POST[user_refer]', '$_POST[user_id]', now(), '$ip', '$_POST[user_comp_tel]', '승인요청'
+			)
+		";
+
+		mysql_query($insert);
+
+		close("사용자등록신청를 완료 했습니다.\\n승인 후 로그인 하실 수 있습니다.");
+
+	}
+
+	if($_POST[flag] == "agent_add"){
+
+		$ip = getenv("REMOTE_ADDR");
+
+		$saup=$_FILES['saup_sabon'];
+		$shinbun=$_FILES['shinbun_sabon'];
+		$tongjang=$_FILES['tongjang_sabon'];
+
+		if($saup[name]!=""){
+			$saup_file=upload_file_Check($saup, $_file_size, $_ok_file, "file_upload/sabon/", "file");
+		}
+
+		if($shinbun[name]!=""){
+			$shinbun_file=upload_file_Check($shinbun, $_file_size, $_ok_file, "file_upload/sabon/", "file");
+		}
+
+		if($tongjang[name]!=""){
+			$tongjang_file=upload_file_Check($tongjang, $_file_size, $_ok_file, "file_upload/sabon/", "file");
+		}
+
+
+		$insert = "
+			insert into np_agent(
+				agent_seq, agent_nm, agent_boss_nm, agent_busi_num, agent_status, agent_type, agent_tel, agent_fax, agent_zipcode, agent_addr1, agent_addr2, agent_homepage, agent_refer, agent_use_yn, agent_reg_id, agent_reg_dt, agent_reg_ip, agent_id, saup_sabon, shinbun_sabon, tongjang_sabon
+			) values (
+				'', '$_POST[agent_nm]', '$_POST[agent_boss_nm]', '$_POST[agent_busi_num]', '$_POST[agent_status]', '$_POST[agent_type]', '$_POST[agent_tel]', '$_POST[agent_fax]', '$_POST[agent_zipcode]', '$_POST[agent_addr1]', '$_POST[agent_addr2]', '$_POST[agent_homepage]', '$_POST[agent_refer]', 'N', '$_SESSION[user_id]', now(), '$ip', '$_POST[agent_id]', '$saup_file', '$shinbun_file', '$tongjang_file'
+			)
+		";
+
+		mysql_query($insert);
+
+		$select = "select max(agent_seq) agent_seq from np_agent";
+		$result = mysql_query($select);
+		$row = @mysql_fetch_array($result);
+
+		$user_jumin = $_POST[jumin1]."-".$_POST[jumin2];
+
+		$insert2 = "
+			insert into np_user(
+				user_id, pwd, agent_seq, user_nm, user_level, user_jumin, user_posit, user_tel, user_hp, user_zipcode, user_addr1, user_addr2, user_email, user_use_yn, user_refer, user_reg_id, user_reg_dt, user_reg_ip, user_comp_tel, user_stat
+			) values (
+				'$_POST[user_id]', '$_POST[pwd]', '$row[agent_seq]', '$_POST[user_nm]', '10', '$user_jumin', '$_POST[user_posit]', '$_POST[user_tel]', '$_POST[user_hp]', '$_POST[user_zipcode]', '$_POST[user_addr1]', '$_POST[user_addr2]', '$_POST[user_email]', 'Y', '$_POST[user_refer]', '$_POST[user_id]', now(), '$ip', '$_POST[user_comp_tel]', '승인요청'
+			)
+		";
+
+		//echo $insert2;
+		mysql_query($insert2);
+
+		close("사용자등록신청를 완료 했습니다.\\n승인 후 로그인 하실 수 있습니다.");
+		//opener();
+	}
+?>

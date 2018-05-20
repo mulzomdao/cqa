@@ -1,0 +1,288 @@
+<?
+	session_start();
+	include "connect.html";
+	include "function.html";
+	include "variable.html";
+
+	if($_SESSION[s_level]<7 || $_SESSION[s_level]==""){
+		echo "<script>alert('관리자 페이지입니다. 관리자로 로그인 해주세요.');location.replace('adminLogin.html');</script>";
+	}
+
+	$flag=$_POST['flag'];
+	if(empty($flag)){$flag=$_GET['flag'];}
+	$category=$_GET['category'];
+
+	if($flag=="add"){
+		$board=$_POST['board'];
+		$check_sql="select board from boardAdmin where board='$board'";
+		$query=mysql_query($check_sql);
+		$object=mysql_fetch_object($query);
+		
+		if($object->board!=""){
+			echo "<script>alert('이미 등록된 게시판 table명 입니다.');history.go(-1);</script>";
+			exit();
+		}
+
+		$boardName=$_POST['boardName'];
+		$readLevel=$_POST['readLevel'];
+		$writeLevel=$_POST['writeLevel'];
+		$skin=$_POST['skin'];
+		$bgColor=$_POST['bgColor'];
+		$maxNum=$_POST['maxNum'];
+		$maxPage=$_POST['maxPage'];
+		$width=$_POST['width'];
+		$tail=$_POST['tail'];
+		$fileYes=$_POST['fileYes'];
+		$fileYes2=$_POST['fileYes2'];
+		$fileYes3=$_POST['fileYes3'];
+		$imageYes=$_POST['imageYes'];
+		$imageYes2=$_POST['imageYes2'];
+		$imageYes3=$_POST['imageYes3'];
+		$fileSize=$_POST['fileSize'];
+		$noFuck=$_POST['noFuck'];
+		$noScript=$_POST['noScript'];
+		$noFile=$_POST['noFile'];
+		$adminId=$_POST['adminId'];
+		$prodBoard=$_POST['prodBoard'];
+		
+		$top=$_POST[top];
+		$bottom=$_POST[bottom];
+		$section=$_POST[section];
+		$style=$_POST[style];
+		$linkpage=$_POST[linkpage];
+		$lock=$_POST[open];
+
+		if(empty($tail)){$tail=0;}
+		if(empty($fileYes)){$fileYes=0;}
+		if(empty($imageYes)){$imageYes=0;}
+		if(empty($prodBoard)){$prodBoard=0;}
+	
+		$insert_query="insert into boardAdmin(board, boardName, readLevel, writeLevel, skin, bgColor, maxNum, maxPage, width, tail, fileYes, fileYes2, fileYes3, imageYes, imageYes2, imageYes3, fileSize, noFuck, noScript, noFile, adminId, prodBoard, regDate, top, bottom, section, style, linkpage, open, html, o, x, showTail) values('$board', '$boardName', '$readLevel', '$writeLevel', '$skin', '$bgColor', '$maxNum', '$maxPage', '$width', '$tail', '$fileYes', '$fileYes2', '$fileYes3', '$imageYes', '$imageYes2', '$imageYes3', '$fileSize', '$noFuck', '$noScript', '$noFile', '$adminId', '$prodBoard', now(), '$top', '$bottom', '$section', '$style', '$linkpage', '$open', '$_POST[html]', '$_POST[o]', '$_POST[x]', '$_POST[showTail]');";
+		
+		//echo $insert_query."<br>";		
+		
+		mysql_query($insert_query);
+
+		$create_table="create table $board (
+			no int primary key not null auto_increment,	 
+			id varchar(20),							
+			name varchar(10) not null,		
+			passwd varchar(20) not null,				
+			email varchar(100),						
+			title varchar(100) not null,			
+			html enum('0', '1') not null,		
+			regDate datetime not null,		
+			count smallint unsigned not null,	
+			depth varchar(50) not null,				
+			sameNo int unsigned,				
+			file varchar(100),						
+			file2 varchar(100),						
+			file3 varchar(100),						
+			fileSize int unsigned,	 			
+			fileSize2 int unsigned,	 			
+			fileSize3 int unsigned,	 			
+			userImage varchar(100),			
+			userImage2 varchar(100),
+			userImage3 varchar(100),
+			imageSize int unsigned,		
+			imageSize2 int unsigned,
+			imageSize3 int unsigned,
+			fileDown smallint unsigned,		
+			ip varchar(20),							
+			prodNo int unsigned default null,	
+			section varchar(255),
+			open enum('0', '1') not null,
+			o smallint unsigned default '0',
+			x smallint unsigned default '0',
+			secret enum('0', '1') not null,
+			
+			index(title),
+			index(name),
+			index(depth),
+			index(sameNo)
+		);";
+		
+		$boardMain=$board."_main";
+		$create_table2="create table $boardMain (
+			no int primary key not null auto_increment,	 
+			boardNo int unsigned not null,
+			main text not null,
+
+			index(boardNo)
+		);";
+		//echo $create_table."<br>";
+		//echo $create_table2."<br>";
+		
+		mysql_query($create_table);
+		mysql_query($create_table2);
+
+		echo "<script>history.go(-1);;</script>";
+	}
+	
+	if($flag=="del"){
+		$no=$_GET['no'];
+		$board=$_GET['board'];
+		$boardMain=$board."_main";
+
+		$del_sql="delete from boardAdmin where no=$no";
+		$drop_sql="drop table $board";
+		$drop_sql2="drop table $boardMain";
+		
+		//echo "$del_sql<br>";
+		//echo "$drop_sql<br>";
+		//echo "$drop_sql2<br>";
+
+		mysql_query($del_sql);
+		mysql_query($drop_sql);
+		mysql_query($drop_sql2);
+
+		echo "<script>history.go(-1);</script>";
+	}
+
+	if($flag=="mainDel"){
+		$delete1="delete from $_GET[board]";
+		$delete2="delete from ".$_GET[board]."_main";
+
+		mysql_query($delete1);
+		mysql_query($delete2);
+
+		echo "<script>alert('내용을 삭제하였습니다.'); history.go(-1);</script>";
+	}
+	
+	if($flag=="modify"){
+		$no=$_POST['no'];
+		$boardName=$_POST['boardName'];
+		$writeLevel=$_POST['writeLevel'];
+		$readLevel=$_POST['readLevel'];
+		$skin=$_POST['skin'];
+		$bgColor=$_POST['bgColor'];
+		$maxNum=$_POST['maxNum'];
+		$maxPage=$_POST['maxPage'];
+		$width=$_POST['width'];
+		$tail=$_POST['tail'];
+		$fileYes=$_POST['fileYes'];
+		$fileYes2=$_POST['fileYes2'];
+		$fileYes3=$_POST['fileYes3'];
+		$imageYes=$_POST['imageYes'];
+		$imageYes2=$_POST['imageYes2'];
+		$imageYes3=$_POST['imageYes3'];
+		$html=$_POST['html'];
+		$fileSize=$_POST['fileSize'];
+		$noFuck=$_POST['noFuck'];
+		$noScript=$_POST['noScript'];
+		$noFile=$_POST['noFile'];
+		$adminId=$_POST['adminId'];
+		$prodBoard=$_POST['prodBoard'];
+
+		if(empty($tail)){$tail=0;}
+		if(empty($fileYes)){$fileYes=0;}
+		if(empty($imageYes)){$imageYes=0;}
+		if(empty($prodBoard)){$prodBoard=0;}
+
+		$update_sql="update boardAdmin set boardName='$boardName', writeLevel='$writeLevel', readLevel='$readLevel', skin='$skin', bgColor='$bgColor', maxNum='$maxNum', maxPage='$maxPage', width='$width', tail='$tail', fileYes='$fileYes', fileYes2='$fileYes2', fileYes3='$fileYes3', imageYes='$imageYes', imageYes2='$imageYes2', imageYes3='$imageYes3', fileSize='$fileSize', noFuck='$noFuck', noFile='$noFile', adminId='$adminId', html='$html', top='$_POST[top]', bottom='$_POST[bottom]', section='$_POST[section]', style='$_POST[style]', secret='$_POST[secret]', o='$_POST[o]', x='$_POST[x]', showTail='$_POST[showTail]', linkpage='$_POST[linkpage]' where no=$no ";
+		
+		//echo $update_sql;		
+		mysql_query($update_sql);
+
+		echo "<script>history.go(-1);</script>";
+	}
+?>
+
+<?
+	if($_POST[flag]=="chainAdd"){
+
+		include "../boardFunction.html";
+
+		$map=$_FILES['map'];
+
+		$img1=$_FILES['img1'];
+		$img2=$_FILES['img2'];
+		$img3=$_FILES['img3'];
+
+		$titleImg=$_FILES['titleImg'];
+
+		if($map[name]!=""){
+			$reImgName5=upload_file_Check($map, 2, "gif|jpg|jpeg|bmp", "../images/chainImg/", "img");
+		}
+
+		if($img1[name]!=""){
+			$reImgName1=upload_file_Check($img1, 2, "gif|jpg|jpeg|bmp", "../images/chainImg/img1/", "img");
+		}
+		if($img2[name]!=""){
+			$reImgName2=upload_file_Check($img2, 2, "gif|jpg|jpeg|bmp", "../images/chainImg/img2/", "img");
+		}
+		if($img3[name]!=""){
+			$reImgName3=upload_file_Check($img3, 2, "gif|jpg|jpeg|bmp", "../images/chainImg/img3/", "img");
+		}
+		
+		if($titleImg[name]!=""){
+			$reImgName4=upload_file_Check($titleImg, 2, "gif|jpg|jpeg|bmp", "../images/chainImg/", "img");
+		}
+		
+		//no, title, name, id, info, map, img1, img2, img3, board, time, camTime, titleImg, regDate, open, etc  
+		$insert="insert into chainList(title, name, id, juso, tel, email, info, map, img1, img2, img3, board, time, camTime, titleImg, regDate, open, etc) values('$_POST[title]', '$_POST[name]', '$_POST[id]', '$_POST[juso]', '$_POST[tel]', '$_POST[email]', '$_POST[info]', '$reImgName5', '$reImgName1', '$reImgName2', '$reImgName3', '$_POST[board]', '$_POST[time]', '$_POST[camTime]', '$reImgName4', now(), '1', '$_POST[etc]' ) ";
+
+		mysql_query($insert);
+
+		echo "<script>history.go(-1);</script>";
+
+	}
+?>
+
+<?
+	if($_POST[flag]=="chainModify"){
+
+		include "../boardFunction.html";
+
+		$map=$_FILES['map'];
+
+		$img1=$_FILES['img1'];
+		$img2=$_FILES['img2'];
+		$img3=$_FILES['img3'];
+
+		$titleImg=$_FILES['titleImg'];
+
+		if($map[name]!=""){
+			$reImgName5=upload_file_Check($map, 2, "gif|jpg|jpeg|bmp", "../images/chainImg/", "img");
+
+			$str5=", map='$reImgName5' ";
+		}
+
+		if($img1[name]!=""){
+			$reImgName1=upload_file_Check($img1, 2, "gif|jpg|jpeg|bmp", "../images/chainImg/img1/", "img");
+
+			$str1=", img1='$reImgName1' ";
+		}
+		if($img2[name]!=""){
+			$reImgName2=upload_file_Check($img2, 2, "gif|jpg|jpeg|bmp", "../images/chainImg/img2/", "img");
+			$str2=", img2='$reImgName2' ";
+		}
+		if($img3[name]!=""){
+			$reImgName3=upload_file_Check($img3, 2, "gif|jpg|jpeg|bmp", "../images/chainImg/img3/", "img");
+			$str3=", img3='$reImgName3' ";
+		}
+		
+		if($titleImg[name]!=""){
+			$reImgName4=upload_file_Check($titleImg, 2, "gif|jpg|jpeg|bmp", "../images/chainImg/", "img");
+			$str4=", titleImg='$reImgName4' ";
+		}
+		
+		$update="update chainList set title='$_POST[title]', name='$_POST[name]', id='$_POST[id]', juso='$_POST[juso]', tel='$_POST[tel]', email='$_POST[email]', info='$_POST[info]', board='$_POST[board]', time='$_POST[time]', camTime='$_POST[camTime]', open='$_POST[open]', etc='$_POST[etc]' $str1 $str2 $str3 $str4 $str5 where no='$_POST[no]' ";
+
+		//echo $update;
+
+		mysql_query($update);
+
+		echo "<script>alert('수정하였습니다.'); history.go(-1);</script>";
+
+	}
+?>
+
+<?
+	if($_GET[flag]=="chainDel"){
+		$delete="delete from chainList where no=$_GET[no] ";
+		//echo $delete;
+		mysql_query($delete);
+		echo "<script>history.go(-1);</script>";
+	}
+?>

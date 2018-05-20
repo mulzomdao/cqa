@@ -1,0 +1,61 @@
+<?
+//	//session_cache_limiter('no-cache, must-revalidate');
+	session_start();
+
+	include "Admin/connect.html";
+	include "Admin/variable.html";
+	include "Admin/function.html";
+
+//	//페이지히트 테이블에 insert
+//	if(!ereg("PHPSESSID", $_SERVER[REQUEST_URI]) && $_SERVER[REQUEST_URI]!="/" && $_SERVER[REQUEST_URI]!="/index.html" && $_SERVER[REQUEST_URI]!="/index.html?" && $_SESSION[s_level]<'3'){
+//		pageHit();
+//	}
+//
+//	//visit 테이블 insert
+//	if($_SESSION[s_counter]!=1 && $HTTP_REFERER!=""){
+//		$refer=parse_url($HTTP_REFERER);		
+//		$now=date("Y-m-d H:i:s");
+//		$ip=getenv("REMOTE_ADDR");
+//
+//		$insert="insert into visit(visitDate, refer, referHost, ip) values('$now', '$HTTP_REFERER', '$refer[host]', '$ip')";
+//		//echo $insert;
+//		@mysql_query($insert);
+//
+//		session_register("s_counter");
+//		$_SESSION[s_counter]=1;
+//	}
+
+	
+?>
+<html>
+<head>
+	<title>4EDU 당신을 위한 에듀케이션</title>
+	<meta http-equiv='content-type' content='text/html; charset=ks_c_5601-1987'>
+
+	<link href="include/main.css" rel="stylesheet" type="text/css">
+	<script LANGUAGE="JavaScript1.2" SRC="include/javascript.js"></script>
+</head>
+
+<?if($main=="boardView.html" && $_SESSION[s_level]<=10 ){?>
+<body topmargin=0 leftmargin=0 marginwidth="0" marginheight="0" width="100%" oncontextmenu="return false" ondragstart="return false" onselectstart="return false">
+<?}else{?>
+<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" width="100%">
+<?}//제품 상세정보 페이지 일시 오른쪽 마우스 막음 끝 ?>
+
+	
+	
+	<table width=100% cellpadding=0 cellspacing=0 border=0>
+		<tr>
+			<td valign=top colspan=2><?include "include/top.html";?></td>
+		</tr>
+		</tr>
+			<td width="820" valign=top align=center><?if(isset($main)){include $main;}else{include "main.html";}?></td>
+			<td width="*" valign=top align=left><?include "include/right.html";?></td>
+		</tr>
+		<tr>
+			<td valign=top colspan=2><?include "include/bottom.html";?></td>
+		</tr>
+	</table>
+
+</body>
+</html>

@@ -1,0 +1,210 @@
+<?
+	function board_option($board) {
+
+		global $no, $board, $boardName, $bgColor, $maxNum, $maxPage, $width, $fileSize, $readLevel, $writeLevel, $tail, $regDate, $skin, $fileYes, $fileYes2, $fileYes3, $imageYes, $imageYes2, $imageYes3, $adminId, $noScript, $noFuck, $noFile, $html, $boardTop, $boardBottom, $section, $boardStyle, $linkpage, $boardOpen, $oo, $xx, $showTail, $secret;
+
+		$select="select * from boardAdmin where board='$board'";
+		$result=@mysql_query($select);
+		$rows=@mysql_fetch_array($result);
+
+		$no=$rows[no];
+		$board=$rows[board];
+		$boardName=$rows[boardName];
+		$bgColor=$rows[bgColor];
+		$maxNum=$rows[maxNum];
+		$maxPage=$rows[maxPage];
+		$width=$rows[width];
+		$fileSize=$rows[fileSize];
+		$readLevel=$rows[readLevel];
+		$writeLevel=$rows[writeLevel];
+		$tail=$rows[tail];
+		$regDate=$rows[regDate];
+		$skin=$rows[skin];
+		$fileYes=$rows[fileYes];
+		$fileYes2=$rows[fileYes2];
+		$fileYes3=$rows[fileYes3];
+		$imageYes=$rows[imageYes];
+		$imageYes2=$rows[imageYes2];
+		$imageYes3=$rows[imageYes3];
+		$adminId=$rows[adminId];
+		$noScript=$rows[noScript];
+		$noFuck=$rows[noFuck];
+		$noFile=$rows[noFile];
+		$html=$rows[html];
+
+		$boardTop=$rows[top];
+		$boardBottom=$rows[bottom];
+		$section=$rows[section];
+		$boardStyle=$rows[style];
+		$linkpage=$rows[linkpage];
+		$boardOpen=$rows[open];
+		$oo=$rows[o];
+		$xx=$rows[x];
+		$showTail=$rows[showTail];
+		$secret=$rows[secret];
+	}
+
+	function board_exist($board, $db_name) {
+		global $board_exist;
+		$result=@mysql_list_tables($db_name);
+		$num=@mysql_num_rows($result);
+
+		for($i=0; $i<$num; $i++) {
+			$table=@mysql_tablename($result, $i);
+			if($table==$board) $board_exist=1;
+		}
+	}
+
+	function board_total($board, $where){
+		$select="select no from $board $where";
+		//echo $select;
+		$result=@mysql_query($select);
+		$num=@mysql_num_rows($result);
+
+		return $num;
+	}
+
+	function upload_file_Check($file, $max, $endpoint, $dir, $type){
+		$fileName=$file[name];
+		$fileSize=$file[size];
+
+		if(isset($fileName)){
+			$explode=explode('.',$fileName);
+			$fileEx = strtolower(array_pop($explode));
+			$maxSize = $max*1000000;
+		}
+		
+		if(empty($fileEx)) {
+			echo "<script>alert('확장자가 없습니다.'); history.go(-1);</script>";
+			exit;
+		}
+		
+		$endpointArr = explode("|", $endpoint);
+		$endpointCheck = 0;
+		
+		for($i=0; $i<sizeof($endpointArr); $i++) {
+			if($endpointArr[$i]==$fileEx){
+				$endpointCheck++;
+				break;
+			}
+		}
+
+		if(($endpointCheck>0 && $type=='img') || ($endpointCheck==0 && $type=='file')){
+			$reFileName=uniqid(rand()*microtime());
+			$reFileName=explode(".", $reFileName);
+
+			$reFileName=$reFileName[1].".".$fileEx;
+			$moveDir=$dir.$reFileName;
+
+			if($fileSize>$maxSize){
+				echo "<script>alert('제한용량 $max (M) 를 초과하였습니다.'); history.go(-1);</script>";
+				exit;
+			}
+			
+			if(is_uploaded_file($file[tmp_name])){
+
+				move_uploaded_file($file[tmp_name], $moveDir);
+				return $reFileName;
+			}else{
+				return;
+			}
+		}else{
+			echo "<script>alert('올바르지않은 확장자 입니다.'); history.go(-1);</script>";
+			exit;
+		}
+	}
+
+	// 욕 필터링
+	function filt($content, $filt_1){ 
+		for ($i = 0; $i < sizeof($filt_1); $i++) { 
+			$filter = "/$filt_1[$i]/"; 
+			if(preg_match($filter,$content)) { 
+				echo"<script>alert('\'$filt_1[$i]\' 는 사용할 수 없는 단어 입니다.'); history.back();</script>"; 
+				exit;
+			} 
+		} 
+		return; 
+	}
+
+	// 자동 삭제
+	function autoDel($content, $filt_1){ 
+		for ($i = 0; $i < sizeof($filt_1); $i++) { 
+			$filter = "/$filt_1[$i]/"; 
+			if(preg_match($filter,$content)) { 
+				//echo"<script>alert('\'$filt_1[$i]\' 는 사용할 수 없는 단어 입니다.'); history.back();</script>"; 
+				//exit;
+				return '1';
+			}else{
+				return '2';
+			}
+		} 
+		//return; 
+	}
+	
+	function autoLink($content){
+		$content = eregi_replace("^www.","http://www.", $content);
+		#******* www
+		$content = eregi_replace("([^/])www([0-9a-zA-Z./@~?&=_-]+)","\\1http://www\\2", $content);
+		#******* http 
+		$content = eregi_replace("http://([0-9a-zA-Z./@~?&=_-]+)", "<a href=\"http://\\1\" target='_blank'>http://\\1</a>", $content);
+		#******* ftp
+		//$content = eregi_replace("ftp://([0-9a-zA-Z./@~?&=_-]+)", "<a href=\"ftp://\\1\" target='_blank'>ftp://\\1</a>", $content);
+		#******* email
+		//$content = eregi_replace("([_0-9a-zA-Z-]+(\.[_0-9a-zA-Z-]+)*)@([0-9a-zA-Z-]+(\.[0-9a-zA-Z-]+)*)", "<a href=\"mailto:\\1@\\3\">\\1@\\3</a>", $content);
+
+		return $content;
+	}
+
+	function imgThumbo2($filePath, $saveName, $sFactor, $saveDir = "./", $destroy="1"){
+
+        if (!file_exists($saveDir)) { 
+            @mkdir($saveDir); 
+            @chmod($saveDir, 0777); 
+		} 
+
+        $sz = @getimagesize($filePath); // 이미지 사이즈구함
+        if($sz[0]  > $sFactor || $sz[1] > $sFactor){        
+                if($sz[0]>$sz[1]) $per=$sFactor/$sz[0]; 
+                else $per=$sFactor/$sz[1]; 
+                $imgW=ceil($sz[0]*$per); 
+                $imgH=ceil($sz[1]*$per); 
+        }else{
+                $imgW=ceil($sz[0]);//width 값 
+                $imgH=ceil($sz[1]);//height 값 
+        }
+        
+        switch ($sz[2]) {
+        case 1:
+                $src_img = imagecreatefromgif($filePath);
+                $dst_img = imagecreate($imgW, $imgH); 
+                //$dst_img = imagecreatetruecolor($imgW, $imgH); 
+                ImageCopyResampled($dst_img,$src_img,0,0,0,0,$imgW,$imgH,$sz[0],$sz[1]); 
+                ImageInterlace($dst_img);
+                Imagegif($dst_img, $saveDir.$saveName);
+                break;
+        case 2:
+                $src_img = imagecreatefromjpeg($filePath);
+                $dst_img = imagecreatetruecolor($imgW, $imgH); 
+                ImageCopyResampled($dst_img,$src_img,0,0,0,0,$imgW,$imgH,$sz[0],$sz[1]); 
+                ImageInterlace($dst_img);
+                ImageJPEG($dst_img, $saveDir.$saveName);
+                break;
+        case 3:
+                $src_img = imagecreatefrompng($filePath);
+                $dst_img = imagecreatetruecolor($imgW, $imgH); 
+                ImageCopyResampled($dst_img,$src_img,0,0,0,0,$imgW,$imgH,$sz[0],$sz[1]); 
+                ImageInterlace($dst_img);
+                ImagePNG($dst_img, $saveDir.$saveName);
+                break;
+        default:
+                return false;
+                break;
+        }
+        
+        return $saveAll = array($saveDir, $saveName, $imgW, $imgH);
+        if($destroy){
+                ImageDestroy($dst_img); // 제거
+                ImageDestroy($src_img); //
+        }
+	}
+?>

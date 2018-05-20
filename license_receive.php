@@ -31,14 +31,7 @@
             </a>
         </article>
 
-        <h4 class="mb10">시험공지정보</h4>
-        <ul>
-            <li>CQA자격시험일정은 아래 표에서 확인하실 수 있습니다.</li>
-            <li>자격시험에 대해 궁금한 내용은 02-516-2242로 문의하시면 됩니다.</li>
-            <li>더욱 노력하는 CQA가 되겠습니다. 감사합니다.</li>
-            <li>협회나 한국퀼트센터의 소식을 문자로 받을 수 있습니다.</li>
-            <li>이미 지원하신 경우, 수험표출력은 입금확인이 된 후 [CQA자격시험] - [합격자조회 및 응시결과] 메뉴에 접속하시면 확인이 가능합니다.</li>
-        </ul>
+        <h4 class="mb10">시험공지</h4>
 
         <hr style="margin-top: 20px; margin-bottom: 0px;">
         <div class="row">
@@ -47,7 +40,7 @@
                     <thead>
                         <tr class="text-center">
                             <th width="5%">No</th>
-                            <th>시험</th>
+                            <th>시험명</th>
                             <th>접수기간</th>
                             <th>시험일</th>
                             <th>상태</th>

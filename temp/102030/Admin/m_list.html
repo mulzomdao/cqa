@@ -1,0 +1,225 @@
+<?
+	$toDay=explode("-", date("Y-m-d"));
+
+	if($_POST[sYear]!=""){$sYear=$_POST[sYear];}elseif($_GET[sYear]!=""){$sYear=$_GET[sYear];}else{$sYear=$toDay[0];}
+	if($_POST[sMonth]!=""){$sMonth=$_POST[sMonth];}elseif($_GET[sMonth]!=""){$sMonth=$_GET[sMonth];}else{$sMonth=$toDay[1];}
+	if($_POST[sDay]!=""){$sDay=$_POST[sDay];}elseif($_GET[sDay]!=""){$sDay=$_GET[sDay];}else{$sDay=$toDay[2];}
+
+	if($_POST[eYear]!=""){$eYear=$_POST[eYear];}elseif($_GET[eYear]!=""){$eYear=$_GET[eYear];}else{$eYear=$toDay[0];}
+	if($_POST[eMonth]!=""){$eMonth=$_POST[eMonth];}elseif($_GET[eMonth]!=""){$eMonth=$_GET[eMonth];}else{$eMonth=$toDay[1];}
+	if($_POST[eDay]!=""){$eDay=$_POST[eDay];}elseif($_GET[eDay]!=""){$eDay=$_GET[eDay];}else{$eDay=$toDay[2];}
+
+	if($_POST[sYear]!="" || $_GET[sYear]!=""){
+		$sDate=$sYear."-".$sMonth."-".$sDay." 00:00:00";
+		$eDate=$eYear."-".$eMonth."-".$eDay." 23:59:59";
+
+		//$sDate=mktime(0, 0, 0, $sMonth, $sDay, $sYear);
+
+		$where="where regDate<='$eDate' and regDate>='$sDate'";
+		$tail="&sYear=$sYear&sMonth=$sMonth&sDay=$sDay&eYear=$eYear&eMonth=$eMonth&eDay=$eDay";
+		//echo $tail;
+	}else{
+		if($_GET[searchStr]!=""){
+			$where=" where $_GET[searchKey] like '%$_GET[searchStr]%' ";	
+		}else{
+			$where="";
+		}
+	}
+
+	if($_GET[page]!=""){$page=$_GET[page];}
+
+	if($_GET[orderBy]=="point"){
+		$orderBy="order by point desc";
+	}elseif($_GET[orderBy]=="level"){
+		$orderBy="order by level desc";
+	}elseif($_GET[orderBy]=="no"){
+		$orderBy="order by regDate desc";
+	}elseif($_GET[orderBy]=="regDate"){
+		$orderBy="order by regDate desc";
+	}else{
+		$orderBy="order by regDate desc";
+	}
+
+	//페이징 관련 변수들
+	$select_total=mysql_query("select no from member $where");
+	$total=mysql_num_rows($select_total);
+	if (!$page) $page = 1; 
+	$scale=25;
+	$start=($page-1)*$scale; 
+
+	$totNum=$total-(($page-1)*$scale);
+?>
+<script>function winopen(email){window.open('../boardMail.html?email='+email,'_box','width=600,height=400,scrollbars=yes');}</script>
+<table>
+	<tr>
+		<td height=30><b>회원 리스트</b></td>
+	</tr>
+</table>
+
+<table width=100% cellspacing=0 cellpadding=0>
+	<tr>
+		<form name=SearchDay method=get action="index.html";>
+		<input type=hidden name=main value="<?echo $main?>">
+		<input type=hidden name=category value="<?echo $category?>">
+		<td>
+			<select name=sYear>
+<?for($i=2000;$i<=$toDay[0];$i++){?>
+				<option value=<?echo $i?><?if($i==$sYear){echo " selected";}?>><?echo $i?>년</option>
+<?}?>
+			</select><select name=sMonth>
+<?for($i=12;$i>0;$i--){?>
+				<option value=<?echo $i?><?if($i==$sMonth){echo " selected";}?>><?echo $i?>월</option>
+<?}?>
+			</select><select name=sDay>
+<?for($i=31;$i>0;$i--){?>
+				<option value=<?echo $i?><?if($i==$sDay){echo " selected";}?>><?echo $i?>일</option>
+<?}?>
+			</select>
+			~
+			<select name=eYear>
+<?for($i=2003;$i<=$toDay[0];$i++){?>
+				<option value=<?echo $i?><?if($i==$eYear){echo " selected";}?>><?echo $i?>년</option>
+<?}?>
+			</select><select name=eMonth>
+<?for($i=12;$i>0;$i--){?>
+				<option value=<?echo $i?><?if($i==$eMonth){echo " selected";}?>><?echo $i?>월</option>
+<?}?>
+			</select><select name=eDay>
+<?for($i=31;$i>0;$i--){?>
+				<option value=<?echo $i?><?if($i==$eDay){echo " selected";}?>><?echo $i?>일</option>
+<?}?>
+			</select>
+			<input type=button value=검색 onclick="submit();">
+		</td>
+		</form>
+
+		<form method=get name=searchForm>
+		<input type=hidden name=main value="m_list.html">
+		<input type=hidden name=category value="<?echo $category?>">
+		<td valign=bottom align=right>			
+			<select name=searchKey>
+				<option value=id <?if($_GET[searchKey]=="id"){echo "selected";}?>>아이디</option>
+				<option value=name <?if($_GET[searchKey]=="name"){echo "selected";}?>>이름</option>
+				<option value=email <?if($_GET[searchKey]=="email"){echo "selected";}?>>이메일</option>
+				<option value=tel <?if($_GET[searchKey]=="tel"){echo "selected";}?>>전화번호</option>
+				<option value=hp <?if($_GET[searchKey]=="hp"){echo "selected";}?>>핸드폰</option>
+				<option value=level <?if($_GET[searchKey]=="level"){echo "selected";}?>>레벨</option>
+				<option value=jumin1 <?if($_GET[searchKey]=="jumin1"){echo "selected";}?>>주민번호앞</option>
+			</select><input type=text size=20 maxlength=20 name=searchStr value="<?echo $_GET[searchStr];?>">
+			<input type=button value=찾기 onclick="searchString(this.form)">
+		</td>
+	</tr>
+	</form>
+</table>
+
+<table border=1 width=100% cellpadding=0 cellspacing=0>
+	<tr>
+		<td>
+			<table width=100% cellpadding=0 cellspacing=1>
+				<tr height=20 align=center bgcolor=#eeeeee>
+					<td><a href="index.html?main=m_list.html&page=<?echo $page?>&searchKey=<?echo $_GET[searchKey]?>&searchStr=<?echo $_GET[searchStr]?>&orderBy=no"><b>번호</b></a></td>
+					<td><b>아이디</b></td>
+					<td><b>이름</b></td>
+					<td><b>이메일</b></td>
+					<td><b>전화번호</b></td>
+					<td><b>핸드폰</b></td>
+					<!--<td><b>포인트</b></td>-->
+					<td><a href="index.html?main=m_list.html&page=<?echo $page?>&searchKey=<?echo $_GET[searchKey]?>&searchStr=<?echo $_GET[searchStr]?>&orderBy=regDate"><b>가입일</b></a></td>
+					<!--<td><a href="index.html?main=m_list.html&page=<?echo $page?>&searchKey=<?echo $_GET[searchKey]?>&searchStr=<?echo $_GET[searchStr]?>&orderBy=loginDate"><b>로그인날짜</b></a></td>-->
+					<td><a href="index.html?main=m_list.html&page=<?echo $page?>&searchKey=<?echo $_GET[searchKey]?>&searchStr=<?echo $_GET[searchStr]?>&orderBy=level"><b>레벨</b></a></td>
+<?
+	if($_SESSION[s_level]>="9"){
+?>		
+					<td width=3%><b>수정</b></td>
+					<td width=3%><b>삭제</b></td>
+<?
+	}	
+?>
+				</tr>
+<?
+	//no, id, passwd, name, email, tel, hp, zipcode, addr1, addr2, jumin1, jumin2, regDate, birth, marry, job, mailService, level, loginDate  
+	$select="select no, id, name, email, tel, hp, regDate, level, loginDate from member $where $orderBy limit $start, $scale";
+	//echo $select;
+	$result=mysql_query($select);
+
+	while($rows=mysql_fetch_array($result)){
+?>
+				<form action="memberEdit.html" method=post>
+				<input type=hidden name=flag value="levelFix">
+				<input type=hidden name=category value=<?echo $category?>>
+				<input type=hidden name=id value=<?echo $rows[id]?>>
+				<input type=hidden name=page value=<?echo $page?>>
+				<input type=hidden name=searchStr value=<?echo $_GET[searchStr]?>>
+				<input type=hidden name=searchKey value=<?echo $_GET[searchKey]?>>
+				<input type=hidden name=orderBy value=<?echo $_GET[orderBy]?>>
+
+				<tr align=center onmouseover="this.style.backgroundColor='#f7f7f7'" onmouseout="this.style.backgroundColor=''">
+					<td><?echo $totNum;?></td>
+					<td><a href="index.html?main=m_modify.html&id=<?echo $rows[id]?>&page=<?echo $page?>&searchKey=<?echo $_GET[searchKey]?>&searchStr=<?echo $_GET[searchStr]?>"><?echo $rows[id];?></a></td>
+					<td><?echo $rows[name];?></td>
+					<td><a href="javascript:winopen('<?echo $rows[email]?>')"><?echo $rows[email];?></a></td>
+					<td><?echo $rows[tel];?></td>
+					<td><?echo $rows[hp];?></td>
+					<!--
+					<td>
+<?
+		//$select2="select sum(point) totPoint from point where id='$rows[id]' ";
+		$select2="select sum(point) point from point where trim(id)='$rows[id]' ";
+		$result2=mysql_query($select2);
+		//echo $select2;
+		$row2=mysql_fetch_array($result2);
+		echo number_format($row2[point]);
+?>						
+					</td>
+					-->
+					<td><?echo substr($rows[regDate], 0, 16);?></td>
+					<!--<td><?echo substr($rows[loginDate], 2, 14);?></td>-->
+					<td>
+						<select name="level" size="1" class=form2>
+							<option value="">레벨</option>
+<?
+	for($i=1;$i<sizeof($_memberLevel);$i++){
+		if($_memberLevel[$i]==""){continue;}
+?>
+							<option value="<?echo $i?>" <?if($i==$rows[level]){echo "selected";}?>><?echo $_memberLevel[$i]?></option>
+<?
+	}
+?>	
+						</select>
+						<!--
+						<input type=text size=1 maxlength=1 name=level value="<?echo $rows[level];?>" onkeyPress="if ((event.keyCode<48) || (event.keyCode>57)) event.returnValue=false;" style="ime-mode:disabled" onchange="javascript:if(this.value=='' || this.value=='0'){this.value='<?echo $rows[level]?>';alert('레벨를 1이상 입력해주세요');}" class=form2>
+						-->
+					</td>
+<?
+	if($_SESSION[s_level]>="9"){
+?>	
+					<td><input type=submit class=button value=e></td>	
+					<td><input type=button class=button value=x onclick="javascript:var bool = confirm('정말 삭제하시겠습니까 ?'); if(bool) location.href='memberEdit.html?flag=memberDel&memberNo=<?echo $rows[no]?>&page=<?echo $page?>&searchKey=<?echo $_GET[searchKey]?>&searchStr=<?echo $_GET[searchStr]?>';"></td>
+<?
+	}						
+?>
+				</tr>
+				</form>
+<?
+		$totNum--;
+	}	
+?>
+				
+			</table>
+		</td>
+	</tr>
+</table>
+
+<table width=100%>
+	<tr><td height=4></td></tr>
+	<tr width=100%>
+		<td align=center width=100% >
+<?
+	$path="index.html?main=m_list.html";
+	$query="&searchKey=$_GET[searchKey]&searchStr=$_GET[searchStr]&orderBy=$_GET[orderBy]$tail";
+	$page_show=page_navigation($path, $total, $scale, $page, $query);
+	echo $page_show;
+?>
+		</td>
+	</tr>
+</table>

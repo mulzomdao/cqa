@@ -10,12 +10,12 @@
         <div class="container">
             <div class="row">
                 <div class=" col-md-6">
-                    <h4>지회/지부 - <span>지회</span></h4>
+                    <h4>지회/지부/분과 - <span>지회</span></h4>
                 </div>
                 <div class=" col-md-6 mb0">
                     <ol class="breadcrumb text-md-right">
                         <li class="breadcrumb-item active"><a href="index.php">Home</a></li>
-                        <li class="breadcrumb-item active">지회/지부</li>
+                        <li class="breadcrumb-item active">지회/지부/분과</li>
                         <li class="breadcrumb-item">지회</li>
                     </ol>
                 </div>

@@ -1,0 +1,35 @@
+<?
+	$_reurl=urlencode($_SERVER["REQUEST_URI"]);
+	$_repage=parse_url($_SERVER["REQUEST_URI"]);
+	
+	$_email="webmaster@102030.co.kr";
+	$_domain="http://www.102030.co.kr";
+
+	$_dateTime=date("Y-m-d H:i:s");
+	$_date=date("Y-m-d");
+	$_toDay=explode("-", date("Y-m-d"));
+
+	$_yesterDay=date("Y-m-d H:i:s", mktime(date("H"), date("i"), date("s"), date("m") ,date("d")-1, date("Y")));
+	$_lastWeek=date("Y-m-d H:i:s", mktime(date("H"), date("i"), date("s"), date("m") ,date("d")-7, date("Y")));
+
+	$_memberLevel[0]="비회원";
+	$_memberLevel[1]="일반회원";
+	$_memberLevel[2]="정식회원";
+	$_memberLevel[3]="";
+	$_memberLevel[4]="";
+	$_memberLevel[5]="";
+	$_memberLevel[6]="";
+	$_memberLevel[7]="";
+	$_memberLevel[8]="사원";
+	$_memberLevel[9]="관리자";
+
+	$_job[0]="학생";
+	$_job[1]="직장인";
+	$_job[2]="교사";
+	$_job[3]="기타";
+
+	$_boardStyle[1]="일반게시판";
+	$_boardStyle[2]="방명록";
+	$_boardStyle[3]="갤러리";
+	$_boardStyle[4]="공지사항";
+?>

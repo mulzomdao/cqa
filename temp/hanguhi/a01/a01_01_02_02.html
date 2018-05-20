@@ -1,0 +1,116 @@
+<?
+	session_start();
+	include "../inc/connect.html";
+	include "../inc/function.html";
+	//include "../inc/variable.html";
+	//include "../inc/session.html";
+
+
+	//$cont_seq = get_cont_seq();
+
+	$select1 = "select a.*, b.agent_nm, c.user_nm, user_hp, user_tel, user_email from np_contract a, np_agent b, np_user c where a.cont_seq = $_GET[cont_seq] and a.cont_agent_seq = b.agent_seq and a.cont_user_id = c.user_id ";
+
+	//echo $select1;
+	$result1=@mysql_query($select1);
+	$row1=@mysql_fetch_array($result1);
+
+	$select = "select * from np_line where cont_seq = $_GET[cont_seq] order by 1 asc";
+	$result=@mysql_query($select);
+	$num = mysql_num_rows($result);
+
+
+	$select = "select * from np_line where cont_seq = $_GET[cont_seq] order by 1 asc limit 1";
+	$result=@mysql_query($select);
+	$row=@mysql_fetch_array($result);
+
+
+	$select2 = "select * from np_account where cust_seq = $row1[cust_seq] limit 1";
+	//echo $select2;
+	$result2=@mysql_query($select2);
+	$row2=@mysql_fetch_array($result2);
+
+	$open_dt = explode("-", $row[open_dt]);
+
+	$cont_reg_dt = explode(" ", $row1[cont_reg_dt]);
+	$cont_reg_dt = explode("-", $cont_reg_dt[0]);
+
+
+	/*
+	$filename = $row1[cust_nm]."_청약서_".date("Ymd").".doc";
+
+	Header("Content-type: application/vnd.ms-word");
+	Header("Content-type: charset=euc-kr");
+	header("Content-Disposition: attachment; filename=".$filename);
+	Header("Content-Description: PHP3 Generated Data");
+	Header("Pragma: no-cache");
+	Header("Expires: 0");
+	*/
+?>
+
+<HEAD>
+    <link rel="stylesheet" href="http://hanguhi.cafe24.com/css/style2.css" type="text/css">
+</HEAD>
+
+<body onload="javascript:print()">
+
+<table width="1340" height="946" border=0 cellspacing=0 cellpadding=0>
+	<tr>
+		<td background="http://hanguhi.cafe24.com/images/contract.gif"></td>
+	</tr>
+</table>
+
+<div class="lt2" style="position:absolute; left:125px; top:153;"><?echo $open_dt[0]?></div>
+<div class="lt2" style="position:absolute; left:174px; top:153;"><?echo $open_dt[1]?></div>
+<div class="lt2" style="position:absolute; left:215px; top:153;"><?echo $open_dt[2]?></div>
+
+<div class="lt2" style="position:absolute; left:219px; top:172;"><?echo $row1[comp_nm]?><!--상호--></div>
+<div class="lt2" style="position:absolute; left:534px; top:172;"><?echo $row1[comp_num]?><!--사업자등록번호--></div>
+
+<div class="lt2" style="position:absolute; left:219px; top:191;"><?echo $row1[comp_boss_nm]?><!--대표자명--></div>
+<div class="lt2" style="position:absolute; left:534px; top:191;"><?echo $row1[cust_jumin]?><!--주민번호--></div>
+
+<div class="lt2" style="position:absolute; left:219px; top:209;"><?echo $row1[cust_hp]?><!--휴대폰--></div>
+<div class="lt2" style="position:absolute; left:534px; top:209;"><?echo $row1[cust_tel]?><!--전화번호--></div>
+<div class="lt2" style="position:absolute; left:737px; top:209;"><?echo $row1[comp_fax]?><!--팩스--></div>
+
+<div class="lt2" style="position:absolute; left:219px; top:227;"><?echo $row1[cust_addr1]?> <?echo $row1[cust_addr2]?><!--주소--></div>
+
+<div class="lt2" style="position:absolute; left:219px; top:246;"><?echo $row1[user_nm]?><!--담당자명--></div>
+<div class="lt2" style="position:absolute; left:401px; top:246;"><?echo $row1[user_hp]?><!--휴대폰번호--></div>
+<div class="lt2" style="position:absolute; left:592px; top:246;"><?echo $row1[user_tel]?><!--전화번호--></div>
+<div class="lt2" style="position:absolute; left:735px; top:246;"><?echo $row1[user_email]?><!--이메일--></div>
+
+<div class="lt2" style="position:absolute; left:219px; top:266;"><?echo $row2[acc_cust_nm]?><!--요금납부자--></div>
+<div class="lt2" style="position:absolute; left:401px; top:266;"><!--휴대폰번호--></div>
+<div class="lt2" style="position:absolute; left:592px; top:266;"><!--전화번호--></div>
+<div class="lt2" style="position:absolute; left:735px; top:266;"><!--이메일--></div>
+
+<div class="lt2" style="position:absolute; left:219px; top:285;"><?echo $row2[acc_addr1]?> <?echo $row2[acc_addr2]?><!--주소--></div>
+
+
+<div class="lt2" style="position:absolute; left:304px; top:303;"><?echo $row2[acc_nm]?><!--은행명--></div>
+<div class="lt2" style="position:absolute; left:570px; top:303;"><?echo $row2[acc_num]?><!--카드번호--></div>
+
+
+
+<div class="lt2" style="position:absolute; left:355px; top:621;"><font size=3>■</font></div>
+<div class="lt2" style="position:absolute; left:488px; top:612;"><?echo $row[confirm_num]?><!--070-0000-0000--> (<?echo $num?>개)</div>
+
+
+<div class="lt2" style="position:absolute; left:208px; top:854;"><font style="font-size:16"><?echo $cont_reg_dt[0]?><!--2011--></font></div>
+<div class="lt2" style="position:absolute; left:263px; top:854;"><font style="font-size:16"><?echo $cont_reg_dt[1]?><!--09--></font></div>
+<div class="lt2" style="position:absolute; left:302px; top:854;"><font style="font-size:16"><?echo $cont_reg_dt[2]?><!--15--></font></div>
+<div class="lt2" style="position:absolute; left:510px; top:854;"><font style="font-size:16"><?echo $row1[cust_nm]?><!--계약자--></font></div>
+
+
+<div class="lt2" style="position:absolute; left:936px; top:480;"><font style="font-size:14"><?echo $cont_reg_dt[0]?><!--2011--></font></div>
+<div class="lt2" style="position:absolute; left:993px; top:480;"><font style="font-size:14"><?echo $cont_reg_dt[1]?><!--09--></font></div>
+<div class="lt2" style="position:absolute; left:1027px; top:480;"><font style="font-size:14"><?echo $cont_reg_dt[2]?><!--15--></font></div>
+<div class="lt2" style="position:absolute; left:1150px; top:480;"><font style="font-size:14"><?echo $row1[cust_nm]?><!--계약자--></font></div>
+
+<div class="lt2" style="position:absolute; left:930px; top:780;"><font style="font-size:14"><?echo $cont_reg_dt[0]?><!--2011--></font></div>
+<div class="lt2" style="position:absolute; left:979px; top:780;"><font style="font-size:14"><?echo $cont_reg_dt[1]?><!--09--></font></div>
+<div class="lt2" style="position:absolute; left:1010px; top:780;"><font style="font-size:14"><?echo $cont_reg_dt[2]?><!--15--></font></div>
+<div class="lt2" style="position:absolute; left:1130px; top:780;"><font style="font-size:14"><?echo $row1[cust_nm]?><!--계약자--></font></div>
+
+</body>

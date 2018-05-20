@@ -1,0 +1,71 @@
+<?
+	session_start();
+	include "../inc/connect.html";
+	include "../inc/function.html";
+	include "../inc/variable.html";
+	include "../inc/session.html";
+
+	if($_GET[acc_gubun]!="" || $_GET[acc_gubun]!="지로"){
+
+		if($_GET[acc_gubun]=="계좌이체"){
+			$select = "select * from np_code where code_sec = 'bank_nm' and use_yn = 'Y' order by code_nm asc ";
+		}else if($_GET[acc_gubun]=="신용카드"){
+			$select = "select * from np_code where code_sec = 'card_nm' and use_yn = 'Y' order by code_nm asc ";
+		}
+
+		$result=@mysql_query($select);
+		$num = @mysql_num_rows($result);
+	}
+?>
+
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+	<title>NetPlus</title>
+	<link href="/css/style2.css" rel="stylesheet" type="text/css">
+	<script language="javascript" src="/js/script.js"></script>
+</head>
+
+<script>
+
+	function parentInsert(){
+		parent.document.<?echo $_GET[form_nm]?>.acc_nm.value = eval("document.acc_nm.acc_nm.options[document.acc_nm.acc_nm.selectedIndex].value");
+	}
+
+	function accDisabled(flag){
+		if(flag == "Y"){
+			document.acc_nm.acc_nm.disabled = true;
+		}
+	}
+
+</script>
+
+<BODY BGCOLOR=#FFFFFF LEFTMARGIN=0 TOPMARGIN=0 MARGINWIDTH=0 MARGINHEIGHT=0 height=100% align="left">
+
+<table width="1200" border="0" bordercolor="">
+<form name="acc_nm">
+
+	<select name="acc_nm" onchange="parentInsert()" style="width:120" <?echo $_GET[disabled]?>>
+		<option value="">선택해주세요</option>
+<?
+	if($num>0){
+
+		while($rows = @mysql_fetch_array($result)){
+
+			if($rows[code_no] == $_GET[acc_nm]){
+				$selected = "selected";
+			}else{
+				$selected = "";
+			}
+
+			echo "<option value='$rows[code_no]' $selected>$rows[code_nm]</option>";
+
+		}
+	}
+?>
+	</select>
+</form>
+</table>
+
+</body>
+</html>

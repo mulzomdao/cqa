@@ -1,0 +1,231 @@
+<?
+	session_start();
+	include "../inc/connect.html";
+	include "../inc/function.html";
+	include "../inc/variable.html";
+	include "../inc/session.html";
+
+	if($_SESSION[user_level]<20){
+		alert("권한이 없습니다.");
+	}
+
+	if($_SESSION[user_level]<30){
+		$_GET[agent_seq] = $_SESSION[agent_seq];
+		$where .= "and (a.user_level < $_SESSION[user_level] or a.user_id = '$_SESSION[user_id]') ";
+	}else if($_SESSION[user_level]>=90){
+		$where .= "and (a.user_level <= $_SESSION[user_level] or a.user_id = '$_SESSION[user_id]') ";
+	}else{
+		$where .= "and (a.user_level < $_SESSION[user_level] or a.user_id = '$_SESSION[user_id]') ";
+	}
+
+    if($_GET[col] != "" && $_GET[search]){
+		$where .= "and $_GET[col] = '$_GET[search]' ";
+	}
+
+	if($_GET[user_use_yn] != ""){
+		$where .= "and a.user_use_yn = '$_GET[user_use_yn]' ";
+	}
+
+	if($_GET[agent_seq] != ""){
+		$where .= "and a.agent_seq = '$_GET[agent_seq]' ";
+	}
+
+	if($_GET[user_stat] != ""){
+		$where .= "and a.user_stat = '$_GET[user_stat]' ";
+	}
+
+	$select = "select count(*) cnt from np_user a where 1=1 $where" ;
+
+	//echo $select;
+	$result=@mysql_query($select);
+	$row = @mysql_fetch_array($result);
+
+	$total = $row[cnt];
+
+	if(!$_GET[page]) $page = 1;
+	$start_num=($page-1)*$_max_num;
+
+	$select = "
+		select
+			a.*,
+			b.agent_nm,
+			c.login_cnt,
+			c.login_dt
+		from
+			np_user a left outer join (select user_id, count(login_seq) login_cnt, max(login_dt) login_dt from np_login group by user_id) c on a.user_id = c.user_id,
+			np_agent b
+		where
+			a.agent_seq = b.agent_seq
+			$where
+		order by user_reg_dt desc
+		limit $start_num, $_max_num";
+
+	//echo2($select);
+	$result=@mysql_query($select);
+	$pages=ceil($total/$_max_num);
+
+?>
+
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+	<title>NetPlus</title>
+	<link href="/css/style2.css" rel="stylesheet" type="text/css">
+	<script language="javascript" src="/js/script.js"></script>
+</head>
+
+<BODY BGCOLOR=#FFFFFF LEFTMARGIN=0 TOPMARGIN=0 MARGINWIDTH=0 MARGINHEIGHT=0 height=100% align="left">
+
+<table width="1200" border="0" bordercolor="">
+	<tr height=20>
+		<td valign="bottom">현재위치 : HOME &gt; 사용자관리 &gt; 사용자관리 목록</td>
+	</tr>
+</table>
+
+<table width="1200" border="1" cellpadding="2" cellspacing="0" bordercolor="#CCCCCC" bgcolor="#ffffff">
+
+<form name=find method=get action="a04_01_01.html">
+
+	<tr>
+		<td>
+			<table border=1 cellpadding=1 cellspacing=0 width=100% style="border-collapse:collapse" bordercolor=#CCCCCC>
+				<tr>
+					<td width="8%" class="bold">대리점</td>
+					<td width="17%" class="center">
+						<select name="agent_seq">
+							<?agent_combo($_SESSION[user_level], $_GET[agent_seq])?>
+						</select>
+					</td>
+					<td width="8%" class="bold">사용여부</td>
+					<td width="17%" class="center">
+						<select name="user_use_yn" size="1">
+							<option value=''>전체</option>
+							<?code_combo("use_yn", $_GET[user_use_yn])?>
+						</select>
+					</td>
+					<td width="8%" class="bold">상태</td>
+					<td width="17%" class="center">
+						<select name="user_stat">
+							<option value=''>전체</option>
+							<?code_combo("user_stat", $_GET[user_stat])?>
+						</select>
+					</td>
+
+                    <td width="8%" class="bold">검색조건</td>
+                    <td width="17%" class="center" >
+
+						<table width="100%" border="0" bordercolor="DDECFC" cellpadding=0 cellspacing=0>
+							<tr>
+								<td align="left" width=81>
+									<select name="col" style="width:80">
+										<option value="">전체</option>
+										<option value="a.user_nm" <?if($_GET[col] == "a.user_nm"){echo "selected";}?>>사원명</option>
+										<option value="a.user_id" <?if($_GET[col] == "a.user_id"){echo "selected";}?>>아이디</option>
+									</select>
+								</td>
+								<td>
+									<input type="text" name="search" size="15" value="<?echo $_GET[search]?>" onFocus="this.value=''" style="width:118">
+								</td>
+							</tr>
+						</table>
+                    </td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+
+</form>
+</table>
+
+<table width="1200" border="0" bordercolor="DDECFC" cellpadding=0 cellspacing=0>
+	<tr>
+		<td align="right" height=27>
+			<img src="/images/bt_inquiry.gif"  value="조회" style="cursor:hand" onclick="find.submit();">
+			<a style="cursor:hand" onclick="window.open('a04_01_01_02.html', '_user_add', 'width=830, height=360,scrollbars=no, status=no, location=no');"><img src="/images/bt_regi.gif" border=0></a>
+		</td>
+	</tr>
+</table>
+
+<table width="1200" border="1" cellpadding="2" cellspacing="0" bordercolor="#CCCCCC" bgcolor="#ffffff">
+	<tr>
+		<td>
+			<div id="bottomright" style="position: RELATIVE; z-index: 1; overflow:hidden; width: 1193; height:422px; left: 0px; top: 0px; visibility: visible;" align="left">
+			<table border=1 cellpadding=1 cellspacing=0 width=100% style="border-collapse:collapse" bordercolor=#CCCCCC>
+				<tr height=20>
+					<td width="40" class="bold">번호</td>
+					<td width="100" class="bold">아이디</td>
+					<td width="70" class="bold">성명</td>
+					<td width="100" class="bold">권한</td>
+					<td width="*" class="bold">대리점명</td>
+					<td width="120" class="bold">주민번호</td>
+					<td width="120" class="bold">연락처</td>
+					<td width="80" class="bold">상태</td>
+					<td width="70" class="bold">사용여부</td>
+					<td width="80" class="bold">등록일</td>
+					<td width="120" class="bold">최종로그인</td>
+					<td width="100" class="bold">로그인수</td>
+				</tr>
+
+<?
+	if($total>0){
+		$user_num = $total-(($page-1)*$_max_num);
+
+		$height = "450";
+
+		if($_tail_yn == "Y"){
+			$height = "500";
+		}
+
+		while($rows = @mysql_fetch_array($result)){
+			$user_refer = htmlspecialchars(short_str(stripslashes($rows[user_refer]), 40));
+			//$user_refer = htmlspecialchars($user_refer);
+			$user_reg_dt = explode(" ", $rows[user_reg_dt]);
+
+?>
+				<tr align=center height=20 style="vertical-align:bottom;" OnMouseOver=style.background='F3F3F3' OnMouseOut=style.background='FFFFFF'>
+					<td class="center"><?echo $user_num?></td>
+					<td class="center"><a style="cursor:hand" onclick="window.open('a04_01_01_01.html?user_id=<?echo $rows[user_id]?>', '_user_mod', 'width=830, height=360,scrollbars=no, status=no, location=no');"><?echo $rows[user_id]?></a></td>
+					<td class="center"><?echo $rows[user_nm]?></td>
+					<td class="center"><?echo $_user_level[$rows[user_level]]?></td>
+					<td class="center"><?echo $rows[agent_nm]?></td>
+					<td class="center"><?echo $rows[user_jumin]?></td>
+					<td class="center"><?echo $rows[user_hp]?></td>
+					<td class="center"><?echo $rows[user_stat]?></td>
+					<td class="center"><?echo $rows[user_use_yn]?></td>
+					<td class="center"><?echo $user_reg_dt[0]?></td>
+					<td class="center"><?echo $rows[login_dt]?></td>
+					<td class="center"><?echo $rows[login_cnt]?></td>
+				</tr>
+
+<?
+			$user_num--;
+		}
+	}else{
+		echo "<tr><td colspan=20 align=center height=60><b>검색 내용이나 등록된 글이 없습니다.</b></td></tr>";
+	}
+?>
+			</table>
+			<div>
+		</td>
+	</tr>
+</table>
+
+
+<table width="1200" border="0" bordercolor="DDECFC" cellpadding=0 cellspaicng=0>
+	<tr height=30 style="vertical-align:middle;">
+		<td align="left" width="200"></td>
+		<td align="center" width="*">
+<?
+	$url = $_SERVER["REQUEST_URI"];
+	pager($total,$pages,$_max_page,$url,$tail);
+?>
+		</td>
+		<td align="right" width="200">Total <?echo $total?> 건, &nbsp;<font color="red"><?echo $page?></font>/<?echo $pages?> Pages
+	  </td>
+	</tr>
+</table>
+
+<?include "../include/bottom.html";?>
+
+</body>
+</html>

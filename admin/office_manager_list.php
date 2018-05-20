@@ -118,7 +118,7 @@
                             <tr class="text-center">
                                 <td>2</td>
                                 <td>서울 신내</td>
-                                <td class="text-left"><a href="office_manager_edit.php"> ㄴ 01-04</a></td>
+                                <td class="text-left" style="padding-left: 20px"><a href="office_manager_edit.php">ㄴ 01-04</a></td>
                                 <td>변성혜</td>
                                 <td>퀼트수작</td>
                                 <td>1</td>

@@ -1,0 +1,122 @@
+UNKNOWN {
+	FONT-SIZE: 9pt; COLOR: #666666; LINE-HEIGHT: 140%; FONT-FAMILY: "µ¸¿ò"
+}
+P {
+	FONT-SIZE: 9pt; COLOR: #666666; LINE-HEIGHT: 140%; FONT-FAMILY: "µ¸¿ò"
+}
+BLOCKQUOTE {
+	FONT-SIZE: 9pt; COLOR: #666666; LINE-HEIGHT: 140%; FONT-FAMILY: "µ¸¿ò"
+}
+TD {
+	FONT-SIZE: 9pt; COLOR: #666666; LINE-HEIGHT: 140%; FONT-FAMILY: "µ¸¿ò"
+}
+BR {
+	FONT-SIZE: 9pt; COLOR: #666666; LINE-HEIGHT: 140%; FONT-FAMILY: "µ¸¿ò"
+}
+A:link {
+	COLOR: #666666; TEXT-DECORATION: none; cursor:hand
+}
+A:visited {
+	COLOR: #666666; TEXT-DECORATION: none; cursor:hand
+}
+A:active {
+	COLOR: #666666; TEXT-DECORATION: none; cursor:hand
+}
+A:hover {
+	COLOR: #000000; TEXT-DECORATION: none; cursor:hand
+}
+A.menu:link {
+	COLOR: #333366; TEXT-DECORATION: none; cursor:hand
+}
+A.menu:visited {
+	COLOR: #333366; TEXT-DECORATION: none; cursor:hand
+}
+A.menu:active {
+	COLOR: #333366; TEXT-DECORATION: none; cursor:hand
+}
+A.menu:hover {
+	COLOR: #000000; TEXT-DECORATION: none; cursor:hand
+}
+A.topmenu:link {
+	COLOR: #d7f9ff; TEXT-DECORATION: none; cursor:hand
+}
+A.topmenu:visited {
+	COLOR: #d7f9ff; TEXT-DECORATION: none; cursor:hand
+}
+A.topmenu:active {
+	COLOR: #d7f9ff; TEXT-DECORATION: none; cursor:hand
+}
+A.topmenu:hover {
+	COLOR: #ffffff; TEXT-DECORATION: none; cursor:hand
+}
+.box1 {
+	BORDER-RIGHT: #b8b8b8 1px solid; BORDER-TOP: #b8b8b8 1px solid; FONT-SIZE: 9pt; BORDER-LEFT: #b8b8b8 1px solid; COLOR: #333333; BORDER-BOTTOM: #b8b8b8 1px solid; FONT-FAMILY: µ¸¿ò
+}
+.date {
+	FONT-SIZE: 9pt; COLOR: #999999; FONT-FAMILY: "µ¸¿ò"
+}
+.9point {
+	FONT-SIZE: 9pt; LINE-HEIGHT: 140%; FONT-FAMILY: "µ¸¿ò"; TEXT-ALIGN: justify
+}
+.9point A:hover {
+	FONT-SIZE: 9pt; COLOR: black
+}
+.9point A:link {
+	COLOR: black
+}
+.9point A:visited {
+	COLOR: black
+}
+.title {
+	FONT-WEIGHT: bolder; FONT-SIZE: 11pt; LINE-HEIGHT: normal; FONT-FAMILY: "µ¸¿ò"
+}
+
+.table_tlt { font-family:"µ¸¿ò"; color: #4469b4; font-weight: bold; background-color: #e5ecf9; text-align:center; vertical-align:middle;}
+
+.white {font-family:"µ¸¿ò"; color: #555555; background-color: #ffffff; vertical-align:middle;}
+
+.whiteB {font-family:"µ¸¿ò"; color: #555555; background-color: #ffffff; vertical-align:middle; font-weight: bold;}
+
+.mnlist_on {
+	FONT-WEIGHT:bolder; COLOR: #eff6a6;TEXT-DECORATION: none;
+}
+
+img {
+   vertical-align:middle;
+}
+
+select {
+   font-family:"µ¸¿ò"; vertical-align:middle; height:20; FONT-SIZE: 9pt;
+}
+
+textarea {
+   font-family:"µ¸¿ò"; vertical-align:middle; FONT-SIZE: 9pt;
+}
+
+
+INPUT {
+	BORDER-RIGHT: #D3D3D3 1px solid;
+	BORDER-TOP: #D3D3D3 1px solid;
+	PADDING-LEFT: 3px;
+	FONT-SIZE: 12px;
+	BORDER-LEFT: #D3D3D3 1px solid;
+	COLOR: #5E5E5E;
+	PADDING-TOP: 3px;
+	BORDER-BOTTOM: #D3D3D3 1px solid;
+	FONT-FAMILY: "µ¸¿ò", "µ¸¿òÃ¼", arial;
+	BACKGROUND-COLOR: #FFFFFF;
+	vertical-align:middle;
+	height:20;
+}
+
+
+/* checkbox CSS */
+.checkbox {
+	BORDER-RIGHT: #cccccc 0px solid;
+	BORDER-TOP: #cccccc 0px solid;
+	FONT-SIZE: 12px;
+	BORDER-LEFT: #cccccc 0px solid;
+	COLOR: #7f7f7f;
+	BORDER-BOTTOM: #cccccc 0px solid;
+	BACKGROUND-COLOR: #ffffff
+}

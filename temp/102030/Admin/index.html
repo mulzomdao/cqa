@@ -1,0 +1,47 @@
+<?
+	ini_set ("session.gc_maxlifetime", "3600");
+	//session_cache_limiter('no-cache, must-revalidate');
+	//session_destroy();
+
+	session_start();
+
+	//echo date("Y-m-d h:i:s");
+
+	include "connect.html";
+	include "function.html";
+	include "variable.html";		
+
+	if($_SESSION[s_level]<7 || $_SESSION[s_level]==""){
+		echo "<script>alert('관리자 페이지입니다. 관리자로 로그인 해주세요.');location.replace('$_domain/Admin/login.html?prePage=$_reurl');</script>";
+	}
+
+	if($main==""){
+		$main="m_list.html";
+	}
+?>
+<html>
+	<head>
+		<meta http-equiv='content-type' content='text/html; charset=euc-kr'>
+		<link href="include/admin.css" rel="stylesheet" type="text/css">
+		<script LANGUAGE="JavaScript1.2" SRC="include/javascript.js"></script>
+	</head>
+
+	<body topmargin=0 leftmargin=0>
+		<table width=950>
+			<tr>
+				<td colspan=2><?include "include/top.html";?></td>
+			</tr>
+			<tr>
+				<td width=130 valign=top>
+					<?include "include/left.html";?>
+				</td>
+				<td width=820 valign=top>
+					<?include $main;?>
+				</td>
+			</tr>
+			<tr>
+				<td colspan=2><?include "include/bottom.html"?></td>
+			</tr>
+		</table>
+	</body>
+</html>

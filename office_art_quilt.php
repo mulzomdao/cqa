@@ -10,13 +10,13 @@
         <div class="container">
             <div class="row">
                 <div class=" col-md-6">
-                    <h4>지회/지부 - <span>분과-한국아트퀼트</span></h4>
+                    <h4>지회/지부/분과 - <span>한국아트퀼트</span></h4>
                 </div>
                 <div class=" col-md-6 mb0">
                     <ol class="breadcrumb text-md-right">
                         <li class="breadcrumb-item active"><a href="index.php">Home</a></li>
-                        <li class="breadcrumb-item active">지회/지부</li>
-                        <li class="breadcrumb-item">분과-한국아트퀼트</li>
+                        <li class="breadcrumb-item active">지회/지부/분과</li>
+                        <li class="breadcrumb-item">한국아트퀼트</li>
                     </ol>
                 </div>
             </div>
@@ -31,16 +31,16 @@
             </a>
         </article>
 
-        <h4 class="mb10">분과-한국아트퀼트 안내</h4>
+        <h4 class="mb10">한국아트퀼트 분과는</h4>
         <p>
-            2014년, 첫 전시를 시작으로
+            2004년, 첫 전시를 시작으로
             매년  한국아트퀼트전이 열리고 있으며
             기존의 트레디셔널한 퀼트작품에 새로운 창의적요소와</br>
             도전적인 작가의식을 업그레이드한 퀼트작품을 만들고 싶은 모든 퀼터들에게 열려있는 공간입니다. 
         </p>     
 
-        <div class="row mb10">
-            <div class="col-lg-4" style="padding-top: 8px">Total : 100</div>
+        <div class="row" style="margin-bottom: 6px;">
+            <div class="col-lg-4"><h4 class="mb10">한국아트퀼트 목록</h4></div>
             <div class="col-lg-8">
                 <div class="pull-right">
                     <div class="form-inline">
@@ -102,7 +102,7 @@
 
         <hr style="margin-top: 0px; margin-bottom: 10px; border-top-width: 2px">
         <div class="row">
-            <div class="col-lg-4" style="padding-top: 6px"></div>
+            <div class="col-lg-4" style="padding-top: 6px">Total : 100</div>
 
             <div class="col-lg-8">
                 <nav aria-label="Page navigation example">

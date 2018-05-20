@@ -1,0 +1,238 @@
+<?
+	session_start();
+	include "../inc/connect.html";
+	include "../inc/function.html";
+	include "../inc/variable.html";
+	include "../inc/session.html";
+
+	$disabled = "disabled";
+
+	if($_GET[user_id]=="" || $_GET[cust_seq]==""){
+		exit;
+	}
+
+
+	//$select = "select * from np_line where cont_seq = $_GET[cont_seq] order by 1 asc";
+	//http://hanguhi01.cafe24.com/a01/a01_01_07_01.html?user_id=k32004&cust_seq=21&comp_seq=
+	$where = "";
+	$num = 0;
+
+	if($_GET[user_id]){
+		$where .= "and a.cont_user_id = '$_GET[user_id]'";
+	}
+	if($_GET[cust_seq]){
+		$where .= "and a.cust_seq = '$_GET[cust_seq]'";
+	}
+	if($_GET[comp_seq]){
+		//$where .= "and a.comp_seq = '$_GET[comp_seq]'";
+	}
+
+	if($_GET[user_id] != "" && $_GET[cust_seq] != ""){
+
+		$select = "
+			SELECT
+				a.*
+				, b.*
+			FROM
+				np_contract a
+				,
+				(SELECT
+					a.*
+				FROM
+					np_line a
+					,
+					(SELECT
+						MAX(line_seq) line_seq
+					FROM
+						np_line a
+						, np_contract b
+					WHERE a.cont_seq = b.cont_seq
+						AND b.cont_gubun IN ('신규', '이동', '해지')
+						AND b.cont_stat IN ('개통', '완료')
+					GROUP BY gaip_num) b
+				WHERE a.line_seq = b.line_seq) b
+			WHERE a.cont_seq = b.cont_seq
+				AND a.cont_gubun IN ('신규', '이동', '변경')
+				AND a.cont_stat IN ('개통', '완료')
+				$where
+			order by 1
+		";
+		//echo $select;
+
+		$result=@mysql_query($select);
+		$num = mysql_num_rows($result);
+	}
+
+	if($num == 0){
+		exit;
+	}
+?>
+
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+	<title>NetPlus</title>
+	<link href="/css/style2.css" rel="stylesheet" type="text/css">
+	<script language="javascript" src="/js/script.js"></script>
+	<script language="javascript" src="../js/calendar.js"></script>
+</head>
+
+<script>
+
+
+
+	function addRow(maxUp){
+
+		var objTbody1, objRow1, objCell1, add1, objLen1, vNo1;
+		//alert(objLen);
+
+		objTbody1=document.getElementById("appTable");
+		objLen1=objTbody1.rows.length-1;
+
+		parent.delRowAll();
+
+		for(var i = 1; i <= objLen1; i++){
+
+			var objTbody, objRow, objCell, add, objLen, vNo;
+			//alert(objLen);
+
+			objTbody=parent.document.getElementById("appTable");
+			objLen=objTbody.rows.length;
+			viewNo=objLen;
+
+			objRow=objTbody.insertRow(objLen);
+			objRow.align='center';
+
+			var objRowCnt = 14;
+
+			objCell0=objRow.insertCell(0);
+			objCell1=objRow.insertCell(1);
+			objCell2=objRow.insertCell(2);
+			objCell3=objRow.insertCell(3);
+			objCell4=objRow.insertCell(4);
+			objCell5=objRow.insertCell(5);
+			objCell6=objRow.insertCell(6);
+			objCell7=objRow.insertCell(7);
+			objCell8=objRow.insertCell(8);
+			objCell9=objRow.insertCell(9);
+			//objCell10=objRow.insertCell(10);
+			objCell11=objRow.insertCell(11);
+			objCell12=objRow.insertCell(12);
+			objCell13=objRow.insertCell(13);
+
+			objCell1.className = "top";
+			objCell2.className = "top";
+			objCell3.className = "top";
+			objCell4.className = "top";
+			objCell5.className = "top";
+			objCell6.className = "top";
+			objCell7.className = "top";
+			objCell8.className = "top";
+			objCell9.className = "top";
+			//objCell10.className = "top";
+			objCell11.className = "top";
+			objCell12.className = "top";
+			objCell13.className = "top";
+
+			objCell0.innerHTML='<input type="checkbox" class="checkbox" name="chk[]" value="'+eval("cont_appro.line_seq_"+i+".value")+'">';
+			objCell1.innerHTML=eval("cont_appro.line_num_"+i+".value");
+			objCell2.innerHTML=eval("cont_appro.cont_seq_"+i+".value"); //'청약번호';
+			objCell3.innerHTML=eval("cont_appro.cont_gubun_"+i+".value"); //'구분';
+			objCell4.innerHTML=eval("cont_appro.cont_stat_"+i+".value"); //'상태';
+			objCell5.innerHTML=eval("cont_appro.sangho_"+i+".value"); //'상호';
+			objCell6.innerHTML=eval("cont_appro.upjong_"+i+".value"); //'업종';
+			objCell7.innerHTML=eval("cont_appro.line_addr_"+i+".value"); //'주소';
+			objCell8.innerHTML=eval("cont_appro.chacksin_"+i+".value"); //'착신번호';
+			objCell9.innerHTML=eval("cont_appro.hope_num_"+i+".value"); //'희망번호';
+			//objCell10.innerHTML=eval("cont_appro.line_stat_"+i+".value"); //'회선상태';
+			objCell11.innerHTML=eval("cont_appro.open_dt_"+i+".value"); //'개통일자';
+			objCell12.innerHTML=eval("cont_appro.gaip_num_"+i+".value"); //'가입번호';
+			objCell13.innerHTML=eval("cont_appro.confirm_num_"+i+".value"); //'확정번호';
+		}
+	}
+
+</script>
+
+<BODY BGCOLOR=#FFFFFF LEFTMARGIN=0 TOPMARGIN=0 MARGINWIDTH=0 MARGINHEIGHT=0 height=100% onload="addRow(1000)">
+
+<table border=1 cellpadding=1 cellspacing=0 width=100% style="border-collapse:collapse" bordercolor=#CCCCCC id="appTable">
+
+<form method=post name="cont_appro" action="a01_01_edit.html" ENCTYPE='multipart/form-data'>
+
+	<input type="hidden" name="flag" value="">
+	<input type="hidden" name="user_id" value="<?echo $_GET[user_id]?>">
+	<input type="hidden" name="cust_seq" value="<?echo $_GET[cust_seq]?>">
+	<input type="hidden" name="comp_seq" value="<?echo $_GET[comp_seq]?>">
+
+	<tr height=20>
+		<td class="bold" width=40><a style="cursor:hand" onclick="checkAll(cont_appro['chk[]']);">선택</a></td><!--선택-->
+		<td class="bold" width=40>번호</td>
+		<td class="bold" width=60>청약번호</td>
+		<td class="bold" width=40>구분</td>
+		<td class="bold" width=40>상태</td>
+		<td class="bold" width=*>상호</td>
+		<td class="bold" width=*>업종</td>
+		<td class="bold" width=*>주소(안내동)</td>
+		<td class="bold" width=*>착신번호</td>
+		<td class="bold" width=*>희망번호</td>
+		<td class="bold" width=60>회선상태</td>
+		<td class="bold" width=70 onclick="all_fill('open_dt')">개통일자</td>
+		<td class="bold" width=90 onclick="all_fill('gaip_num')">가입번호</td>
+		<td class="bold" width=90 onclick="all_fill('confirm_num')">확정번호</td>
+	</tr>
+				<input type="hidden" name="line_num" value="<?echo $num?>">
+<?
+	if($num>0){
+
+		$line_num = 1;
+		while($rows = @mysql_fetch_array($result)){
+
+?>
+				<input type="hidden" name="line_seq_<?echo $line_num?>" value="<?echo $rows[line_seq]?>">
+				<input type="hidden" name="line_num_<?echo $line_num?>" value="<?echo $line_num?>">
+				<input type="hidden" name="cont_seq_<?echo $line_num?>" value="<?echo $rows[cont_seq]?>"><!--청약서번호-->
+				<input type="hidden" name="cont_gubun_<?echo $line_num?>" value="<?echo $rows[cont_gubun]?>"><!--구분-->
+				<input type="hidden" name="cont_stat_<?echo $line_num?>" value="<?echo $rows[cont_stat]?>"><!--상태-->
+				<input type="hidden" name="sangho_<?echo $line_num?>" value="<?echo $rows[sangho]?>"><!--상호-->
+				<input type="hidden" name="upjong_<?echo $line_num?>" value="<?echo $rows[upjong]?>"><!--업종-->
+				<input type="hidden" name="line_addr_<?echo $line_num?>" value="<?echo $rows[line_addr]?>"><!--주소-->
+				<input type="hidden" name="chacksin_<?echo $line_num?>" value="<?echo $rows[chacksin]?>"><!--착신번호-->
+				<input type="hidden" name="hope_num_<?echo $line_num?>" value="<?echo $rows[hope_num]?>"><!--희망번호-->
+
+				<!--<input type="hidden" name="line_stat_<?echo $line_num?>" value="<?echo $rows[line_stat]?>"><!--상태-->
+				<!--<input type="hidden" name="open_dt_<?echo $line_num?>" value="<?echo $rows[open_dt]?>"><!--개통일자-->
+				<!--<input type="hidden" name="gaip_num_<?echo $line_num?>" value="<?echo $rows[gaip_num]?>"><!--가입번호-->
+				<!--<input type="hidden" name="confirm_num_<?echo $line_num?>" value="<?echo $rows[confirm_num]?>"><!--확정번호-->
+				<tr align=center height=20 style="vertical-align:bottom;">
+
+					<td align=center><input type="checkbox" class="checkbox" name="chk[]" value="<?echo $rows[line_seq]?>" <?if($num==1){echo "checked";}?>></td>
+					<td><?echo $line_num?><input type="hidden" name="no[]" value="<?echo $line_num?>"></td><!--번호-->
+					<td><?echo $rows[cont_seq]?></td><!--청약서번호-->
+					<td><?echo $rows[cont_gubun]?></td><!--구분-->
+					<td><?echo $rows[cont_stat]?></td><!--상태-->
+					<td><?echo $rows[sangho]?><?if($rows[change_sangho]){echo " → $rows[change_sangho]";}?></td><!--상호-->
+					<td><?echo $rows[upjong]?><?if($rows[change_upjong]){echo " → $rows[change_upjong]";}?></td><!--업종-->
+					<td><?echo $rows[line_addr]?><?if($rows[change_addr]){echo " → $rows[change_addr]";}?></td><!--주소-->
+					<td><?echo $rows[chacksin]?><?if($rows[change_chacksin]){echo " → $rows[change_chacksin]";}?></td><!--착신번호-->
+					<td><?echo $rows[hope_num]?><?if($rows[change_hope_num]){echo " → $rows[change_hope_num]";}?></td><!--희망번호-->
+					<td>
+						<select name="line_stat_<?echo $line_num?>" style="width:60" <?echo $disabled?> onchange="line_stat('<?echo $line_num?>')">
+							<?code_combo("line_stat", $rows[line_stat])?>
+						</select>
+					</td><!--상태-->
+					<td><input type="text" name="open_dt_<?echo $line_num?>" value="<?echo $rows[open_dt]?>" style="width:68" <?echo $disabled?> onfocus="blur()"></td><!--개통일자-->
+					<td><input type="text" name="gaip_num_<?echo $line_num?>" value="<?echo $rows[gaip_num]?>" style="width:88" <?echo $disabled?>></td><!--가입번호-->
+					<td><input type="text" name="confirm_num_<?echo $line_num?>" value="<?echo $rows[confirm_num]?>" style="width:88" <?echo $disabled?>></td><!--확정번호-->
+				</tr>
+
+<?
+			$line_num++;
+		}
+	}else{
+		echo "<tr><td colspan=15 align=center height=20 style='vertical-align:bottom;'>조회 내용이 없습니다.</td></tr>";
+	}
+?>
+</form>
+</table>
+
+</body>
