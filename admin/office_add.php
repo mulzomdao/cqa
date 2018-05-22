@@ -49,7 +49,7 @@
                             <div class="ibox-content" style="padding-bottom: 10px">
                                 <fieldset class="form-horizontal">
 
-                                    <form role="form" id="office_manager_add" action="office_manager.php" method="post">
+                                    <form role="form" id="office_add" action="office_crud.php" method="post">
                                         <input type="hidden" id="db_access_flag" name="db_access_flag" value="office_add">
 
                                         <div class="form-group" style="margin-bottom: 5px">
@@ -178,7 +178,7 @@
 
         $(document).ready(function() {
 
-            $("#office_manager_add").validate({
+            $("#office_add").validate({
                 rules: {
                     office_num: {
                         required: true,
@@ -198,16 +198,16 @@
                     }, 
                     mobile: {
                         required: true,
-                        rangelength: [10, 14]
+                        rangelength: [9, 14]
                     }, 
                     email: {
                         email: true
                     }, 
                     shop_phone: {
-                        rangelength: [10, 14]
+                        rangelength: [9, 14]
                     }, 
                     phone: {
-                        rangelength: [10, 14]
+                        rangelength: [9, 14]
                     }, 
                     homepage: {
                         url: true

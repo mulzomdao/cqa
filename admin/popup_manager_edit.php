@@ -156,7 +156,7 @@ typesetting, remaining essentially unchanged. It was popularised in the 1960s wi
                 todayBtn: "linked",
                 keyboardNavigation: false,
                 forceParse: false,
-                calendarWeeks: true,
+                calendarWeeks: false,
                 autoclose: true
             });
 
@@ -166,7 +166,7 @@ typesetting, remaining essentially unchanged. It was popularised in the 1960s wi
                 todayBtn: "linked",
                 keyboardNavigation: false,
                 forceParse: false,
-                calendarWeeks: true,
+                calendarWeeks: false,
                 autoclose: true
             });
         });

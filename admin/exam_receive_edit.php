@@ -112,7 +112,7 @@
                                     <div class="form-group" style="margin-bottom: 5px">
                                         <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 주민번호</label>
                                         <div class="col-sm-5"><input type="text" class="form-control input-sm" value=""></div>
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 생년월일</label>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">생년월일</label>
                                         <div class="col-sm-5">       
                                             <div class="col-sm-4" style="padding-left: 0px; padding-right: 2px;">                                                
                                                 <select class="form-control input-sm m-b" name="account" style="padding-bottom: 2px; margin-bottom: 0px; padding-top: 0px; padding-left: 5px;">
@@ -284,7 +284,7 @@
                 todayBtn: "linked",
                 keyboardNavigation: false,
                 forceParse: false,
-                calendarWeeks: true,
+                calendarWeeks: false,
                 autoclose: true
             });
 
@@ -294,7 +294,7 @@
                 todayBtn: "linked",
                 keyboardNavigation: false,
                 forceParse: false,
-                calendarWeeks: true,
+                calendarWeeks: false,
                 autoclose: true
             });
 
@@ -304,7 +304,7 @@
                 todayBtn: "linked",
                 keyboardNavigation: false,
                 forceParse: false,
-                calendarWeeks: true,
+                calendarWeeks: false,
                 autoclose: true
             });
         });

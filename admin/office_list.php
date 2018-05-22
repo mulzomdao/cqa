@@ -104,7 +104,7 @@
                     <div class="ibox-content" style="padding: 15px">
                         <div class="row">
                             
-                            <form role="form" id="office_manager_list" action="office_manager_list.php" method="get">
+                            <form role="form" id="office_list" action="office_list.php" method="get">
                                 <div class="col-sm-3" style="padding-left: 15px; padding-right: 5px">
                                     <div class="form-group">
                                         <div class="input-group"><input type="text" class="form-control input-sm" name="office_id" id="office_id" value="<?echo $_GET[office_id]?>" placeholder="지회/지부번호">
@@ -168,16 +168,19 @@
                             <tr class="text-center">
                                 <td><?echo $total?></td>
                                 <td><?echo $rows[office_area]?></td>
-                                <td class="text-left"><a href="office_manager_edit.php?office_id=<?echo $rows[office_id]?>"><?echo $rows[office_id]?></a></td>
+                                <td class="text-left">
+                                    <?if ($rows[sub_office_num] != "") {echo "&nbsp;&nbsp;&nbsp;&nbsp; └ ";}?>
+                                    <a href="office_edit.php?office_id=<?echo $rows[office_id]?>"><?echo $rows[office_id]?></a>
+                                </td>
                                 <td><?echo $rows[member_name]?></td>
                                 <td><?echo $rows[office_name]?></td>
                                 <td><?echo $rows[recommend_count]?></td>
                                 <td><?echo $rows[reg_date]?></td>
                                 <td class="text-right">
                                     <div class="btn-group">
-                                        <a type="button" class="btn btn-xs btn-white" href="office_manager_add.php?office_num=<?echo $rows[office_num]?>">Add</a>
-                                        <a type="button" class="btn btn-xs btn-white" href="office_manager_edit.php?office_id=<?echo $rows[office_id]?>">View</a>
-                                        <a type="button" class="btn btn-xs btn-white" href="#">Delete</a>
+                                        <a type="button" class="btn btn-xs btn-white" href="office_add.php?office_num=<?echo $rows[office_num]?>">Add</a>
+                                        <a type="button" class="btn btn-xs btn-white" href="office_edit.php?office_id=<?echo $rows[office_id]?>">View</a>
+                                        <a type="button" class="btn btn-xs btn-white" href="javascript:office_delete('<?echo $rows[office_id]?>')">Delete</a>
                                     </div>
                                 </td>
                             </tr>
@@ -190,7 +193,7 @@
                             <tr>
                                 <td colspan="8" style="padding-right: 0px; padding-left: 0px; padding-bottom: 0px;">
                                                                     
-                                    <a type="button" class="btn btn-sm btn-success" href="office_manager_add.php">Add</a>
+                                    <a type="button" class="btn btn-sm btn-success" href="office_add.php">Add</a>
                                     <!-- <a type="button" class="btn btn-sm btn-success">Excel Down</a> -->
 
                                     <!-- <div class="btn-group pull-right">
@@ -231,7 +234,7 @@
 
             $('.footable').footable();
 
-            $("#office_manager_list").validate({
+            $("#office_list").validate({
                 rules: {
                     office_id: {
                         rangelength: [2, 20]
@@ -251,6 +254,12 @@
             });
 
         });
+
+        function office_delete(office_id) {
+            if (confirm("삭제하시겠습니까?")) {
+                location.href="office_crud.php?db_access_flag=office_crud_delete&office_id="+office_id;
+            }
+        }
     </script>
 </body>
 

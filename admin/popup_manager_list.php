@@ -52,7 +52,7 @@
                                 <div class="form-group">
                                     <div class="input-group"><input type="text" class="form-control input-sm" placeholder="제목">
                                         <span class="input-group-btn">
-                                            <a type="button" class="btn btn-sm btn-white"><i class="fa fa-search"></i></a> 
+                                            <button type="submit" class="btn btn-sm btn-white btn-submit"><i class="fa fa-search"></i></button>
                                         </span>
                                     </div>
                                 </div>
@@ -63,7 +63,7 @@
                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                         <input id="date_added" type="text" class="form-control input-sm" value="" placeholder="시작일">
                                         <span class="input-group-btn">
-                                            <a type="button" class="btn btn-sm btn-white"><i class="fa fa-search"></i></a> 
+                                            <button type="submit" class="btn btn-sm btn-white btn-submit"><i class="fa fa-search"></i></button>
                                         </span>
                                     </div>       
                                 </div>
@@ -74,7 +74,7 @@
                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                         <input id="date_modified" type="text" class="form-control input-sm" value="" placeholder="종료일">
                                         <span class="input-group-btn">
-                                            <a type="button" class="btn btn-sm btn-white"><i class="fa fa-search"></i></a> 
+                                            <button type="submit" class="btn btn-sm btn-white btn-submit"><i class="fa fa-search"></i></button>
                                         </span>
                                     </div>
                                 </div>
@@ -84,7 +84,7 @@
                                     <div class="input-group">
                                         <input type="text" class="form-control input-sm" placeholder="등록자">
                                         <span class="input-group-btn">
-                                            <a type="button" class="btn btn-sm btn-white"><i class="fa fa-search"></i></a> 
+                                            <button type="submit" class="btn btn-sm btn-white btn-submit"><i class="fa fa-search"></i></button>
                                         </span>
                                     </div>
                                 </div>
@@ -201,7 +201,7 @@
                 todayBtn: "linked",
                 keyboardNavigation: false,
                 forceParse: false,
-                calendarWeeks: true,
+                calendarWeeks: false,
                 autoclose: true
             });
 
@@ -211,7 +211,7 @@
                 todayBtn: "linked",
                 keyboardNavigation: false,
                 forceParse: false,
-                calendarWeeks: true,
+                calendarWeeks: false,
                 autoclose: true
             });
 

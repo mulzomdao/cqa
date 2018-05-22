@@ -21,7 +21,7 @@
                     </a>
                     <ul class="dropdown-menu animated fadeInRight m-t-xs">
                         <li><a href="/index.php">HomePage</a></li>
-                        <li><a href="member_manager_edit.php">Profile</a></li>
+                        <li><a href="member_edit.php">Profile</a></li>
                         <li class="divider"></li>
                         <li><a href="#">Logout</a></li>
                     </ul>
@@ -42,27 +42,27 @@
                 </ul>
             </li>
             <li <?if ($page_1_name == 'office') {echo "class='active'";}?>>
-                <a href="office_manager_list.php"><i class="fa fa-sitemap"></i><span class="nav-label">지회/지부관리</span></a>
+                <a href="office_list.php"><i class="fa fa-sitemap"></i><span class="nav-label">지회/지부관리</span></a>
             </li>
             <li <?if ($page_1_name == 'member') {echo "class='active'";}?>>
-                <a href="member_manager_list.php"><i class="fa fa-users"></i><span class="nav-label">회원관리</span></a>
+                <a href="member_list.php"><i class="fa fa-users"></i><span class="nav-label">회원관리</span></a>
             </li>
             <li <?if ($page_1_name == 'exam') {echo "class='active'";}?>>
                 <a href="#"><i class="fa fa-file-text-o"></i><span class="nav-label">자격시험/접수관리</span><span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level <?if ($page_1_name != 'exam_manager.php' && $page_1_name != 'exam_receive_manager.php') {echo "collapse";}?>">
-                    <li <?if ($page_2_name == 'exam_manager') {echo "class='active'";}?>><a href="exam_manager_list.php">시험관리</a></li>
-                    <li <?if ($page_2_name == 'exam_receive') {echo "class='active'";}?>><a href="exam_receive_manager_list.php">시험접수관리</a></li>
+                <ul class="nav nav-second-level <?if ($page_1_name != 'exam_crud.php' && $page_1_name != 'exam_receive_crud.php') {echo "collapse";}?>">
+                    <li <?if ($page_2_name == 'exam_crud') {echo "class='active'";}?>><a href="exam_list.php">시험관리</a></li>
+                    <li <?if ($page_2_name == 'exam_receive') {echo "class='active'";}?>><a href="exam_receive_list.php">시험접수관리</a></li>
                 </ul>
             </li>
             <li <?if ($page_1_name == 'education') {echo "class='active'";}?>>
                 <a href="#"><i class="fa fa-pencil-square-o"></i><span class="nav-label">교육/접수관리</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level <?if ($page_1_name != 'education_manager.php' && $page_1_name != 'education_receive_manager.php') {echo "collapse";}?>">
-                    <li <?if ($page_2_name == 'education_manager') {echo "class='active'";}?>><a href="education_manager_list.php">교육관리</a></li>
-                    <li <?if ($page_2_name == 'education_receive') {echo "class='active'";}?>><a href="education_receive_manager_list.php">교육접수관리</a></li>
+                    <li <?if ($page_2_name == 'education_manager') {echo "class='active'";}?>><a href="education_list.php">교육관리</a></li>
+                    <li <?if ($page_2_name == 'education_receive') {echo "class='active'";}?>><a href="education_receive_list.php">교육접수관리</a></li>
                 </ul>
             </li>
             <li <?if ($page_1_name == 'book') {echo "class='active'";}?>>
-                <a href="book_manager_list.php"><i class="fa fa-book"></i><span class="nav-label">교재관리</span>
+                <a href="book_list.php"><i class="fa fa-book"></i><span class="nav-label">교재관리</span>
             </li>
         </ul>
 

@@ -82,7 +82,7 @@
                             <div class="ibox-content" style="padding-bottom: 10px">
                                 <fieldset class="form-horizontal">
 
-                                    <form role="form" id="office_manager_edit" action="office_manager.php" method="post">
+                                    <form role="form" id="office_edit" action="office_crud.php" method="post">
                                         <input type="hidden" id="db_access_flag" name="db_access_flag" value="office_edit">
                                         <input type="hidden" id="office_id" name="office_id" value="<?echo $row[office_id]?>">
 
@@ -190,7 +190,7 @@
 
                                         <div class="form-group pull-right" style="margin-bottom: 5px; padding-right: 15px">
                                             <button type="submit" class="btn btn-sm btn-success">Save</button>
-                                            <a type="button" class="btn btn-sm btn-success" id="office_manager_delete">Delete</a>
+                                            <a type="button" class="btn btn-sm btn-success" id="office_crud_delete">Delete</a>
                                             <a type="button" class="btn btn-sm btn-success" href="javascript:history.go(-1)">Cancel</a>
                                         </div>
 
@@ -215,7 +215,7 @@
         $(document).ready(function() {
 
 
-            $("#office_manager_edit").validate({
+            $("#office_edit").validate({
                 rules: {
                     office_num: {
                         required: true,
@@ -235,16 +235,16 @@
                     }, 
                     mobile: {
                         required: true,
-                        rangelength: [10, 14]
+                        rangelength: [9, 14]
                     }, 
                     email: {
                         email: true
                     }, 
                     shop_phone: {
-                        rangelength: [10, 14]
+                        rangelength: [9, 14]
                     }, 
                     phone: {
-                        rangelength: [10, 14]
+                        rangelength: [9, 14]
                     }, 
                     homepage: {
                         url: true
@@ -257,9 +257,9 @@
                 }
             });            
             
-            $("#office_manager_delete").click(function(){
+            $("#office_crud_delete").click(function(){
                 if (confirm('삭제 하시겠습니까?')) {
-                    location.replace('office_manager.php?db_access_flag=office_manager_delete&office_id=<?echo $row[office_id]?>');
+                    location.replace('office_crud.php?db_access_flag=office_crud_delete&office_id=<?echo $row[office_id]?>');
                 }
             });
         });

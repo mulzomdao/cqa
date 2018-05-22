@@ -7,7 +7,9 @@
 
 	if ($_POST["db_access_flag"] == "member_add") {
 
-        $birthday = $_POST[birth_year] . '-' . $_POST[birth_month] . '-' . $_POST[birth_date];
+        if ($_POST[birth_year] != "" && $_POST[birth_month] != "" && $_POST[birth_mbirth_dateonth] != "") {
+            $birthday = $_POST[birth_year] . '-' . $_POST[birth_month] . '-' . $_POST[birth_date];
+        }
 
         $query = "
             INSERT INTO cqa_member (member_id, member_no, recommend_id, member_name, member_eng_name, member_password, member_level
@@ -26,7 +28,7 @@
                  , '$_POST[member_level]'
                  , '$_POST[member_right]'
                  , '$_POST[right_start_date]'
-                 , date_add(STR_TO_DATE('$_POST[right_start_date]', '%Y-%m-%d'), INTERVAL $_POST[member_right] year) right_end_date
+                 , date_add(date_add(STR_TO_DATE('$_POST[right_start_date]', '%Y-%m-%d'), INTERVAL - 1 DAY), INTERVAL $_POST[member_right] year) right_end_date
                  , '$birthday'
                  , '$_POST[sex]'
                  , '$_POST[mobile]'
@@ -54,12 +56,14 @@
             echo mysqli_error($connect);
             // echo("<script>history.go(-1);</script>"); 
         } else {
-            echo("<script>location.replace('member_manager_list.php');</script>"); 
+            echo("<script>location.replace('member_list.php');</script>"); 
         }
 
     } else if ($_POST["db_access_flag"] == "member_edit") {
 
-        $birthday = $_POST[birth_year] . '-' . $_POST[birth_month] . '-' . $_POST[birth_date];
+        if ($_POST[birth_year] != "" && $_POST[birth_month] != "" && $_POST[birth_mbirth_dateonth] != "") {
+            $birthday = $_POST[birth_year] . '-' . $_POST[birth_month] . '-' . $_POST[birth_date];
+        }
 
         $query = "
             UPDATE cqaquilt.cqa_member
@@ -70,7 +74,7 @@
                  , member_level = '$_POST[member_level]'
                  , member_right = '$_POST[member_right]'
                  , right_start_date = '$_POST[right_start_date]'
-                 , right_end_date = date_add(STR_TO_DATE('$_POST[right_start_date]', '%Y-%m-%d'), INTERVAL $_POST[member_right] year)
+                 , right_end_date = date_add(date_add(STR_TO_DATE('$_POST[right_start_date]', '%Y-%m-%d'), INTERVAL - 1 DAY), INTERVAL $_POST[member_right] year)
                  , birthday = '$birthday'
                  , sex = '$_POST[sex]'
                  , mobile = '$_POST[mobile]'
@@ -98,10 +102,10 @@
             echo mysqli_error($connect);
             // echo("<script>history.go(-1);</script>"); 
         } else {
-            echo("<script>location.replace('member_manager_edit.php?member_id=". $_POST[member_id] ."');</script>"); 
+            echo("<script>location.replace('member_edit.php?member_id=". $_POST[member_id] ."');</script>"); 
         }
 
-    } else if ($_GET["db_access_flag"] == "member_manager_delete") {
+    } else if ($_GET["db_access_flag"] == "member_crud_delete") {
 
         $query = "
             UPDATE cqa_member
@@ -116,7 +120,7 @@
         if ($result === false) {
             echo mysqli_error($connect);
         } else {
-            echo("<script>location.replace('member_manager_list.php');</script>"); 
+            echo("<script>location.replace('member_list.php');</script>"); 
         }
 
 	}

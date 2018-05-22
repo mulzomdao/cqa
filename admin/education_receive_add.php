@@ -30,7 +30,7 @@
 
             <div class="row wrapper border-bottom white-bg page-heading">
                 <div class="col-lg-10">
-                    <h2>교육접수상세</h2>
+                    <h2>교육접수등록</h2>
                     <ol class="breadcrumb">
                         <li>
                             <a href="index.html">Home</a>
@@ -70,7 +70,7 @@
                                         </div>
                                         <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 아이디</label>
                                         <div class="col-sm-5">
-                                            <div class="input-group"><input type="text" class="form-control input-sm" value="yaabam" placeholder="아이디검색">
+                                            <div class="input-group"><input type="text" class="form-control input-sm" value="" placeholder="아이디검색">
                                                 <span class="input-group-btn">
                                                     <a type="button" class="btn btn-sm btn-primary"><i class="fa fa-search"></i></a> 
                                                 </span>
@@ -79,15 +79,14 @@
                                     </div>
                                     <div class="form-group" style="margin-bottom: 5px">
                                         <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 성명</label>
-                                        <div class="col-sm-5"><input type="text" class="form-control input-sm" value="김미애"></div>
+                                        <div class="col-sm-5"><input type="text" class="form-control input-sm" placeholder=""></div>
                                         <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">이메일</label>
-                                        <div class="col-sm-5"><input type="text" class="form-control input-sm" value="yaabam@naver.com"></div>
+                                        <div class="col-sm-5"><input type="text" class="form-control input-sm" placeholder=""></div>
                                     </div>
                                     <div class="form-group" style="margin-bottom: 0px">                                             
                                         <div class="col-sm-6" style="padding: 0px">                            
                                             <label class="col-sm-2 control-label" style="padding-left: 0px; padding-right: 0px;"><i class="fa fa-check"></i> 핸드폰</label>
-                                            <div class="col-sm-10" style="margin-bottom: 5px;"><input type="text" class="form-control input-sm" value="010-4752-0491"></div>
-
+                                            <div class="col-sm-10" style="margin-bottom: 5px;"><input type="text" class="form-control input-sm" value=""></div>
                                             <label class="col-sm-2 control-label" style="padding-left: 0px; padding-right: 0px">전화</label>
                                             <div class="col-sm-10"><input type="text" class="form-control input-sm" value=""></div>
                                         </div>                                  
@@ -95,17 +94,17 @@
                                         <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px; padding-top: 24px;">주소</label>
                                         <div class="col-sm-5">
                                             <div class="col-sm-3" style="padding: 0px;">
-                                                <div class="input-group"><input type="text" class="form-control input-sm" value="03936">
+                                                <div class="input-group"><input type="text" class="form-control input-sm" value="">
                                                     <span class="input-group-btn">
                                                         <a type="button" class="btn btn-sm btn-primary"><i class="fa fa-search"></i></a> 
                                                     </span>
                                                 </div>
                                             </div>
                                             <div class="col-sm-9" style="padding-left: 4px; padding-right: 0px;">
-                                                <input type="text" class="form-control input-sm" value="서울 마포구 월드컵북로 235 (성산동, 성산시영아파트)">
+                                                <input type="text" class="form-control input-sm" value="">
                                             </div>
                                             <div class="col-sm-12" style="padding: 0px; margin-bottom: 5px">
-                                                <input type="text" class="form-control input-sm" value="16동 706호">
+                                                <input type="text" class="form-control input-sm" value="">
                                             </div>
                                         </div>
                                     </div>
@@ -122,7 +121,7 @@
                                                 <option value="0">미입금</option>
                                                 <option value="5">입금완료</option>
                                                 <option value="10">미이수</option>
-                                                <option value="20" selected>이수완료</option>
+                                                <option value="20">이수완료</option>
                                             </select>                                         
                                         </div>
                                     </div>
@@ -171,7 +170,7 @@
                 todayBtn: "linked",
                 keyboardNavigation: false,
                 forceParse: false,
-                calendarWeeks: true,
+                calendarWeeks: false,
                 autoclose: true
             });
 
@@ -181,7 +180,7 @@
                 todayBtn: "linked",
                 keyboardNavigation: false,
                 forceParse: false,
-                calendarWeeks: true,
+                calendarWeeks: false,
                 autoclose: true
             });
 
@@ -191,7 +190,7 @@
                 todayBtn: "linked",
                 keyboardNavigation: false,
                 forceParse: false,
-                calendarWeeks: true,
+                calendarWeeks: false,
                 autoclose: true
             });
         });

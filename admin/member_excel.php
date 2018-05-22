@@ -51,7 +51,7 @@
                     WHEN right_start_date < NOW() and now() <= right_end_date then '유효'
                     else '만료'
                end right_flag
-             , DATE_FORMAT(a.birthday, '%Y-%m-%d') birthday 
+             , if(DATE_FORMAT(a.birthday, '%Y-%m-%d') = '0000-00-00', '', DATE_FORMAT(a.birthday, '%Y-%m-%d')) birthday
              , sex
              , CONCAT(mobile) mobile 
              , CONCAT(phone) phone
@@ -110,7 +110,6 @@
                     <td>이메일</td>
                     <td>홈페이지</td>
                     <td>주소</td>
-                    <td>사용여부</td>
                     <td>등록자ID</td>
                     <td>등록일</td>
                     <td>수정자ID</td>
@@ -137,7 +136,6 @@
                     <td><?echo $rows[email]?></td>
                     <td><?echo $rows[homepage]?></td>
                     <td style='mso-number-format:\@;'><?echo $rows[zip_code]?> <?echo $rows[zip_address]?> <?echo $rows[detail_address]?></td>
-                    <td><?echo $rows[use_flag]?></td>
                     <td><?echo $rows[reg_id]?></td>
                     <td style='mso-number-format:\@;'><?echo $rows[reg_date]?></td>
                     <td><?echo $rows[modify_id]?></td>

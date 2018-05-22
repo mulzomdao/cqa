@@ -41,14 +41,11 @@
         $result = mysqli_query($connect, $query);
 
         if ($result === false) {            
-            var_dump($_POST);
-            echo "</br>";
             var_dump($query);
-            echo "</br>";
             echo mysqli_error($connect);
             // echo("<script>history.go(-1);</script>"); 
         } else {
-            echo("<script>location.replace('office_manager_list.php');</script>"); 
+            echo("<script>location.replace('office_list.php');</script>"); 
         }
 
     } else if ($_POST["db_access_flag"] == "office_edit") {
@@ -81,17 +78,14 @@
         $result = mysqli_query($connect, $query);
 
         if ($result === false) {            
-            var_dump($_POST);
-            echo "</br>";
             var_dump($query);
-            echo "</br>";
             echo mysqli_error($connect);
             // echo("<script>history.go(-1);</script>"); 
         } else {
-            echo("<script>location.replace('office_manager_edit.php?office_id=". $_POST[office_id] ."');</script>"); 
+            echo("<script>location.replace('office_edit.php?office_id=". $_POST[office_id] ."');</script>"); 
         }
 
-    } else if ($_GET["db_access_flag"] == "office_manager_delete") {
+    } else if ($_GET["db_access_flag"] == "office_crud_delete") {
 
         $query = "
             UPDATE cqa_office
@@ -101,14 +95,13 @@
              WHERE use_flag = 'Y'
                and if(sub_office_num != '', CONCAT(office_num, '-', sub_office_num), office_num) = '$_GET[office_id]'
         ";
-        var_dump($query);
 
         $result = mysqli_query($connect, $query);
 
         if ($result === false) {
             echo mysqli_error($connect);
         } else {
-            echo("<script>location.replace('office_manager_list.php');</script>"); 
+            echo("<script>location.replace('office_list.php');</script>"); 
         }
 
 	}

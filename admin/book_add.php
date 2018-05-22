@@ -30,7 +30,7 @@
 
             <div class="row wrapper border-bottom white-bg page-heading">
                 <div class="col-lg-10">
-                    <h2>교재상세</h2>
+                    <h2>교재등록</h2>
                     <ol class="breadcrumb">
                         <li>
                             <a href="index.html">Home</a>
@@ -60,15 +60,15 @@
                                         <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 품목</label>
                                         <div class="col-sm-5">
                                             <select class="form-control input-sm m-b" name="account" style="padding-bottom: 2px; margin-bottom: 0px; padding-top: 0px; padding-left: 5px;">
-                                                <option value='36'>교재</option>
-                                                <option value='34' selected>템플릿</option>
+                                                <option value='36' >교재</option>
+                                                <option value='34' >템플릿</option>
                                             </select>
                                         </div>
                                         <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 품명</label>
-                                        <div class="col-sm-5"><input type="text" class="form-control input-sm" value="10 템플릿이용 곡선피싱"></div>
+                                        <div class="col-sm-5"><input type="text" class="form-control input-sm" placeholder=""></div>
                                     </div>
                                     <div class="form-group" style="margin-bottom: 5px">                                        
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 상품이미지</label>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">상품이미지</label>
                                         <div class="col-sm-5">                                        
                                             <div class="fileinput fileinput-new input-group" data-provides="fileinput" style="margin: 0px">
                                                 <div class="form-control input-sm" data-trigger="fileinput">
@@ -84,7 +84,7 @@
                                             </div> 
                                         </div>
                                         <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">구성/크기</label>
-                                        <div class="col-sm-5"><input type="text" class="form-control input-sm" value=""></div>
+                                        <div class="col-sm-5"><input type="text" class="form-control input-sm" placeholder=""></div>
                                     </div>
 
                                     <div class="form-group" style="margin-bottom: 5px">
@@ -92,19 +92,19 @@
                                         <div class="col-sm-5">
                                             
                                             <div class="col-sm-6" style="padding-left: 0px; padding-right: 2px;">
-                                                <input type="text" class="form-control input-sm" value="15,000">
+                                                <input type="text" class="form-control input-sm" placeholder="소비자가">
                                             </div>
                                             <div class="col-sm-6" style="padding-left: 2px; padding-right: 0px;">
-                                                <input type="text" class="form-control input-sm" value="10,500">
+                                                <input type="text" class="form-control input-sm" placeholder="회원가">
                                             </div>
                                         </div>
 
                                         <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">재고수량</label>
-                                        <div class="col-sm-5"><input type="text" class="form-control input-sm" value="0"></div>
+                                        <div class="col-sm-5"><input type="text" class="form-control input-sm" placeholder=""></div>
                                     </div>
                                     <div class="form-group" style="margin-bottom: 5px">
                                         <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">요약설명</label>
-                                        <div class="col-sm-5"><input type="text" class="form-control input-sm" value=""></div>
+                                        <div class="col-sm-5"><input type="text" class="form-control input-sm" placeholder=""></div>
                                         <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 상태</label>
                                         <div class="col-sm-5">
                                             <label class="radio-inline"><input type="radio" value="option1" id="inlineCheckbox1" checked=""> 판매중 </label>
@@ -113,19 +113,21 @@
                                             <label class="radio-inline"><input type="radio" value="option1" id="inlineCheckbox1"> 판매예정 </label>  
                                         </div>
                                     </div>
+
                                     <div class="form-group" style="margin-bottom: 5px">
                                         <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 교재설명</label>
                                         <div class="col-sm-11">
                                             <div class="summernote"></div>                                            
                                         </div>
                                     </div>
+
                                     <div class="form-group" style="margin-bottom: 5px">
                                         <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">관리메모</label>
                                         <div class="col-sm-11"><textarea class="form-control" rows="3"></textarea></div>
                                     </div>
+
                                     <div class="form-group pull-right" style="margin-bottom: 0px; padding-right: 15px">
-                                        <a type="button" class="btn btn-sm btn-success" href="board_manager_add.php">Save</a>
-                                        <a type="button" class="btn btn-sm btn-success" href="board_manager_add.php">Delete</a>
+                                        <a type="button" class="btn btn-sm btn-success" href="board_manager_add.php">Add</a>
                                         <a type="button" class="btn btn-sm btn-success" href="board_manager_add.php">Cancel</a>
                                     </div>
 
@@ -164,7 +166,7 @@
                 todayBtn: "linked",
                 keyboardNavigation: false,
                 forceParse: false,
-                calendarWeeks: true,
+                calendarWeeks: false,
                 autoclose: true
             });
 
@@ -174,7 +176,7 @@
                 todayBtn: "linked",
                 keyboardNavigation: false,
                 forceParse: false,
-                calendarWeeks: true,
+                calendarWeeks: false,
                 autoclose: true
             });
 
@@ -184,7 +186,7 @@
                 todayBtn: "linked",
                 keyboardNavigation: false,
                 forceParse: false,
-                calendarWeeks: true,
+                calendarWeeks: false,
                 autoclose: true
             });
         });

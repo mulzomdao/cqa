@@ -107,7 +107,7 @@
                     <div class="ibox-content" style="padding: 15px">
                         <div class="row">
                             
-                            <form role="form" id="member_manager_list" action="member_manager_list.php" method="get">
+                            <form role="form" id="member_list" action="member_list.php" method="get">
                                 <div class="col-sm-3" style="padding-left: 15px; padding-right: 5px">
                                     <div class="form-group">
                                         <div class="input-group">                                        
@@ -215,7 +215,7 @@
 ?>
                             <tr class="text-center">
                                 <td class="text-center"><?echo $total?></td>
-                                <td><a href="member_manager_edit.php?member_id=<?echo $rows[member_id]?>"><?echo $rows[member_id]?></a></td>
+                                <td><a href="member_edit.php?member_id=<?echo $rows[member_id]?>"><?echo $rows[member_id]?></a></td>
                                 <td><?echo $rows[member_name]?></td>
                                 <td><?echo $rows[mobile]?></td>
                                 <td><?echo $rows[member_no]?></td>
@@ -225,7 +225,7 @@
                                 <td><?echo $rows[reg_date]?></td>
                                 <td class="text-right">
                                     <div class="btn-group">
-                                        <a type="button" class="btn btn-xs btn-white" href="member_manager_edit.php?member_id=<?echo $rows[member_id]?>">View</a>
+                                        <a type="button" class="btn btn-xs btn-white" href="member_edit.php?member_id=<?echo $rows[member_id]?>">View</a>
                                         <a type="button" class="btn btn-xs btn-white" href="javascript:member_delete('<?echo $rows[member_id]?>')">Delete</a>
                                     </div>
                                 </td>
@@ -239,7 +239,7 @@
                             <tr>
                                 <td colspan="10" style="padding-right: 0px; padding-left: 0px; padding-bottom: 0px;">
                                     
-                                    <a type="button" class="btn btn-sm btn-success" href="member_manager_add.php">Add</a>
+                                    <a type="button" class="btn btn-sm btn-success" href="member_add.php">Add</a>
                                     <a type="button" class="btn btn-sm btn-success" onclick="excel_down()">Excel Down</a>
 
                                     <!-- <div class="btn-group pull-right">
@@ -280,7 +280,7 @@
 
             $('.footable').footable();
 
-            $("#member_manager_list").validate({
+            $("#member_list").validate({
                 rules: {
                     id_name_no: {
                         minlength: 2,
@@ -292,21 +292,21 @@
             });
 
             $('.btn-submit').click(function(){
-                $("#member_manager_list").attr("action", "member_manager_list.php");
+                $("#member_list").attr("action", "member_list.php");
             });
 
         });
 
         function excel_down() {
             if (confirm('엑셀다운 받으시겠습니까?')) {
-                $("#member_manager_list").attr("action", "member_manager_excel.php");
-                $("#member_manager_list").submit();
+                $("#member_list").attr("action", "member_excel.php");
+                $("#member_list").submit();
             }
         }
 
         function member_delete(member_id) {
             if (confirm("삭제하시겠습니까?")) {
-                location.href="member_manager.php?db_access_flag=member_manager_delete&member_id="+member_id;
+                location.href="member_crud.php?db_access_flag=member_crud_delete&member_id="+member_id;
             }
         }
     </script>

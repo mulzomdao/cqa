@@ -39,4 +39,10 @@
     $_right_flag['TEMP'] = "준회원";
     $_right_flag['ACTIVE'] = "유효";
     $_right_flag['END'] = "만료";
+
+    $_exam_status['RECEIVE_WAIT'] = "접수대기";
+    $_exam_status['RECEIVING'] = "접수중";
+    $_exam_status['RECEIVE_END'] = "접수완료";
+    $_exam_status['EXAM_END'] = "시험종료";
+    
 ?>

@@ -30,16 +30,16 @@
 
             <div class="row wrapper border-bottom white-bg page-heading">
                 <div class="col-lg-10">
-                    <h2>시험상세</h2>
+                    <h2>교육상세</h2>
                     <ol class="breadcrumb">
                         <li>
                             <a href="index.html">Home</a>
                         </li>
                         <li>
-                            <a>자격시험/접수관리</a>
+                            <a>교육/접수관리</a>
                         </li>
                         <li>
-                            <strong>시험관리</strong>
+                            <strong>교육관리</strong>
                         </li>
                     </ol>
                 </div>
@@ -54,40 +54,26 @@
 
                         <div class="ibox float-e-margins">
                             <div class="ibox-title">
-                                <h5>시험정보</small></h5>
+                                <h5>교육정보</small></h5>
                             </div>
                             <div class="ibox-content" style="padding-bottom: 10px">
 
                                 <fieldset class="form-horizontal">
                                     <div class="form-group" style="margin-bottom: 5px">
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 시험명</label>
-                                        <div class="col-sm-5"><input type="text" class="form-control input-sm" value="2018년 2급 자격검정 면제및 시험"></div>
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 합격자발표</label>
-                                        <div class="col-sm-5">
-                                            <div class="input-group date">
-                                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                                <input id="date_added" type="text" class="form-control input-sm" value="2018-04-07">
-                                            </div>         
-                                        </div>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 교육명</label>
+                                        <div class="col-sm-5"><input type="text" class="form-control input-sm" value="2018년 2급 자격검정 면제 및 교육"></div>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 교육장소</label>
+                                        <div class="col-sm-5"><input type="text" class="form-control input-sm" value="서울 양재동 한국퀼트센터"></div>
                                     </div>
                                     <div class="form-group" style="margin-bottom: 5px">
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><small>핸드퀼트 </small>시험일</label>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 교육일</label>
                                         <div class="col-sm-5">
                                             <div class="input-group date">
                                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                                 <input id="date_modified" type="text" class="form-control input-sm" value="2018-03-24">
                                             </div>                                                
                                         </div>
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><small>머신퀼트 </small>시험일</label>
-                                        <div class="col-sm-5">
-                                            <div class="input-group date">
-                                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                                <input id="date_modified" type="text" class="form-control input-sm" value="2018-03-25">
-                                            </div>                                                
-                                        </div>
-                                    </div>
-                                    <div class="form-group" style="margin-bottom: 5px">
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><small>핸드퀼트 </small>접수기간</label>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 접수기간</label>
                                         <div class="col-sm-5">
                                             <div class="col-sm-6" style="padding: 0px; padding-right: 2px">
                                                 <div class="input-group date">
@@ -102,28 +88,6 @@
                                                 </div>                                                
                                             </div>
                                         </div>
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><small>머신퀼트 </small>접수기간</label>
-                                        <div class="col-sm-5">
-                                            <div class="col-sm-6" style="padding: 0px; padding-right: 2px">
-                                                <div class="input-group date">
-                                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                                    <input id="date_added" type="text" class="form-control input-sm" value="2018-03-01">
-                                                </div>                                                
-                                            </div>
-                                            <div class="col-sm-6" style="padding: 0px; padding-left: 2px">
-                                                <div class="input-group date">
-                                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                                    <input id="date_added" type="text" class="form-control input-sm" value="2018-03-23">
-                                                </div>                                                
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group" style="margin-bottom: 5px">
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 고사장</label>
-                                        <div class="col-sm-5"><input type="text" class="form-control input-sm" value="서울 양재동 한국퀼트센터"></div>
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 응시과목</label>
-                                        <div class="col-sm-5"><input type="text" class="form-control input-sm" value="핸드면제/ 머신면제/핸드퀼트/머신퀼트"></div>
                                     </div>
 
                                     <div class="form-group" style="margin-bottom: 5px">
@@ -141,7 +105,7 @@
                                     </div>
 
                                     <div class="form-group" style="margin-bottom: 5px">
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 시험안내</label>
+                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 교육안내</label>
                                         <div class="col-sm-11">
                                             <div class="summernote"></div>                                            
                                         </div>
@@ -200,7 +164,7 @@
                 todayBtn: "linked",
                 keyboardNavigation: false,
                 forceParse: false,
-                calendarWeeks: true,
+                calendarWeeks: false,
                 autoclose: true
             });
 
@@ -210,7 +174,7 @@
                 todayBtn: "linked",
                 keyboardNavigation: false,
                 forceParse: false,
-                calendarWeeks: true,
+                calendarWeeks: false,
                 autoclose: true
             });
 
@@ -220,7 +184,7 @@
                 todayBtn: "linked",
                 keyboardNavigation: false,
                 forceParse: false,
-                calendarWeeks: true,
+                calendarWeeks: false,
                 autoclose: true
             });
         });

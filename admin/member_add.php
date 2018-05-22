@@ -51,7 +51,7 @@
                             <div class="ibox-content" style="padding-bottom: 10px">                    
 
                                 <fieldset class="form-horizontal">
-                                    <form role="form" id="member_manager_add" action="member_manager.php" method="post">
+                                    <form role="form" id="member_add" action="member_crud.php" method="post">
                                         <input type="hidden" id="db_access_flag" name="db_access_flag" value="member_add">
 
                                         <div class="form-group" style="margin-bottom: 5px">
@@ -95,10 +95,12 @@
                                             </div>
                                         </div>
                                         <div class="form-group" style="margin-bottom: 5px">
-                                            <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 시작일</label>
+                                            <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"> 시작일</label>
                                             <div class="col-sm-5">
-                                                <div class="input-group date">
-                                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                <div class="input-group date">                                                    
+                                                    <span class="input-group-btn" style="vertical-align: top">
+                                                        <button type="button" class="btn btn-sm btn-white" style="border-right-width: 0px; margin-bottom: 0px"><i class="fa fa-calendar"></i></button>
+                                                    </span>
                                                     <input id="right_start_date" name="right_start_date" type="text" class="form-control input-sm" value="<?echo $_date?>" readonly style="background: white">
                                                 </div>
                                             </div>
@@ -151,7 +153,7 @@
                                             <div class="col-sm-5"><input type="text" class="form-control input-sm" name="member_eng_name" id="member_eng_name" value=""></div>
                                         </div>
                                         <div class="form-group" style="margin-bottom: 5px">
-                                            <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 생년월일</label>
+                                            <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">생년월일</label>
                                             <div class="col-sm-5">       
                                                 <div class="col-sm-4" style="padding-left: 0px; padding-right: 2px;">                                                
                                                     <select class="form-control input-sm m-b" name="birth_year" id="birth_year" style="padding-bottom: 2px; margin-bottom: 0px; padding-top: 0px; padding-left: 5px;">
@@ -254,46 +256,44 @@
                 todayBtn: "linked",
                 keyboardNavigation: false,
                 forceParse: false,
-                calendarWeeks: true,
+                calendarWeeks: false,
                 autoclose: true
             });
 
-            $("#member_manager_add").validate({
+            $("#member_add").validate({
                 rules: {
                     recommend_id: {
                         required: true
-                    }, member_id: {
+                    }, 
+                    member_id: {
                         required: true,
-                        minlength: 4,
-                        maxlength: 20
-                    }, member_password: {
+                        rangelength: [4, 20]
+                    }, 
+                    member_password: {
                         required: true,
-                        minlength: 4,
-                        maxlength: 20
-                    }, member_password_confirm: {
+                        rangelength: [4, 20]
+                    }, 
+                    member_password_confirm: {
                         required: true,
-                        minlength: 4,
-                        maxlength: 20,
+                        rangelength: [4, 20],
                         equalTo: '#member_password'
-                    }, member_name: {
+                    }, 
+                    member_name: {
                         required: true,
-                        minlength: 2,
-                        maxlength: 20
-                    }, member_eng_name: {
-                        minlength: 8,
-                        maxlength: 40
-                    }, birth_year: {
-                        required: true
-                    }, birth_month: {
-                        required: true
-                    }, birth_date: {
-                        required: true
-                    }, email: {
+                        rangelength: [2, 20]
+                    },
+                    member_eng_name: {
+                        rangelength: [8, 40]
+                    }, 
+                    email: {
                         email: true
-                    }, mobile: {
-                        required: true,
-                        minlength: 10,
-                        maxlength: 14
+                    }, 
+                    mobile: {
+                        required: true,                        
+                        rangelength: [9, 14]
+                    },
+                    phone: {
+                        rangelength: [9, 14]
                     }
                 }, submitHandler: function (form) {
                     if (confirm("등록 하시겠습니까?")) {

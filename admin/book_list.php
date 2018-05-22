@@ -23,16 +23,13 @@
 
             <div class="row wrapper border-bottom white-bg page-heading">
                 <div class="col-lg-10">
-                    <h2>교육접수목록</h2>
+                    <h2>교재목록</h2>
                     <ol class="breadcrumb">
                         <li>
                             <a href="index.html">Home</a>
                         </li>
-                        <li>
-                            <a>교육/접수관리</a>
-                        </li>
                         <li class="active">
-                            <strong>교육접수관리</strong>
+                            <strong>교재관리</strong>
                         </li>
                     </ol>
                 </div>
@@ -44,7 +41,7 @@
             <div class="wrapper wrapper-content animated fadeInRight ecommerce">                                    
                 <div class="ibox">
                     <div class="ibox-title">
-                        <h5>교육접수목록조회</h5>
+                        <h5>교재목록조회</h5>
                     </div>
                     <div class="ibox-content" style="padding: 15px">
                         <div class="row">
@@ -52,13 +49,12 @@
                                 <div class="form-group">
                                     <div class="input-group">
                                         <select class="form-control input-sm m-b" name="account" style="padding-bottom: 2px; margin-bottom: 0px; padding-top: 0px; padding-left: 5px;">
-                                            <option value="">교육명</option>
-                                            <option value='36' >2018년 2급 자격검정 면제및 교육</option>
-                                            <option value='34' >2017 강사자격 및 이관심사</option>
-                                            <option value='33' >2017년 2급 핸드, 머신 자격검정 교육</option>
+                                            <option value="">품목</option>
+                                            <option value='36' >템플릿</option>
+                                            <option value='34' >교재</option>
                                         </select>
                                         <span class="input-group-btn">
-                                            <a type="button" class="btn btn-sm btn-white"><i class="fa fa-search"></i></a> 
+                                            <button type="submit" class="btn btn-sm btn-white btn-submit"><i class="fa fa-search"></i></button>
                                         </span>
                                     </div>
                                 </div>
@@ -66,21 +62,11 @@
                             <div class="col-sm-3" style="padding-left: 5px; padding-right: 5px">
                                 <div class="form-group">
                                     <div class="input-group">
-                                        <input type="text" class="form-control input-sm" placeholder="아이디">
+                                        <input type="text" class="form-control input-sm" placeholder="품명">
                                         <span class="input-group-btn">
-                                            <a type="button" class="btn btn-sm btn-white"><i class="fa fa-search"></i></a> 
+                                            <button type="submit" class="btn btn-sm btn-white btn-submit"><i class="fa fa-search"></i></button>
                                         </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-3" style="padding-left: 5px; padding-right: 5px">
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control input-sm" placeholder="성명">
-                                        <span class="input-group-btn">
-                                            <a type="button" class="btn btn-sm btn-white"><i class="fa fa-search"></i></a> 
-                                        </span>
-                                    </div>
+                                    </div>       
                                 </div>
                             </div>
                             <div class="col-sm-3" style="padding-left: 5px; padding-right: 5px">
@@ -88,13 +74,23 @@
                                     <div class="input-group">
                                         <select class="form-control input-sm m-b" name="account" style="padding-bottom: 2px; margin-bottom: 0px; padding-top: 0px; padding-left: 5px;">
                                             <option value="">상태</option>
-                                            <option value="0">미입금</option>
-                                            <option value="5">입금완료</option>
-                                            <option value="10">미이수완료</option>
-                                            <option value="20">이수완료</option>
+                                            <option value="0">판매중</option>
+                                            <option value="5">일시판매중지</option>
+                                            <option value="10">판매중지</option>
+                                            <option value="20">판매예정</option>
                                         </select>
                                         <span class="input-group-btn">
-                                            <a type="button" class="btn btn-sm btn-white"><i class="fa fa-search"></i></a> 
+                                            <button type="submit" class="btn btn-sm btn-white btn-submit"><i class="fa fa-search"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-3" style="padding-left: 5px; padding-right: 5px">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control input-sm" placeholder="요약설명">
+                                        <span class="input-group-btn">
+                                            <button type="submit" class="btn btn-sm btn-white btn-submit"><i class="fa fa-search"></i></button>
                                         </span>
                                     </div>
                                 </div>
@@ -105,57 +101,53 @@
                             <thead>
                             <tr>
                                 <th width="48" class="text-center">No</th>
-                                <th data-hide="phone" class="text-center">교육</th>
-                                <th data-hide="phone" class="text-center">교육일시</th>
-                                <th data-hide="phone" class="text-center">성명</th>
-                                <th data-hide="phone" class="text-center">연락처</th>
-                                <th data-hide="phone" class="text-center">교육장소</th>
+                                <th data-hide="phone" class="text-center">품목</th>
+                                <th data-hide="phone" class="text-center">품명</th>
+                                <th data-hide="phone" class="text-center">가격</th>
                                 <th data-hide="phone" class="text-center">상태</th>
+                                <th data-hide="phone" class="text-center">재고</th>
                                 <th class="text-right">Action</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr class="text-center">
                                 <td>3</td>
-                                <td><a href="education_receive_manager_edit.php">2018년 2급 자격검정 면제및 교육</a></td>
-                                <td>2018-03-24</td>
-                                <td>김미애</td>
-                                <td>010-4752-0491</td>
-                                <td>서울 양재동 한국퀼트센터</td>
-                                <td>이수완료</td>
+                                <td>템플릿</td>
+                                <td><a href="book_edit.php">11 피클디쉬(소)</a></td>
+                                <td>[소비자가] 25,000 &nbsp; / &nbsp; [회원가] 17,500</td>
+                                <td>판매중</td>
+                                <td>0</td>
                                 <td class="text-right">
                                     <div class="btn-group">
-                                        <a type="button" class="btn btn-xs btn-white" href="education_receive_manager_edit.php">View</a>
+                                        <a type="button" class="btn btn-xs btn-white" href="book_edit.php">View</a>
                                         <a type="button" class="btn btn-xs btn-white" href="#">Delete</a>
                                     </div>
                                 </td>
                             </tr>
                             <tr class="text-center">
                                 <td>2</td>
-                                <td><a href="education_receive_manager_edit.php">2018년 2급 자격검정 면제및 교육</a></td>
-                                <td>2018-03-24</td>
-                                <td>유수연</td>
-                                <td>010-3639-4859</td>
-                                <td>서울 양재동 한국퀼트센터</td>
-                                <td>이수완료</td>
+                                <td>템플릿</td>
+                                <td><a href="book_edit.php">11 피클디쉬(대)</a></td>
+                                <td>[소비자가] 30,000 &nbsp; / &nbsp; [회원가] 21,000</td>
+                                <td>판매중</td>
+                                <td>0</td>
                                 <td class="text-right">
                                     <div class="btn-group">
-                                        <a type="button" class="btn btn-xs btn-white" href="education_receive_manager_edit.php">View</a>
+                                        <a type="button" class="btn btn-xs btn-white" href="book_edit.php">View</a>
                                         <a type="button" class="btn btn-xs btn-white" href="#">Delete</a>
                                     </div>
                                 </td>
                             </tr>
                             <tr class="text-center">
                                 <td>1</td>
-                                <td><a href="education_receive_manager_edit.php">2018년 2급 자격검정 면제및 교육</a></td>
-                                <td>2018-03-24</td>
-                                <td>박미림</td>
-                                <td>010-6375-0210</td>
-                                <td>서울 양재동 한국퀼트센터</td>
-                                <td>이수완료</td>
+                                <td>템플릿</td>
+                                <td><a href="book_edit.php">10 템플릿이용 곡선피싱</a></td>
+                                <td>[소비자가] 15,000 &nbsp; / &nbsp; [회원가] 15,400</td>
+                                <td>판매중</td>
+                                <td>0</td>
                                 <td class="text-right">
                                     <div class="btn-group">
-                                        <a type="button" class="btn btn-xs btn-white" href="education_receive_manager_edit.php">View</a>
+                                        <a type="button" class="btn btn-xs btn-white" href="book_edit.php">View</a>
                                         <a type="button" class="btn btn-xs btn-white" href="#">Delete</a>
                                     </div>
                                 </td>
@@ -163,9 +155,9 @@
                             </tbody>
                             <tfoot>
                             <tr>
-                                <td colspan="11" style="padding-right: 0px; padding-left: 0px; padding-bottom: 0px;">
+                                <td colspan="7" style="padding-right: 0px; padding-left: 0px; padding-bottom: 0px;">
                                     
-                                    <a type="button" class="btn btn-sm btn-success" href="education_receive_manager_add.php">Add</a>
+                                    <a type="button" class="btn btn-sm btn-success" href="book_add.php">Add</a>
                                     <a type="button" class="btn btn-sm btn-success">Excel Down</a>
 
                                     <!-- <div class="btn-group pull-right">
@@ -212,7 +204,7 @@
                 todayBtn: "linked",
                 keyboardNavigation: false,
                 forceParse: false,
-                calendarWeeks: true,
+                calendarWeeks: false,
                 autoclose: true
             });
 
@@ -222,7 +214,7 @@
                 todayBtn: "linked",
                 keyboardNavigation: false,
                 forceParse: false,
-                calendarWeeks: true,
+                calendarWeeks: false,
                 autoclose: true
             });
 

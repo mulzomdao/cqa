@@ -92,7 +92,7 @@
                             </div>
                             <div class="ibox-content" style="padding-bottom: 10px">  
                                 <fieldset class="form-horizontal">
-                                    <form role="form" id="member_manager_edit" action="member_manager.php" method="post">
+                                    <form role="form" id="member_edit" action="member_crud.php" method="post">
                                         <input type="hidden" id="db_access_flag" name="db_access_flag" value="member_edit">
 
                                         <div class="form-group" style="margin-bottom: 5px">
@@ -132,7 +132,9 @@
                                             <label class="col-sm-2 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 시작일</label>
                                             <div class="col-sm-10">
                                                 <div class="input-group date">
-                                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                    <span class="input-group-btn" style="vertical-align: top">
+                                                        <button type="button" class="btn btn-sm btn-white" style="border-right-width: 0px; margin-bottom: 0px"><i class="fa fa-calendar"></i></button>
+                                                    </span>
                                                     <input id="right_start_date" name="right_start_date" type="text" class="form-control input-sm" value="<?echo $row[right_start_date]?>" readonly style="background: white">
                                                 </div>
                                             </div>
@@ -189,7 +191,7 @@
                                             <div class="col-sm-10"><input type="text" class="form-control input-sm" name="member_eng_name" id="member_eng_name" value="<?echo $row[member_eng_name]?>"></div>
                                         </div>
                                         <div class="form-group" style="margin-bottom: 5px">
-                                            <label class="col-sm-2 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 생년월일</label>
+                                            <label class="col-sm-2 control-label" style="padding-left: 0px; padding-right: 0px">생년월일</label>
                                             <div class="col-sm-10">                                                     
                                                 <div class="col-sm-4" style="padding-left: 0px; padding-right: 2px;">                                                
                                                     <select class="form-control input-sm m-b" name="birth_year" id="birth_year" style="padding-bottom: 2px; margin-bottom: 0px; padding-top: 0px; padding-left: 5px;">
@@ -299,7 +301,7 @@
 
                                         <div class="form-group pull-right" style="margin-bottom: 5px; padding-right: 15px">
                                             <button type="submit" class="btn btn-sm btn-success">Save</button>
-                                            <a type="button" class="btn btn-sm btn-success" id="member_manager_delete">Delete</a>
+                                            <a type="button" class="btn btn-sm btn-success" id="member_crud_delete">Delete</a>
                                             <a type="button" class="btn btn-sm btn-success" href="javascript:history.go(-1)">Cancel</a>
                                         </div>
                                     </form>
@@ -423,42 +425,47 @@
                 todayBtn: "linked",
                 keyboardNavigation: false,
                 forceParse: false,
-                calendarWeeks: true,
+                calendarWeeks: false,
                 autoclose: true
             });
 
-            $("#member_manager_edit").validate({
+            $("#member_edit").validate({
                 rules: {
                     recommend_id: {
                         required: true
-                    }, member_id: {
+                    }, 
+                    member_id: {
                         required: true,
                         rangelength: [4, 20]
-                    }, member_password: {
+                    }, 
+                    member_password: {
                         required: true,
                         rangelength: [4, 20]
-                    }, member_password_confirm: {
+                    }, 
+                    member_password_confirm: {
                         required: true,
                         rangelength: [4, 20],
                         equalTo: '#member_password'
-                    }, member_name: {
+                    }, 
+                    member_name: {
                         required: true,
                         rangelength: [2, 20]
-                    }, member_eng_name: {
+                    }, 
+                    member_eng_name: {
                         rangelength: [8, 40]
-                    }, birth_year: {
-                        required: true
-                    }, birth_month: {
-                        required: true
-                    }, birth_date: {
-                        required: true
-                    }, email: {
+                    }, 
+                    email: {
                         email: true
-                    }, homepage: {
+                    }, 
+                    homepage: {
                         url: true
-                    }, mobile: {
+                    }, 
+                    mobile: {
                         required: true,
-                        rangelength: [10, 14]
+                        rangelength: [9, 14]
+                    }, 
+                    phone: {
+                        rangelength: [9, 14]
                     }
                 }, submitHandler: function (form) {
                     if (confirm("수정 하시겠습니까?")) {
@@ -467,9 +474,9 @@
                 }
             });
             
-            $("#member_manager_delete").click(function(){
+            $("#member_crud_delete").click(function(){
                 if (confirm('삭제 하시겠습니까?')) {
-                    location.replace('member_manager.php?db_access_flag=member_manager_delete&member_id=<?echo $row[member_id]?>');
+                    location.replace('member_crud.php?db_access_flag=member_crud_delete&member_id=<?echo $row[member_id]?>');
                 }
             });
 
