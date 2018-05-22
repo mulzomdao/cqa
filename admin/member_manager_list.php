@@ -106,16 +106,14 @@
                     </div>
                     <div class="ibox-content" style="padding: 15px">
                         <div class="row">
-
-
                             
                             <form role="form" id="member_manager_list" action="member_manager_list.php" method="get">
                                 <div class="col-sm-3" style="padding-left: 15px; padding-right: 5px">
                                     <div class="form-group">
                                         <div class="input-group">                                        
-                                            <input type="text" class="form-control input-sm" name="id_name_no" id="id_name_no" value="<?echo $_GET[id_name_no]?>" placeholder="아이디/성명/회원번호">
+                                            <input type="text" class="form-control input-sm btn-submit" name="id_name_no" id="id_name_no" value="<?echo $_GET[id_name_no]?>" placeholder="아이디/성명/회원번호">
                                             <span class="input-group-btn" style="vertical-align: top">
-                                                <button type="submit" class="btn btn-sm btn-white"><i class="fa fa-search"></i></button> 
+                                                <button type="submit" class="btn btn-sm btn-white btn-submit"><i class="fa fa-search"></i></button> 
                                             </span>
                                         </div>
                                     </div>
@@ -123,7 +121,7 @@
                                 <div class="col-sm-3" style="padding-left: 5px; padding-right: 5px">
                                     <div class="form-group">                        
                                         <div class="input-group">
-                                            <select class="form-control input-sm m-b" name="member_right" id="member_right" style="padding-bottom: 2px; margin-bottom: 0px; padding-top: 0px; padding-left: 5px;">
+                                            <select class="form-control input-sm m-b btn-submit" name="member_right" id="member_right" style="padding-bottom: 2px; margin-bottom: 0px; padding-top: 0px; padding-left: 5px;">
                                                 <option value=''>자격선택</option>
                                                 <option value="0" <?if ($_GET[member_right] == "0") {echo "selected";}?>>준회원 (cqa웹사이트 열람만 가능)</option>
                                                 <option value="1" <?if ($_GET[member_right] == "1") {echo "selected";}?>>정회원 1년 (30,000원)</option>
@@ -133,7 +131,7 @@
                                             </select>
 
                                             <span class="input-group-btn">
-                                                <button type="submit" class="btn btn-sm btn-white"><i class="fa fa-search"></i></button> 
+                                                <button type="submit" class="btn btn-sm btn-white btn-submit"><i class="fa fa-search"></i></button> 
                                             </span>
                                         </div>       
                                     </div>
@@ -142,7 +140,7 @@
                                     <div class="form-group">
                                         <div class="input-group">
                                             
-                                            <select class="form-control input-sm m-b" name="member_level" id="member_level" style="padding-bottom: 2px; margin-bottom: 0px; padding-top: 0px; padding-left: 5px;">
+                                            <select class="form-control input-sm m-b btn-submit" name="member_level" id="member_level" style="padding-bottom: 2px; margin-bottom: 0px; padding-top: 0px; padding-left: 5px;">
                                                 <option value=''>레벨선택</option>                                                
                                                 <option value="9" <?if ($_GET[member_level] == "9") {echo "selected";}?>>레벨9 (준회원)</option>
                                                 <option value="8" <?if ($_GET[member_level] == "8") {echo "selected";}?>>레벨8 (상실회원)</option>
@@ -156,7 +154,7 @@
                                             </select>
 
                                             <span class="input-group-btn">
-                                                <button type="submit" class="btn btn-sm btn-white"><i class="fa fa-search"></i></button> 
+                                                <button type="submit" class="btn btn-sm btn-white btn-submit"><i class="fa fa-search"></i></button> 
                                             </span>
                                         </div>
                                     </div>
@@ -164,7 +162,7 @@
                                 <div class="col-sm-3" style="padding-left: 5px; padding-right: 15px">
                                     <div class="form-group">
                                         <div class="input-group">
-                                            <select class="form-control input-sm m-b" name="recommend_id" id="recommend_id" style="padding-bottom: 2px; margin-bottom: 0px; padding-top: 0px; padding-left: 5px;">
+                                            <select class="form-control input-sm m-b btn-submit" name="recommend_id" id="recommend_id" style="padding-bottom: 2px; margin-bottom: 0px; padding-top: 0px; padding-left: 5px;">
                                                 <option value=''>추천인선택</option>
                                                 <option value='10' <?if ($_GET[recommend_id] == "10") {echo "selected";}?>>[LYDIA 30] 장흥숙 (10-00)</option>
                                                 <option value='07' <?if ($_GET[recommend_id] == "07") {echo "selected";}?>>[S퀼트] 송재란 (07-00)</option>
@@ -186,7 +184,7 @@
                                             </select>
 
                                             <span class="input-group-btn">
-                                                <button type="submit" class="btn btn-sm btn-white"><i class="fa fa-search"></i></button> 
+                                                <button type="submit" class="btn btn-sm btn-white btn-submit"><i class="fa fa-search"></i></button> 
                                             </span>
                                         </div>
                                     </div>
@@ -228,7 +226,7 @@
                                 <td class="text-right">
                                     <div class="btn-group">
                                         <a type="button" class="btn btn-xs btn-white" href="member_manager_edit.php?member_id=<?echo $rows[member_id]?>">View</a>
-                                        <a type="button" class="btn btn-xs btn-white" href="#">Delete</a>
+                                        <a type="button" class="btn btn-xs btn-white" href="javascript:member_delete('<?echo $rows[member_id]?>')">Delete</a>
                                     </div>
                                 </td>
                             </tr>
@@ -242,7 +240,7 @@
                                 <td colspan="10" style="padding-right: 0px; padding-left: 0px; padding-bottom: 0px;">
                                     
                                     <a type="button" class="btn btn-sm btn-success" href="member_manager_add.php">Add</a>
-                                    <a type="button" class="btn btn-sm btn-success">Excel Down</a>
+                                    <a type="button" class="btn btn-sm btn-success" onclick="excel_down()">Excel Down</a>
 
                                     <!-- <div class="btn-group pull-right">
                                         <button type="button" class="btn btn-sm btn-white"><i class="fa fa-angle-double-left"></i></button>
@@ -293,7 +291,24 @@
                 }
             });
 
+            $('.btn-submit').click(function(){
+                $("#member_manager_list").attr("action", "member_manager_list.php");
+            });
+
         });
+
+        function excel_down() {
+            if (confirm('엑셀다운 받으시겠습니까?')) {
+                $("#member_manager_list").attr("action", "member_manager_excel.php");
+                $("#member_manager_list").submit();
+            }
+        }
+
+        function member_delete(member_id) {
+            if (confirm("삭제하시겠습니까?")) {
+                location.href="member_manager.php?db_access_flag=member_manager_delete&member_id="+member_id;
+            }
+        }
     </script>
 </body>
 

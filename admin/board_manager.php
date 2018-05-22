@@ -6,7 +6,7 @@
     include "lib/function.php";
     //var_dump($_POST);
 
-	if($_POST["db_access_flag"] == "board_manager_add"){
+	if ($_POST["db_access_flag"] == "board_manager_add") {
 
         $query = "
             insert into cqa_board_manager (board_id, board_name, manager_id, board_explain, use_flag, reg_id, reg_date, modify_id, modify_date)
@@ -30,14 +30,14 @@
         ";
         
         $result = mysqli_query($connect, $query);
+
         if ($result === false) {
             echo mysqli_error($connect);
+        } else {
+            echo "<script>location.replace('board_manager_list.php');</script>"; 
         }
 
-        echo("<script>location.replace('board_manager_list.php');</script>"); 
-    }
-    
-	if ($_POST["db_access_flag"] == "board_manager_edit") {
+    } else if ($_POST["db_access_flag"] == "board_manager_edit") {
 
         $query = "
             UPDATE cqa_board_manager
@@ -52,13 +52,14 @@
         ";
 
         $result = mysqli_query($connect, $query);
+
         if ($result === false) {
             echo mysqli_error($connect);
+        } else {
+            echo "<script>location.replace('board_manager_edit.php?board_id=". $_POST[board_id] ."');</script>"; 
         }
 
-        echo("<script>location.set replace('board_manager_edit.php?board_id=". $_POST[board_id] ."');</script>"); 
-	}
-	if ($_POST["db_access_flag"] == "board_manager_delete") {
+	} else if ($_GET["db_access_flag"] == "board_manager_delete") {
 
         $query = "
             UPDATE cqa_board_manager
@@ -66,15 +67,17 @@
                  , modify_id = 'admin'
                  , modify_date = now()
              WHERE use_flag = 'Y'
-               and board_id = '$_POST[board_id]'
+               and board_id = '$_GET[board_id]'
         ";
 
         $result = mysqli_query($connect, $query);
+
         if ($result === false) {
             echo mysqli_error($connect);
+        } else {
+            echo "<script>location.replace('board_manager_list.php');</script>"; 
         }
 
-        echo("<script>location.replace('board_manager_list.php');</script>"); 
 	}
 
 ?>

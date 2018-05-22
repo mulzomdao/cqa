@@ -12,7 +12,7 @@
              , board_explain
              , use_flag
              , reg_id
-             , date_format(a.reg_date, '%Y-%m-%d') reg_date 
+             , a.reg_date 
           from cqa_board_manager a
          where use_flag = 'Y' 
            and board_id = '$_GET[board_id]'
@@ -88,7 +88,7 @@
                                         </div>
                                         <div class="form-group pull-right" style="margin-bottom: 5px; padding-right: 15px">
                                             <button type="submit" class="btn btn-sm btn-success">Save</button>
-                                            <a type="button" class="btn btn-sm btn-success" id="board_manager_delete">Delete</a>
+                                            <button type="button" class="btn btn-sm btn-success" id="board_manager_delete">Delete</button>
                                             <a type="button" class="btn btn-sm btn-success" href="javascript:history.go(-1)">Cancel</a>
                                         </div>
                                     </form>
@@ -137,8 +137,7 @@
             
             $("#board_manager_delete").click(function(){
                 if (confirm('삭제 하시겠습니까?')) {
-                    $("#db_access_flag").val('board_manager_delete');
-                    $('#board_manager_edit').submit();
+                    location.replace('board_manager.php?db_access_flag=board_manager_delete&board_id=<?echo $row[board_id]?>');
                 }
             });
         });

@@ -86,11 +86,11 @@
                                                         <span class="fileinput-filename"></span>
                                                     </div>
                                                     <span class="input-group-addon btn-sm btn-default btn-file">
-                                                        <span class="fileinput-new">Select file</span>
-                                                        <span class="fileinput-exists">Change</span>
+                                                        <span class="fileinput-new"><small>Select file</small></span>
+                                                        <span class="fileinput-exists"><small>Change</small></span>
                                                         <input type="file" name="..."/>
                                                     </span>
-                                                    <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
+                                                    <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput"><small>Remove</small></a>
                                                 </div> 
                                             </div>
                                         </div>

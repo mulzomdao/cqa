@@ -156,9 +156,9 @@
                                 <td><?echo $rows[reg_date]?></td>
                                 <td class="text-right">
                                     <div class="btn-group">
-                                        <a type="button" class="btn btn-xs btn-white" href="board_manager_edit.php">BoardView</a>
+                                        <a type="button" class="btn btn-xs btn-white" href="#">BoardView</a>
                                         <a type="button" class="btn btn-xs btn-white" href="board_manager_edit.php?board_id=<?echo $rows[board_id]?>">Edit</a>
-                                        <a type="button" class="btn btn-xs btn-white" href="#">Delete</a>
+                                        <a type="button" class="btn btn-xs btn-white" href="javascript:board_delete('<?echo $rows[board_id]?>')">Delete</a>
                                     </div>
                                 </td>
                             </tr>
@@ -232,6 +232,12 @@
 
             $('.footable').footable();
         });
+
+        function board_delete(board_id) {
+            if (confirm("삭제하시겠습니까?")) {
+                location.href="board_manager.php?db_access_flag=board_manager_delete&board_id="+board_id;
+            }
+        }
     </script>
 </body>
 
