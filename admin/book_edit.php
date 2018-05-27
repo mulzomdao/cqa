@@ -33,10 +33,10 @@
                      , b.file_name
                      , b.new_file_name
                      , b.file_size
-                 From (select book_seq, max(file_seq) file_seq from cqa_book_file where use_flag = 'Y' group by book_seq) a
-                    , cqa_file b
-                where 1 = 1
-                  and a.file_seq = b.file_seq) b 
+                  From (select book_seq, max(file_seq) file_seq from cqa_book_file where use_flag = 'Y' group by book_seq) a
+                     , cqa_file b
+                 where 1 = 1
+                   and a.file_seq = b.file_seq) b 
             on a.book_seq = b.book_seq
          where a.use_flag = 'Y'
            and a.book_seq = $_GET[book_seq]";    
