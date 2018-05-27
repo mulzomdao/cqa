@@ -39,28 +39,33 @@
                             when hand_exam_date is not null then concat('[핸드] ', hand_exam_date)
                             when machine_exam_date is not null then concat('[머신] ', machine_exam_date)
                         end exam_date_info
-                     , exam_seq
-                     , exam_name
-                     , exam_date
-                     , receive_start_date
-                     , receive_end_date
-                     , machine_exam_date
-                     , machine_receive_start_date
-                     , machine_receive_end_date
-                     , hand_exam_date
-                     , hand_receive_start_date
-                     , hand_receive_end_date
-                     , pass_announce_date
-                     , exam_place
-                     , exam_subject
-                     , exam_content
-                     , use_flag
-                     , reg_id
-                     , reg_date
-                     , modify_id
-                     , modify_date
-                  FROM cqa_exam_v) a 
-         where use_flag = 'Y' $filter
+                     , a.exam_seq
+                     , a.exam_name
+                     , a.exam_date
+                     , a.receive_start_date
+                     , a.receive_end_date
+                     , a.machine_exam_date
+                     , a.machine_receive_start_date
+                     , a.machine_receive_end_date
+                     , a.hand_exam_date
+                     , a.hand_receive_start_date
+                     , a.hand_receive_end_date
+                     , a.pass_announce_date
+                     , a.exam_area
+                     , a.exam_subject
+                     , a.exam_content
+                     , a.use_flag
+                     , a.reg_id
+                     , a.reg_date
+                     , a.modify_id
+                     , a.modify_date
+                     , if (b.receive_count is null, 0, b.receive_count) receive_count 
+                     , if (b.no_charge_count is null, 0, b.no_charge_count) no_charge_count 
+                     , if (b.charge_count is null, 0, b.charge_count) charge_count 
+                     , if (b.no_pass_count is null, 0, b.no_pass_count) no_pass_count 
+                     , if (b.pass_count is null, 0, b.pass_count) pass_count
+                  FROM cqa_exam_v a left outer join cqa_exam_receive_sum_v b on a.exam_seq = b.exam_seq) a 
+         where a.use_flag = 'Y' $filter
          order by exam_seq desc
     ";    
     // var_dump($query);
@@ -148,10 +153,7 @@
                                         <div class="input-group">                                        
                                             <select class="form-control input-sm m-b" name="exam_status" id="exam_status" style="padding-bottom: 2px; margin-bottom: 0px; padding-top: 0px; padding-left: 5px;">
                                                 <option value=''>상태선택</option>
-                                                <option value="RECEIVE_WAIT" <?if ($_GET[exam_status] == 'RECEIVE_WAIT') {echo "selected";}?>><?echo $_exam_status[RECEIVE_WAIT]?></option>
-                                                <option value="RECEIVING" <?if ($_GET[exam_status] == 'RECEIVE_WAIT') {echo "selected";}?>><?echo $_exam_status[RECEIVING]?></option>
-                                                <option value="RECEIVE_END" <?if ($_GET[exam_status] == 'RECEIVE_WAIT') {echo "selected";}?>><?echo $_exam_status[RECEIVE_END]?></option>
-                                                <option value="EXAM_END"><?echo $_exam_status[EXAM_END]?></option>
+                                                <?array_combo($_exam_status, $_GET[exam_status])?>
                                             </select>
                                             <span class="input-group-btn" style="vertical-align: top">
                                                 <button type="submit" class="btn btn-sm btn-white btn-submit"><i class="fa fa-search"></i></button>
@@ -163,7 +165,7 @@
 
                         </div>
                         
-                        <table class="footable table table-stripped toggle-arrow-tiny" style="margin-bottom: 0px">
+                        <table class="footable table table-stripped" data-page-size="20" style="margin-bottom: 0px">
                             <thead>
                             <tr>
                                 <th width="48" class="text-center">No</th>
@@ -193,11 +195,11 @@
                                     <?echo $_exam_status[$rows[exam_status]]?>
                                     <?}?>
                                 </td>
-                                <td>0</td>
-                                <td>0</td>
-                                <td>0</td>
-                                <td>0</td>
-                                <td>0</td>
+                                <td><?echo $rows[receive_count]?></td>
+                                <td><?echo $rows[no_charge_count]?></td>
+                                <td><?echo $rows[charge_count]?></td>
+                                <td><?echo $rows[no_pass_count]?></td>
+                                <td><?echo $rows[pass_count]?></td>
                                 <td class="text-right">
                                     <div class="btn-group">
                                         <?if ($rows[exam_status] == 'RECEIVING') {?>
@@ -215,29 +217,11 @@
                             </tbody>
                             <tfoot>
                             <tr>
-                                <td colspan="10" style="padding-right: 0px; padding-left: 0px; padding-bottom: 0px;">
-                                    
+                                <td colspan="3" style="padding-right: 0px; padding-left: 0px; padding-bottom: 0px;">
                                     <a type="button" class="btn btn-sm btn-success" href="exam_add.php">Add</a>
-                                    <!-- <a type="button" class="btn btn-sm btn-success">Excel Down</a> -->
-
-                                    <!-- <div class="btn-group pull-right">
-                                        <button type="button" class="btn btn-sm btn-white"><i class="fa fa-angle-double-left"></i></button>
-                                        <button type="button" class="btn btn-sm btn-white"><i class="fa fa-angle-left"></i></button>
-                                        <button class="btn btn-sm btn-white">1</button>
-                                        <button class="btn btn-sm btn-white  active">2</button>
-                                        <button class="btn btn-sm btn-white">3</button>
-                                        <button class="btn btn-sm btn-wh btn-smite">4</button>
-                                        <button type="button" class="btn btn-sm btn-white"><i class="fa fa-angle-right"></i> </button>
-                                        <button type="button" class="btn btn-sm btn-white"><i class="fa fa-angle-double-right"></i> </button>
-                                    </div> -->
-
-                                    <div class="btn-group pull-right">
-                                        <button type="button" class="btn btn-sm btn-white"><i class="fa fa-angle-double-left"></i></button>
-                                        <button type="button" class="btn btn-sm btn-white"><i class="fa fa-angle-left"></i></button>
-                                        <button class="btn btn-sm btn-smite">1</button>
-                                        <button type="button" class="btn btn-sm btn-white"><i class="fa fa-angle-right"></i> </button>
-                                        <button type="button" class="btn btn-sm btn-white"><i class="fa fa-angle-double-right"></i> </button>
-                                    </div>
+                                </td>
+                                <td colspan="7" style="padding-right: 0px; padding-left: 0px; padding-bottom: 0px;">
+                                    <ul class="pagination pull-right"></ul>
                                 </td>
                             </tr>
                             </tfoot>
@@ -283,7 +267,7 @@
 
         function exam_delete(exam_seq) {
             if (confirm("삭제하시겠습니까?")) {
-                location.href="exam_crud.php?db_access_flag=exam_crud_delete&exam_seq="+exam_seq;
+                location.href="exam_crud.php?db_access_flag=exam_delete&exam_seq="+exam_seq;
             }
         }
     </script>

@@ -27,7 +27,7 @@
               , hand_receive_start_date
               , hand_receive_end_date
               , pass_announce_date
-              , exam_place
+              , exam_area
               , exam_subject
               , exam_content
               , use_flag
@@ -104,7 +104,7 @@
                                         <input type="hidden" id="exam_seq" name="exam_seq" value="<?echo $row[exam_seq]?>">
                                         <div class="form-group" style="margin-bottom: 5px">
                                             <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 시험명</label>
-                                            <div class="col-sm-5"><input type="text" class="form-control input-sm" name="exam_name" id="exam_name" value="<?echo $row[exam_name]?>" placeholder=""></div>
+                                            <div class="col-sm-5"><input type="text" class="form-control input-sm" name="exam_name" id="exam_name" value="<?echo $row[exam_name]?>" placeholder=""/></div>
                                             <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 합격자발표</label>
                                             <div class="col-sm-5">
                                                 <div class="input-group date">
@@ -122,7 +122,7 @@
                                                     <span class="input-group-btn" style="vertical-align: top">
                                                         <button type="button" class="btn btn-sm btn-white" style="border-right-width: 0px; margin-bottom: 0px"><i class="fa fa-calendar"></i></button>
                                                     </span>
-                                                    <input type="text" class="form-control input-sm" name="hand_exam_date" id="hand_exam_date" value="<?echo $row[hand_exam_date]?>" placeholder="">
+                                                    <input type="text" class="form-control input-sm" name="hand_exam_date" id="hand_exam_date" value="<?echo $row[hand_exam_date]?>" placeholder=""/>
                                                 </div>                                                
                                             </div>
                                             <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><small>머신퀼트 </small>시험일</label>
@@ -131,7 +131,7 @@
                                                     <span class="input-group-btn" style="vertical-align: top">
                                                         <button type="button" class="btn btn-sm btn-white" style="border-right-width: 0px; margin-bottom: 0px"><i class="fa fa-calendar"></i></button>
                                                     </span>
-                                                    <input type="text" class="form-control input-sm" name="machine_exam_date" id="machine_exam_date" value="<?echo $row[machine_exam_date]?>" placeholder="">
+                                                    <input type="text" class="form-control input-sm" name="machine_exam_date" id="machine_exam_date" value="<?echo $row[machine_exam_date]?>" placeholder=""/>
                                                 </div>                                                
                                             </div>
                                         </div>
@@ -178,9 +178,9 @@
 
                                         <div class="form-group" style="margin-bottom: 5px">
                                             <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 고사장</label>
-                                            <div class="col-sm-5"><input type="text" class="form-control input-sm" name="exam_place" id="exam_place" value="<?echo $row[exam_place]?>" placeholder=""></div>
+                                            <div class="col-sm-5"><input type="text" class="form-control input-sm" name="exam_area" id="exam_area" value="<?echo $row[exam_area]?>" placeholder=""/></div>
                                             <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 응시과목</label>
-                                            <div class="col-sm-5"><input type="text" class="form-control input-sm" name="exam_subject" id="exam_subject" value="<?echo $row[exam_subject]?>" placeholder=""></div>
+                                            <div class="col-sm-5"><input type="text" class="form-control input-sm" name="exam_subject" id="exam_subject" value="<?echo $row[exam_subject]?>" placeholder=""/></div>
                                         </div>
 
                                         <div class="form-group" style="margin-bottom: 5px">
@@ -204,7 +204,7 @@
 
                                         <div class="form-group pull-right" style="margin-bottom: 0px; padding-right: 15px">
                                             <button type="submit" class="btn btn-sm btn-success">Save</button>
-                                            <a type="button" class="btn btn-sm btn-success" id="exam_crud_delete">Delete</a>
+                                            <a type="button" class="btn btn-sm btn-success" id="exam_delete">Delete</a>
                                             <a type="button" class="btn btn-sm btn-success" href="javascript:history.go(-1)">Cancel</a>
                                         </div>
                                     </form>
@@ -257,7 +257,7 @@
                     pass_announce_date: {
                         required: true
                     },
-                    exam_place: {
+                    exam_area: {
                         required: true,
                         rangelength: [2, 40]
                     },
@@ -273,9 +273,9 @@
                 }
             });
             
-            $("#exam_crud_delete").click(function(){
+            $("#exam_delete").click(function(){
                 if (confirm('삭제 하시겠습니까?')) {
-                    location.replace('exam_crud.php?db_access_flag=exam_crud_delete&exam_seq=<?echo $row[exam_seq]?>');
+                    location.replace('exam_crud.php?db_access_flag=exam_delete&exam_seq=<?echo $row[exam_seq]?>');
                 }
             });
 

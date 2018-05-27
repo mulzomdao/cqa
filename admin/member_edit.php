@@ -8,7 +8,7 @@
     $query = "
         SELECT member_id
              , member_no
-             , recommend_id
+             , office_id
              , member_name
              , member_eng_name
              , member_password
@@ -46,6 +46,14 @@
     ";    
     $result = mysqli_query($connect, $query);
     $row = mysqli_fetch_array($result);
+
+    $query = "
+        select office_id
+             , office_info
+          From cqa_office_id_v
+    ";    
+    // var_dump($query);
+    $office_id_result = mysqli_query($connect, $query);
 ?>
 
 <!DOCTYPE html>
@@ -102,25 +110,11 @@
                                         <div class="form-group" style="margin-bottom: 5px">
                                             <label class="col-sm-2 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 추천인</label>
                                             <div class="col-sm-10">
-                                                <select class="form-control input-sm m-b" name="recommend_id" id="recommend_id" style="padding-bottom: 2px; margin-bottom: 0px; padding-top: 0px; padding-left: 5px;">
+                                                <select class="form-control input-sm m-b" name="office_id" id="office_id" style="padding-bottom: 2px; margin-bottom: 0px; padding-top: 0px; padding-left: 5px;">
                                                     <option value=''>추천인선택</option>
-                                                    <option value='10' <?if ($row[recommend_id] == "10") {echo "selected";}?>>[LYDIA 30] 장흥숙 (10-00)</option>
-                                                    <option value='07' <?if ($row[recommend_id] == "07") {echo "selected";}?>>[S퀼트] 송재란 (07-00)</option>
-                                                    <option value='09' <?if ($row[recommend_id] == "09") {echo "selected";}?>>[그린퀼트] 김경주 (09-00)</option>
-                                                    <option value='04-01' <?if ($row[recommend_id] == "04-10") {echo "selected";}?>>[생활의향기] 이현정 (04-01)</option>
-                                                    <option value='07-07' <?if ($row[recommend_id] == "07-07") {echo "selected";}?>>[소소공방] 현미경 (07-07)</option>
-                                                    <option value='08' <?if ($row[recommend_id] == "08") {echo "selected";}?>>[아원퀼트] 최은영 (08-00)</option>
-                                                    <option value='03-05' <?if ($row[recommend_id] == "03-05") {echo "selected";}?>>[요술나라 요술 손] 유미숙 (03-05)</option>
-                                                    <option value='01-04' <?if ($row[recommend_id] == "01-04") {echo "selected";}?>>[퀼트 수작] 변성혜 (01-04)</option>
-                                                    <option value='08-03' <?if ($row[recommend_id] == "08-03") {echo "selected";}?>>[퀼트 조] 조현화 (08-03)</option>
-                                                    <option value='11-03' <?if ($row[recommend_id] == "11-03") {echo "selected";}?>>[퀼트&돌] 오승미 (11-03)</option>
-                                                    <option value='07-04' <?if ($row[recommend_id] == "07-04") {echo "selected";}?>>[퀼트&미] 김미정 (07-04)</option>
-                                                    <option value='09-05' <?if ($row[recommend_id] == "09-05") {echo "selected";}?>>[퀼트나들이] 박정애 (09-05)</option>
-                                                    <option value='07-06' <?if ($row[recommend_id] == "07-06") {echo "selected";}?>>[퀼트바람] 이수연 (07-06)</option>
-                                                    <option value='01' <?if ($row[recommend_id] == "01") {echo "selected";}?>>[퀼트지음] 엄재영/오선희 (01-00)</option>
-                                                    <option value='03' <?if ($row[recommend_id] == "03") {echo "selected";}?>>[한혜경퀼트] 한혜경 (03-00)</option>
-                                                    <option value='03-04' <?if ($row[recommend_id] == "03-04") {echo "selected";}?>>[허니비퀼트] 김정미 (03-04)</option>
-                                                    <option value="00-00" <?if ($row[recommend_id] == "00-00") {echo "selected";}?>>추천인 없음 (00-00)</option>
+                                                    <?while ($rows = mysqli_fetch_array($office_id_result)) {?>
+                                                    <option value="<?echo $rows[office_id]?>" <?if ($row[office_id] == $rows[office_id]) {echo "selected";}?>><?echo $rows[office_info]?></option>
+                                                    <?}?>
                                                 </select>
                                             </div>
                                         </div>
@@ -143,11 +137,7 @@
                                             <label class="col-sm-2 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 자격선택</label>
                                             <div class="col-sm-10">
                                                 <select class="form-control input-sm m-b" name="member_right" id="member_right" style="padding-bottom: 2px; margin-bottom: 0px; padding-top: 0px; padding-left: 5px;">
-                                                    <option value="0" <?if ($row[member_right] == "0") {echo "selected";}?>>준회원 (cqa웹사이트 열람만 가능)</option>
-                                                    <option value="1" <?if ($row[member_right] == "1") {echo "selected";}?>>정회원 1년 (30,000원)</option>
-                                                    <option value="2" <?if ($row[member_right] == "2") {echo "selected";}?>>정회원 2년 (50,000원)</option>
-                                                    <option value="3" <?if ($row[member_right] == "3") {echo "selected";}?>>정회원 3년 (70,000원)</option>
-                                                    <option value="100" <?if ($row[member_right] == "100") {echo "selected";}?>>정회원 평생 (300,000원)</option>
+                                                    <?array_combo($_member_right, $row[member_right])?>
                                                 </select>
                                             </div>
                                         </div>
@@ -161,16 +151,8 @@
                                             <label class="col-sm-2 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 레벨</label>
                                             <div class="col-sm-10">
                                                 <select class="form-control input-sm m-b" name="member_level" id="member_level" style="padding-bottom: 2px; margin-bottom: 0px; padding-top: 0px; padding-left: 5px;">
-                                                    <option value=''>레벨선택</option>                                                
-                                                    <option value="9" <?if ($row[member_level] == "9") {echo "selected";}?>>레벨9 (준회원)</option>
-                                                    <option value="8" <?if ($row[member_level] == "8") {echo "selected";}?>>레벨8 (상실회원)</option>
-                                                    <option value="7" <?if ($row[member_level] == "7") {echo "selected";}?>>레벨7 (정회원)</option>
-                                                    <option value="6" <?if ($row[member_level] == "6") {echo "selected";}?>>레벨6 (지부장)</option>
-                                                    <option value="5" <?if ($row[member_level] == "5") {echo "selected";}?>>레벨5 (지회장)</option>
-                                                    <option value="4" <?if ($row[member_level] == "4") {echo "selected";}?>>레벨4 </option>
-                                                    <option value="3" <?if ($row[member_level] == "3") {echo "selected";}?>>레벨3 (관리자)</option>
-                                                    <option value="2" <?if ($row[member_level] == "2") {echo "selected";}?>>레벨2 </option>
-                                                    <option value="1" <?if ($row[member_level] == "1") {echo "selected";}?>>레벨1 (최고관리자)</option>
+                                                    <option value=''>레벨선택</option>     
+                                                    <?array_combo($_member_level, $row[member_level])?>
                                                 </select>
                                             </div>
                                         </div>
@@ -191,51 +173,30 @@
                                             <div class="col-sm-10"><input type="text" class="form-control input-sm" name="member_eng_name" id="member_eng_name" value="<?echo $row[member_eng_name]?>"></div>
                                         </div>
                                         <div class="form-group" style="margin-bottom: 5px">
-                                            <label class="col-sm-2 control-label" style="padding-left: 0px; padding-right: 0px">생년월일</label>
+                                            <label class="col-sm-2 control-label" style="padding-left: 0px; padding-right: 0px">생년월일 / 성별</label>
                                             <div class="col-sm-10">                                                     
-                                                <div class="col-sm-4" style="padding-left: 0px; padding-right: 2px;">                                                
+                                                <div class="col-sm-3" style="padding-left: 0px; padding-right: 2px;">                                                
                                                     <select class="form-control input-sm m-b" name="birth_year" id="birth_year" style="padding-bottom: 2px; margin-bottom: 0px; padding-top: 0px; padding-left: 5px;">
                                                         <option value="">년도</option>
-                                                    <?
-                                                        for ($i = 2010; $i >= 1950; $i--) {  
-                                                            if ($i == $row[birth_year]) {
-                                                                echo "<option value='" . $i . "' selected>" . $i . "년</option>";
-                                                            } else {
-                                                                echo "<option value='" . $i . "'>" . $i . "년</option>";
-                                                            }
-                                                        }
-                                                    ?>
+                                                        <?number_combo(2010, 1950, 0, $row[birth_year])?>
                                                     </select>
                                                 </div>
-                                                <div class="col-sm-4" style="padding-left: 2px; padding-right: 2px;">                                              
+                                                <div class="col-sm-3" style="padding-left: 2px; padding-right: 2px;">                                              
                                                     <select class="form-control input-sm m-b" name="birth_month" id="birth_month" style="padding-bottom: 2px; margin-bottom: 0px; padding-top: 0px; padding-left: 5px;">
                                                         <option value="">월</option>
-                                                    <?
-                                                        for ($i = 01; $i <= 12; $i++) {
-                                                            $month = str_pad($i, 2, "0", STR_PAD_LEFT);                                                            
-                                                            if ($month == $row[birth_month]) {
-                                                                echo "<option value='" . $month . "' selected>" . $i . "월</option>";
-                                                            } else {
-                                                                echo "<option value='" . $month . "'>" . $i . "월</option>";
-                                                            }
-                                                        }
-                                                    ?>
+                                                        <?number_combo(1, 12, 2, $row[birth_month])?>
                                                     </select>
                                                 </div>
-                                                <div class="col-sm-4" style="padding-left: 2px; padding-right: 0px;">                                         
+                                                <div class="col-sm-3" style="padding-left: 2px; padding-right: 2px;">                                         
                                                     <select class="form-control input-sm m-b" name="birth_date" id="birth_date" style="padding-bottom: 2px; margin-bottom: 0px; padding-top: 0px; padding-left: 5px;">
                                                         <option value="">일</option>
-                                                    <?
-                                                        for ($i = 01; $i <= 31; $i++) {
-                                                            $date = str_pad($i, 2, "0", STR_PAD_LEFT);                                                            
-                                                            if ($date == $row[birth_date]) {
-                                                                echo "<option value='" . $date . "' selected>" . $i . "일</option>";
-                                                            } else {
-                                                                echo "<option value='" . $date . "'>" . $i . "일</option>";
-                                                            }
-                                                            
-                                                        }
-                                                    ?>
+                                                        <?number_combo(1, 31, 2, $row[birth_date])?>
+                                                    </select>
+                                                </div>     
+                                                <div class="col-sm-3" style="padding-left: 2px; padding-right: 0px;">                                         
+                                                    <select class="form-control input-sm m-b" name="sex" id="sex" style="padding-bottom: 2px; margin-bottom: 0px; padding-top: 0px; padding-left: 5px;">
+                                                        <option value="">성별</option>
+                                                        <?array_combo($_sex, $row[sex])?>
                                                     </select>
                                                 </div>     
                                             </div>
@@ -301,7 +262,7 @@
 
                                         <div class="form-group pull-right" style="margin-bottom: 5px; padding-right: 15px">
                                             <button type="submit" class="btn btn-sm btn-success">Save</button>
-                                            <a type="button" class="btn btn-sm btn-success" id="member_crud_delete">Delete</a>
+                                            <a type="button" class="btn btn-sm btn-success" id="member_delete">Delete</a>
                                             <a type="button" class="btn btn-sm btn-success" href="javascript:history.go(-1)">Cancel</a>
                                         </div>
                                     </form>
@@ -317,7 +278,7 @@
                                 <h5>협회자격정보</h5>
                             </div>
                             <div class="ibox-content" style="padding: 15px">                                
-                                <table class="footable table table-stripped toggle-arrow-tiny" style="margin-bottom: 0px">
+                                <table class="footable table table-stripped" data-page-size="20" style="margin-bottom: 0px">
                                     <thead>
                                     <tr>
                                         <th data-hide="phone">자격상태</th>
@@ -372,7 +333,7 @@
                         </div>
                         <div class="ibox">
                             <div class="ibox-title">
-                                <h5>교재구매정보</h5>
+                                <h5>교육정보</h5>
                             </div>
                             <div class="ibox-content" style="padding: 15px">                                
                                 <table class="table" style="margin-bottom: 0px">
@@ -431,7 +392,7 @@
 
             $("#member_edit").validate({
                 rules: {
-                    recommend_id: {
+                    office_id: {
                         required: true
                     }, 
                     member_id: {
@@ -474,9 +435,9 @@
                 }
             });
             
-            $("#member_crud_delete").click(function(){
+            $("#member_delete").click(function(){
                 if (confirm('삭제 하시겠습니까?')) {
-                    location.replace('member_crud.php?db_access_flag=member_crud_delete&member_id=<?echo $row[member_id]?>');
+                    location.replace('member_crud.php?db_access_flag=member_delete&member_id=<?echo $row[member_id]?>');
                 }
             });
 

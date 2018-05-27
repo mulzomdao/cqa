@@ -1,8 +1,8 @@
 {
-    "host": "cqaquilt.cafe24.com",
+    "host": "cafe24.com",
     "username": "cqaquilt",
     "password": "cqaquilt!@",
-    "remotePath": "",
+    "remotePath": "admin",
     "protocol": "ftp",
     "port": 0,
     "fileNameEncoding": "utf8",
@@ -12,6 +12,5 @@
     "ignore": [
         ".git",
         "/.vscode"
-    ],
-    "ignoreWrongFileEncoding": true
+    ]
 }

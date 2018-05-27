@@ -107,7 +107,7 @@
                                         </div>
                                         <div class="form-group" style="margin-bottom: 5px">
                                             <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 휴대폰</label>
-                                            <div class="col-sm-5"><input type="text" class="form-control input-sm" placeholder="'-'없이 입력하세요" name="mobile" id="mobile" value="<?echo $row[mobile]?>"></div>
+                                            <div class="col-sm-5"><input type="text" class="form-control input-sm" placeholder="'-' 없이 입력하세요" name="mobile" id="mobile" value="<?echo $row[mobile]?>"></div>
                                             <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">이메일</label>
                                             <div class="col-sm-5"><input type="text" class="form-control input-sm" name="email" id="email" value="<?echo $row[email]?>"></div>
                                         </div>
@@ -137,9 +137,9 @@
                                         </div>
                                         <div class="form-group" style="margin-bottom: 5px">
                                             <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">샵전화</label>
-                                            <div class="col-sm-5"><input type="text" class="form-control input-sm" placeholder="'-'없이 입력하세요" name="shop_phone" id="shop_phone" value="<?echo $row[shop_phone]?>"></div>
+                                            <div class="col-sm-5"><input type="text" class="form-control input-sm" placeholder="'-' 없이 입력하세요" name="shop_phone" id="shop_phone" value="<?echo $row[shop_phone]?>"></div>
                                             <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">집전화</label>
-                                            <div class="col-sm-5"><input type="text" class="form-control input-sm" placeholder="'-'없이 입력하세요" name="phone" id="phone" value="<?echo $row[phone]?>"></div>
+                                            <div class="col-sm-5"><input type="text" class="form-control input-sm" placeholder="'-' 없이 입력하세요" name="phone" id="phone" value="<?echo $row[phone]?>"></div>
                                         </div>
                                         <div class="form-group" style="margin-bottom: 0px">                             
                                             <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px; padding-top: 24px;">샵주소</label>

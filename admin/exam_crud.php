@@ -9,7 +9,7 @@
 
         $query = "
             insert into cqa_exam (exam_name, machine_exam_date, machine_receive_start_date, machine_receive_end_date
-                 , hand_exam_date, hand_receive_start_date, hand_receive_end_date, pass_announce_date, exam_place
+                 , hand_exam_date, hand_receive_start_date, hand_receive_end_date, pass_announce_date, exam_area
                  , exam_subject, exam_content, use_flag, reg_id, reg_date, modify_id, modify_date)
             select '$_POST[exam_name]'
                  , '$_POST[machine_exam_date]'
@@ -19,7 +19,7 @@
                  , '$_POST[hand_receive_start_date]'
                  , '$_POST[hand_receive_end_date]'
                  , '$_POST[pass_announce_date]'
-                 , '$_POST[exam_place]'
+                 , '$_POST[exam_area]'
                  , '$_POST[exam_subject]'
                  , '$_POST[exam_content]'
                  , 'Y' use_flag
@@ -51,7 +51,7 @@
                  , hand_receive_start_date = '$_POST[hand_receive_start_date]'
                  , hand_receive_end_date = '$_POST[hand_receive_end_date]'
                  , pass_announce_date = '$_POST[pass_announce_date]'
-                 , exam_place = '$_POST[exam_place]'
+                 , exam_area = '$_POST[exam_area]'
                  , exam_subject = '$_POST[exam_subject]'
                  , exam_content = '$_POST[exam_content]'
                  , use_flag = 'Y'
@@ -71,7 +71,7 @@
             echo("<script>location.replace('exam_edit.php?exam_seq=". $_POST[exam_seq] ."');</script>"); 
         }
 
-    } else if ($_GET["db_access_flag"] == "exam_crud_delete") {
+    } else if ($_GET["db_access_flag"] == "exam_delete") {
 
         $query = "
             UPDATE cqa_exam

@@ -68,31 +68,19 @@
                             <div class="col-sm-4" style="padding-left: 15px; padding-right: 0px;">                                                
                                 <select class="form-control form-control-sm" name="account">
                                     <option value="">년도</option>
-                                    <?
-                                        for ($i = 2010; $i >= 1950; $i--) {
-                                            echo "<option value='" . $i . "'>" . $i . "년</option>";
-                                        }
-                                    ?>
+                                    <?number_combo(2010, 1950, 0, '')?>
                                 </select>
                             </div>
                             <div class="col-sm-4" style="padding-left: 5px; padding-right: 5px;">                                              
                                 <select class="form-control form-control-sm" name="account">
                                     <option value="">월</option>
-                                    <?
-                                        for ($i = 1; $i <= 12; $i++) {
-                                            echo "<option value='" . $i . "'>" . $i . "월</option>";
-                                        }
-                                    ?>
+                                    <?number_combo(1, 12, 0, '')?>
                                 </select>
                             </div>
                             <div class="col-sm-4" style="padding-left: 0px; padding-right: 14px;">                                         
                                 <select class="form-control form-control-sm" name="account">
                                     <option value="">일</option>
-                                    <?
-                                        for ($i = 1; $i <= 31; $i++) {
-                                            echo "<option value='" . $i . "'>" . $i . "월</option>";
-                                        }
-                                    ?>
+                                    <?number_combo(1, 31, 0, '')?>
                                 </select>
                             </div> 
                         </div>
@@ -138,7 +126,7 @@
                     <label for="example-text-input" class="col-3 col-form-label text-right" style="padding-right: 0px">이메일</label>
                     <div class="col-9">          
                         <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-                            <input type="text" class="form-control form-control-sm" id="inlineFormInputGroup" placeholder="">
+                            <input type="text" class="form-control form-control-sm" id="inlineFormInputGroup" placeholder=""/>
                             <div class="input-group-addon" style="padding-bottom: 0px;padding-top: 0px; font-size: 0.8rem">@</div>
                         </div>
                     </div>

@@ -66,7 +66,7 @@
 
                                         <div class="form-group" style="margin-bottom: 5px">
                                             <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 시험명</label>
-                                            <div class="col-sm-5"><input type="text" class="form-control input-sm" name="exam_name" id="exam_name" value="" placeholder=""></div>
+                                            <div class="col-sm-5"><input type="text" class="form-control input-sm" name="exam_name" id="exam_name" value="" placeholder=""/></div>
                                             <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 합격자발표</label>
                                             <div class="col-sm-5">
                                                 <div class="input-group date">
@@ -84,7 +84,7 @@
                                                     <span class="input-group-btn" style="vertical-align: top">
                                                         <button type="button" class="btn btn-sm btn-white" style="border-right-width: 0px; margin-bottom: 0px"><i class="fa fa-calendar"></i></button>
                                                     </span>
-                                                    <input type="text" class="form-control input-sm" name="hand_exam_date" id="hand_exam_date" value="" placeholder="">
+                                                    <input type="text" class="form-control input-sm" name="hand_exam_date" id="hand_exam_date" value="" placeholder=""/>
                                                 </div>                                                
                                             </div>
                                             <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><small>머신퀼트 </small>시험일</label>
@@ -93,7 +93,7 @@
                                                     <span class="input-group-btn" style="vertical-align: top">
                                                         <button type="button" class="btn btn-sm btn-white" style="border-right-width: 0px; margin-bottom: 0px"><i class="fa fa-calendar"></i></button>
                                                     </span>
-                                                    <input type="text" class="form-control input-sm" name="machine_exam_date" id="machine_exam_date" value="" placeholder="">
+                                                    <input type="text" class="form-control input-sm" name="machine_exam_date" id="machine_exam_date" value="" placeholder=""/>
                                                 </div>                                                
                                             </div>
                                         </div>
@@ -140,9 +140,9 @@
 
                                         <div class="form-group" style="margin-bottom: 5px">
                                             <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 고사장</label>
-                                            <div class="col-sm-5"><input type="text" class="form-control input-sm" name="exam_place" id="exam_place" value="" placeholder=""></div>
+                                            <div class="col-sm-5"><input type="text" class="form-control input-sm" name="exam_area" id="exam_area" value="" placeholder=""/></div>
                                             <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 응시과목</label>
-                                            <div class="col-sm-5"><input type="text" class="form-control input-sm" name="exam_subject" id="exam_subject" value="" placeholder=""></div>
+                                            <div class="col-sm-5"><input type="text" class="form-control input-sm" name="exam_subject" id="exam_subject" value="" placeholder="예) 핸드면제/머신면제/핸드퀼트/머신퀼트"/></div>
                                         </div>
 
                                         <div class="form-group" style="margin-bottom: 5px">
@@ -226,7 +226,7 @@
                     pass_announce_date: {
                         required: true
                     },
-                    exam_place: {
+                    exam_area: {
                         required: true,
                         rangelength: [2, 40]
                     },

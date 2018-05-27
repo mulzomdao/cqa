@@ -30,7 +30,7 @@
              , reg_date
              , modify_id
              , modify_date
-         FROM cqaquilt.cqa_office_v
+         FROM cqa_office_v
          where use_flag = 'Y'
            and office_id = '$_GET[office_id]'
     ";    
@@ -108,7 +108,7 @@
                                         </div>
                                         <div class="form-group" style="margin-bottom: 5px">
                                             <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 휴대폰</label>
-                                            <div class="col-sm-5"><input type="text" class="form-control input-sm" placeholder="'-'없이 입력하세요" name="mobile" id="mobile" value="<?echo $row[mobile]?>"></div>
+                                            <div class="col-sm-5"><input type="text" class="form-control input-sm" placeholder="'-' 없이 입력하세요" name="mobile" id="mobile" value="<?echo $row[mobile]?>"></div>
                                             <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">이메일</label>
                                             <div class="col-sm-5"><input type="text" class="form-control input-sm" name="email" id="email" value="<?echo $row[email]?>"></div>
                                         </div>
@@ -138,9 +138,9 @@
                                         </div>
                                         <div class="form-group" style="margin-bottom: 5px">
                                             <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">샵전화</label>
-                                            <div class="col-sm-5"><input type="text" class="form-control input-sm" placeholder="'-'없이 입력하세요" name="shop_phone" id="shop_phone" value="<?echo $row[shop_phone]?>"></div>
+                                            <div class="col-sm-5"><input type="text" class="form-control input-sm" placeholder="'-' 없이 입력하세요" name="shop_phone" id="shop_phone" value="<?echo $row[shop_phone]?>"></div>
                                             <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">집전화</label>
-                                            <div class="col-sm-5"><input type="text" class="form-control input-sm" placeholder="'-'없이 입력하세요" name="phone" id="phone" value="<?echo $row[phone]?>"></div>
+                                            <div class="col-sm-5"><input type="text" class="form-control input-sm" placeholder="'-' 없이 입력하세요" name="phone" id="phone" value="<?echo $row[phone]?>"></div>
                                         </div>
                                         <div class="form-group" style="margin-bottom: 0px">                             
                                             <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px; padding-top: 24px;">샵주소</label>
@@ -190,7 +190,7 @@
 
                                         <div class="form-group pull-right" style="margin-bottom: 5px; padding-right: 15px">
                                             <button type="submit" class="btn btn-sm btn-success">Save</button>
-                                            <a type="button" class="btn btn-sm btn-success" id="office_crud_delete">Delete</a>
+                                            <a type="button" class="btn btn-sm btn-success" id="office_delete">Delete</a>
                                             <a type="button" class="btn btn-sm btn-success" href="javascript:history.go(-1)">Cancel</a>
                                         </div>
 
@@ -257,9 +257,9 @@
                 }
             });            
             
-            $("#office_crud_delete").click(function(){
+            $("#office_delete").click(function(){
                 if (confirm('삭제 하시겠습니까?')) {
-                    location.replace('office_crud.php?db_access_flag=office_crud_delete&office_id=<?echo $row[office_id]?>');
+                    location.replace('office_crud.php?db_access_flag=office_delete&office_id=<?echo $row[office_id]?>');
                 }
             });
         });

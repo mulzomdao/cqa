@@ -1,9 +1,29 @@
-<!--
-*
-*  INSPINIA - Responsive Admin Theme
-*  version 2.7.1
-*
--->
+<?
+    session_start();
+    include "lib/session.php";
+    include "lib/connect.php";
+    include "lib/variable.php";
+    include "lib/function.php";
+
+    $query = "
+        SELECT *
+          FROM cqa_education_receive
+         where use_flag = 'Y'
+           and education_receive_seq = '$_GET[education_receive_seq]'
+    ";    
+    $result = mysqli_query($connect, $query);
+    $row = mysqli_fetch_array($result);
+
+    $query = "
+        select education_seq
+             , education_name
+          From cqa_education_v
+         where use_flag = 'Y'
+         order by education_seq desc
+    ";    
+    // var_dump($query);
+    $result = mysqli_query($connect, $query);
+?>
 
 <!DOCTYPE html>
 <html>
@@ -14,9 +34,6 @@
     <link href="inspinia/css/plugins/summernote/summernote.css" rel="stylesheet">
     <link href="inspinia/css/plugins/summernote/summernote-bs3.css" rel="stylesheet">    
     
-    <link href="inspinia/css/animate.css" rel="stylesheet">
-    <link href="inspinia/css/plugins/dropzone/basic.css" rel="stylesheet">
-    <link href="inspinia/css/plugins/dropzone/dropzone.css" rel="stylesheet">
 </head>    
 
 <body>
@@ -59,83 +76,79 @@
                             <div class="ibox-content" style="padding-bottom: 10px">
 
                                 <fieldset class="form-horizontal">
-                                    <div class="form-group" style="margin-bottom: 5px">
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 교육</label>
-                                        <div class="col-sm-5">
-                                            <select class="form-control input-sm m-b" name="account" style="padding-bottom: 2px; margin-bottom: 0px; padding-top: 0px; padding-left: 5px;">
-                                                <option value='36' >2018년 2급 자격검정 면제및 교육</option>
-                                                <option value='34' >2017 강사자격 및 이관심사</option>
-                                                <option value='33' >2017년 2급 핸드, 머신 자격검정 교육</option>
-                                            </select>
-                                        </div>
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 아이디</label>
-                                        <div class="col-sm-5">
-                                            <div class="input-group"><input type="text" class="form-control input-sm" value="yaabam" placeholder="아이디검색">
-                                                <span class="input-group-btn">
-                                                    <a type="button" class="btn btn-sm btn-primary"><i class="fa fa-search"></i></a> 
-                                                </span>
+                                
+
+                                    <form role="form" id="education_receive_edit" action="education_receive_crud.php" method="post">
+                                        <input type="hidden" id="db_access_flag" name="db_access_flag" value="education_receive_edit">
+                                        <input type="hidden" id="education_receive_seq" name="education_receive_seq" value="<?echo $row[education_receive_seq]?>">
+
+                                        <div class="form-group" style="margin-bottom: 5px">
+                                            <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 아이디</label>
+                                            <div class="col-sm-5">
+                                                    <input type="text" class="form-control input-sm" id="member_id" name="member_id" value="<?echo $row[member_id]?>" placeholder="아이디검색" readonly>
+                                            </div>
+                                            <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 교육명</label>
+                                            <div class="col-sm-5">
+                                                <select class="form-control input-sm m-b" id="education_seq" name="education_seq" style="padding-bottom: 2px; margin-bottom: 0px; padding-top: 0px; padding-left: 5px;">
+                                                    <?while ($rows = mysqli_fetch_array($result)) {?>
+                                                    <option value="<?echo $rows[education_seq]?>"><?echo $rows[education_name]?></option>
+                                                    <?}?>
+                                                </select>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group" style="margin-bottom: 5px">
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 성명</label>
-                                        <div class="col-sm-5"><input type="text" class="form-control input-sm" value="김미애"></div>
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">이메일</label>
-                                        <div class="col-sm-5"><input type="text" class="form-control input-sm" value="yaabam@naver.com"></div>
-                                    </div>
-                                    <div class="form-group" style="margin-bottom: 0px">                                             
-                                        <div class="col-sm-6" style="padding: 0px">                            
-                                            <label class="col-sm-2 control-label" style="padding-left: 0px; padding-right: 0px;"><i class="fa fa-check"></i> 핸드폰</label>
-                                            <div class="col-sm-10" style="margin-bottom: 5px;"><input type="text" class="form-control input-sm" value="010-4752-0491"></div>
+                                        <div class="form-group" style="margin-bottom: 5px">
+                                            <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 성명</label>
+                                            <div class="col-sm-5"><input type="text" class="form-control input-sm" id="member_name" name="member_name" value="<?echo $row[member_name]?>" readonly></div>
+                                            <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 상태</label>
+                                            <div class="col-sm-5">
+                                                <select class="form-control input-sm m-b" id="receive_status" name="receive_status" style="padding-bottom: 2px; margin-bottom: 0px; padding-top: 0px; padding-left: 5px;">
+                                                    <option value="NO_CHARGE"><?echo $_EDUCATION_RECEIVE_STATUS[NO_CHARGE]?></option>
+                                                    <option value="CHARGE"><?echo $_EDUCATION_RECEIVE_STATUS[CHARGE]?></option>
+                                                    <option value="NO_PASS"><?echo $_EDUCATION_RECEIVE_STATUS[NO_PASS]?></option>
+                                                    <option value="PASS"><?echo $_EDUCATION_RECEIVE_STATUS[PASS]?></option>
+                                                </select>                                         
+                                            </div>
+                                        </div>
+                                        <div class="form-group" style="margin-bottom: 0px">     
+                                            
+                                            <div class="col-sm-6" style="padding: 0px">                            
+                                                <label class="col-sm-2 control-label" style="padding-left: 0px; padding-right: 0px;"><i class="fa fa-check"></i>  핸드폰</label>
+                                                <div class="col-sm-10" style="margin-bottom: 5px;"><input type="text" class="form-control input-sm" id="mobile" name="mobile" value="<?echo $row[mobile]?>" placeholder="'-' 없이 입력하세요"></div>
 
-                                            <label class="col-sm-2 control-label" style="padding-left: 0px; padding-right: 0px">전화</label>
-                                            <div class="col-sm-10"><input type="text" class="form-control input-sm" value=""></div>
-                                        </div>                                  
+                                                <label class="col-sm-2 control-label" style="padding-left: 0px; padding-right: 0px">이메일</label>
+                                                <div class="col-sm-10"><input type="text" class="form-control input-sm" id="email" name="email" value="<?echo $row[email]?>"></div>
+                                            </div>                                  
 
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px; padding-top: 24px;">주소</label>
-                                        <div class="col-sm-5">
-                                            <div class="col-sm-3" style="padding: 0px;">
-                                                <div class="input-group"><input type="text" class="form-control input-sm" value="03936">
-                                                    <span class="input-group-btn">
-                                                        <a type="button" class="btn btn-sm btn-primary"><i class="fa fa-search"></i></a> 
-                                                    </span>
+                                            <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px; padding-top: 24px;"> 주소</label>
+                                            <div class="col-sm-5">
+                                                <div class="col-sm-3" style="padding: 0px;">
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control input-sm" id="zip_code" name="zip_code" value="<?echo $row[zip_code]?>" placeholder="우편번호">
+                                                        <span class="input-group-btn">
+                                                            <a type="button" class="btn btn-sm btn-primary"><i class="fa fa-search"></i></a> 
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-9" style="padding-left: 4px; padding-right: 0px;">
+                                                    <input type="text" class="form-control input-sm" id="zip_address" name="zip_address" value="<?echo $row[zip_address]?>">
+                                                </div>
+                                                <div class="col-sm-12" style="padding: 0px; margin-bottom: 5px">
+                                                    <input type="text" class="form-control input-sm" id="detail_address" name="detail_address" value="<?echo $row[detail_address]?>">
                                                 </div>
                                             </div>
-                                            <div class="col-sm-9" style="padding-left: 4px; padding-right: 0px;">
-                                                <input type="text" class="form-control input-sm" value="서울 마포구 월드컵북로 235 (성산동, 성산시영아파트)">
-                                            </div>
-                                            <div class="col-sm-12" style="padding: 0px; margin-bottom: 5px">
-                                                <input type="text" class="form-control input-sm" value="16동 706호">
-                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group" style="margin-bottom: 5px">
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 교육장</label>
-                                        <div class="col-sm-5">
-                                            <select class="form-control input-sm m-b" name="account" style="padding-bottom: 2px; margin-bottom: 0px; padding-top: 0px; padding-left: 5px;">
-                                                <option value="0">서울 양재동 한국퀼트센터</option>
-                                            </select>                   
-                                        </div>
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 상태</label>
-                                        <div class="col-sm-5">
-                                            <select class="form-control input-sm m-b" name="account" style="padding-bottom: 2px; margin-bottom: 0px; padding-top: 0px; padding-left: 5px;">
-                                                <option value="0">미입금</option>
-                                                <option value="5">입금완료</option>
-                                                <option value="10">미이수</option>
-                                                <option value="20" selected>이수완료</option>
-                                            </select>                                         
-                                        </div>
-                                    </div>
-                                    <div class="form-group" style="margin-bottom: 5px">
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">접수메모</label>
-                                        <div class="col-sm-11"><textarea class="form-control" rows="4"></textarea></div>
-                                    </div>
 
-                                    <div class="form-group pull-right" style="margin-bottom: 0px; padding-right: 15px">
-                                        <a type="button" class="btn btn-sm btn-success" href="board_manager_add.php">Add</a>
-                                        <a type="button" class="btn btn-sm btn-success" href="board_manager_add.php">Cancel</a>
-                                    </div>
+                                        <div class="form-group" style="margin-bottom: 5px">
+                                            <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">접수메모</label>
+                                            <div class="col-sm-11"><textarea class="form-control" rows="4" id="receive_memo" name="receive_memo"><?echo $row[receive_memo]?></textarea></div>
+                                        </div>
 
+                                        <div class="form-group pull-right" style="margin-bottom: 0px; padding-right: 15px">
+                                            <button type="submit" class="btn btn-sm btn-success">Save</button>
+                                            <a type="button" class="btn btn-sm btn-success" id="education_receive_delete">Delete</a>
+                                            <a type="button" class="btn btn-sm btn-success" href="javascript:history.go(-1)">Cancel</a>
+                                        </div>
+                                    </form>
                                 </fieldset>
 
                             </div>
@@ -154,53 +167,52 @@
     <?include "include/admin_js.php"?>
     <!-- SUMMERNOTE -->
     <script src="inspinia/js/plugins/summernote/summernote.min.js"></script>    
-    <!-- DROPZONE -->
-    <script src="inspinia/js/plugins/dropzone/dropzone.js"></script>
-
+    
     <script>
 
         $(document).ready(function() {
 
-            $('.summernote').summernote({
-                height: 300
+            $('input[type="text"]').keypress(function() {
+                if (event.keyCode === 13) {
+                    event.preventDefault();
+                }
             });
 
-            $('#date_added').datepicker({
-                format: "yyyy-mm-dd",
-                language: "kr",
-                todayBtn: "linked",
-                keyboardNavigation: false,
-                forceParse: false,
-                calendarWeeks: false,
-                autoclose: true
+            $("#education_receive_edit").validate({
+                rules: {
+                    member_id: {
+                        required: true,
+                        rangelength: [4, 20]
+                    }, 
+                    member_name: {
+                        required: true,
+                        rangelength: [2, 20]
+                    },
+                    member_eng_name: {
+                        required: true,
+                        rangelength: [8, 40]
+                    }, 
+                    receive_subject: {
+                        required: true
+                    }, 
+                    email: {
+                        email: true
+                    }
+                }, submitHandler: function (form) {
+                    if (confirm("수정 하시겠습니까?")) {
+                        form.submit();
+                    }     
+                }
+            });
+            
+            $("#education_receive_delete").click(function(){
+                if (confirm('삭제 하시겠습니까?')) {
+                    location.replace('education_receive_crud.php?db_access_flag=education_receive_delete&education_receive_seq=<?echo $row[education_receive_seq]?>');
+                }
             });
 
-            $('#date_added_01').datepicker({
-                format: "yyyy-mm-dd",
-                language: "kr",
-                todayBtn: "linked",
-                keyboardNavigation: false,
-                forceParse: false,
-                calendarWeeks: false,
-                autoclose: true
-            });
-
-            $('#date_modified').datepicker({
-                format: "yyyy-mm-dd",
-                language: "kr",
-                todayBtn: "linked",
-                keyboardNavigation: false,
-                forceParse: false,
-                calendarWeeks: false,
-                autoclose: true
-            });
         });
         
-        Dropzone.options.dropzoneForm = {
-            paramName: "file", // The name that will be used to transfer the file
-            maxFilesize: 2, // MB
-            dictDefaultMessage: "<strong>Drop files here or click to upload. </strong></br> (This is just a demo dropzone. Selected files are not actually uploaded.)",
-        };
     </script>
 </body>
 

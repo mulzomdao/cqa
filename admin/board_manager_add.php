@@ -51,7 +51,7 @@
                             <div class="ibox-content" style="padding-bottom: 10px">
 
                                 <fieldset class="form-horizontal">
-                                    <form role="form" id="board_manager_add" action="board_manager.php" method="post">
+                                    <form role="form" id="board_manager_add" action="board_manager_crud.php" method="post">
                                         <input type="hidden" id="db_access_flag" name="db_access_flag" value="board_manager_add">
                                         <div class="form-group" style="margin-bottom: 5px">
                                             <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 게시판ID</label>

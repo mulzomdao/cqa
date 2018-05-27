@@ -38,7 +38,7 @@
                     <label for="example-text-input" class="col-3 col-form-label text-right" style="padding-right: 0px"><i class="ti-check"></i> 아이디</label>
                     <div class="col-9">                                
                         <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-                            <input type="text" class="form-control form-control-sm" id="inlineFormInputGroup" placeholder="">
+                            <input type="text" class="form-control form-control-sm" id="inlineFormInputGroup" placeholder=""/>
                             <div class="input-group-addon" style="padding-bottom: 0px; padding-top: 0px; font-size: 0.8rem">중복확인</div>
                         </div>
                     </div>
@@ -155,7 +155,7 @@
                     <label for="example-text-input" class="col-3 col-form-label text-right" style="padding-right: 0px">이메일</label>
                     <div class="col-9">                                
                         <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-                            <input type="text" class="form-control form-control-sm" id="inlineFormInputGroup" placeholder="">
+                            <input type="text" class="form-control form-control-sm" id="inlineFormInputGroup" placeholder=""/>
                             <div class="input-group-addon" style="padding-bottom: 0px;padding-top: 0px; font-size: 0.8rem">@</div>
                         </div>
                     </div>

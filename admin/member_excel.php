@@ -23,8 +23,8 @@
     if ($_GET[member_level] != "") {
         $filter .= "and member_level = '$_GET[member_level]'";
     }
-    if ($_GET[recommend_id] != "") {
-        $filter .= "and recommend_id = '$_GET[recommend_id]'";
+    if ($_GET[office_id] != "") {
+        $filter .= "and office_id = '$_GET[office_id]'";
     }
 
     $query = "
@@ -39,7 +39,7 @@
     $query = "
         SELECT member_id
              , member_no
-             , recommend_id
+             , office_id
              , member_name
              , member_eng_name
              , member_password
@@ -123,7 +123,7 @@
                     <td><?echo $total?></td>
                     <td><?echo $rows[member_id]?></td>
                     <td><?echo $rows[member_no]?></td>
-                    <td style='mso-number-format:\@;'><?echo $rows[recommend_id]?></td>
+                    <td style='mso-number-format:\@;'><?echo $rows[office_id]?></td>
                     <td><?echo $rows[member_name]?></td>
                     <td><?echo $rows[member_eng_name]?></td>
                     <td><?echo $rows[member_level]?></td>

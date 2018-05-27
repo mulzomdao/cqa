@@ -12,16 +12,12 @@
         }
 
         $query = "
-            INSERT INTO cqa_member (member_id, member_no, recommend_id, member_name, member_eng_name, member_password, member_level
+            INSERT INTO cqa_member (member_id, member_no, office_id, member_name, member_eng_name, member_password, member_level
                  , member_right, right_start_date, right_end_date, birthday, sex, mobile, email, homepage, phone, zip_code
                  , zip_address, detail_address, member_memo, use_flag, reg_id, reg_date, modify_id, modify_date)
             SELECT '$_POST[member_id]'
-                 , (select CONCAT(col2, '-', col1) member_no
-                      from (select lpad(count(*) + 1, 4, 0) col1
-                                 , CONCAT(SUBSTRING(DATE_FORMAT(now(), '%Y'), 3, 2), '-', '$_POST[recommend_id]') col2
-                              from cqa_member
-                             where member_no like concat(CONCAT(SUBSTRING(DATE_FORMAT(now(), '%Y'), 3, 2), '-', '$_POST[recommend_id]'), '%')) a) member_no
-                 , '$_POST[recommend_id]'
+                 , (select CONCAT(SUBSTRING(DATE_FORMAT(now(), '%Y'), 3, 2), '-', '$_POST[office_id]', '-', (select max(member_seq) + 1 from cqa_member)) from dual)
+                 , '$_POST[office_id]'
                  , '$_POST[member_name]'
                  , '$_POST[member_eng_name]'
                  , '$_POST[member_password]'
@@ -61,13 +57,13 @@
 
     } else if ($_POST["db_access_flag"] == "member_edit") {
 
-        if ($_POST[birth_year] != "" && $_POST[birth_month] != "" && $_POST[birth_mbirth_dateonth] != "") {
+        if ($_POST[birth_year] != "" && $_POST[birth_month] != "" && $_POST[birth_date] != "") {
             $birthday = $_POST[birth_year] . '-' . $_POST[birth_month] . '-' . $_POST[birth_date];
         }
 
         $query = "
-            UPDATE cqaquilt.cqa_member
-               SET recommend_id = '$_POST[recommend_id]'
+            UPDATE cqa_member
+               SET office_id = '$_POST[office_id]'
                  , member_name = '$_POST[member_name]'
                  , member_eng_name = '$_POST[member_eng_name]'
                  , member_password = '$_POST[member_password]'
@@ -105,7 +101,7 @@
             echo("<script>location.replace('member_edit.php?member_id=". $_POST[member_id] ."');</script>"); 
         }
 
-    } else if ($_GET["db_access_flag"] == "member_crud_delete") {
+    } else if ($_GET["db_access_flag"] == "member_delete") {
 
         $query = "
             UPDATE cqa_member

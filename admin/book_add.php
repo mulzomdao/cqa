@@ -1,9 +1,14 @@
-<!--
-*
-*  INSPINIA - Responsive Admin Theme
-*  version 2.7.1
-*
--->
+<?
+    session_start();
+    include "lib/session.php";
+    include "lib/connect.php";
+    include "lib/variable.php";
+    include "lib/function.php";
+
+    $test = mk_dir();
+
+    echo $test;
+?>
 
 <!DOCTYPE html>
 <html>
@@ -43,7 +48,7 @@
                 <div class="col-lg-2">
 
                 </div>
-            </div>            
+            </div>              
 
             <div class="wrapper wrapper-content animated fadeInRight ecommerce">
                 <div class="row">
@@ -56,88 +61,74 @@
                             <div class="ibox-content" style="padding-bottom: 10px">
 
                                 <fieldset class="form-horizontal">
-                                    <div class="form-group" style="margin-bottom: 5px">
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 품목</label>
-                                        <div class="col-sm-5">
-                                            <select class="form-control input-sm m-b" name="account" style="padding-bottom: 2px; margin-bottom: 0px; padding-top: 0px; padding-left: 5px;">
-                                                <option value='36' >교재</option>
-                                                <option value='34' >템플릿</option>
-                                            </select>
-                                        </div>
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 품명</label>
-                                        <div class="col-sm-5"><input type="text" class="form-control input-sm" placeholder=""></div>
-                                    </div>
-                                    <div class="form-group" style="margin-bottom: 5px">                                        
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">상품이미지</label>
-                                        <div class="col-sm-5">                                        
-                                            <div class="fileinput fileinput-new input-group" data-provides="fileinput" style="margin: 0px">
-                                                <div class="form-control input-sm" data-trigger="fileinput">
-                                                    <i class="glyphicon glyphicon-file fileinput-exists"></i>
-                                                <span class="fileinput-filename"></span>
-                                                </div>
-                                                <span class="input-group-addon btn-sm btn-default btn-file">
-                                                    <span class="fileinput-new"><small>Select file</small></span>
-                                                    <span class="fileinput-exists"><small>Change</small></span>
-                                                    <input type="file" name="..."/>
-                                                </span>
-                                                <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput"><small>Remove</small></a>
-                                            </div> 
-                                        </div>
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">구성/크기</label>
-                                        <div class="col-sm-5"><input type="text" class="form-control input-sm" placeholder=""></div>
-                                    </div>
 
-                                    <div class="form-group" style="margin-bottom: 5px">
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 소비자가 / 회원가</label>
-                                        <div class="col-sm-5">
-                                            
-                                            <div class="col-sm-6" style="padding-left: 0px; padding-right: 2px;">
-                                                <input type="text" class="form-control input-sm" placeholder="소비자가">
+                                    <form role="form" id="book_add" action="book_crud.php" method="post" enctype="multipart/form-data">
+                                        <input type="hidden" id="db_access_flag" name="db_access_flag" value="book_add">
+                                        <input type="hidden" id="book_seq" name="book_seq" value="">
+
+                                        <div class="form-group" style="margin-bottom: 5px">
+                                            <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 품목</label>
+                                            <div class="col-sm-5">
+                                                <?array_radio("book_type", $_book_type, 'TEXT_BOOK')?>
                                             </div>
-                                            <div class="col-sm-6" style="padding-left: 2px; padding-right: 0px;">
-                                                <input type="text" class="form-control input-sm" placeholder="회원가">
+                                            <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 품명</label>
+                                            <div class="col-sm-5"><input type="text" class="form-control input-sm" id="book_name" name="book_name" value="" placeholder=""/></div>
+                                        </div>
+                                        <div class="form-group" style="margin-bottom: 5px">                                        
+                                            <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">상품이미지</label>
+                                            <div class="col-sm-5">                                        
+                                                <div class="fileinput fileinput-new input-group" data-provides="fileinput" style="margin: 0px">
+                                                    <div class="form-control input-sm" data-trigger="fileinput">
+                                                        <i class="glyphicon glyphicon-file fileinput-exists"></i>
+                                                    <span class="fileinput-filename"></span>
+                                                    </div>
+                                                    <span class="input-group-addon btn-sm btn-default btn-file">
+                                                        <span class="fileinput-new"><small>Select file</small></span>
+                                                        <span class="fileinput-exists"><small>Change</small></span>
+                                                        <input type="file" name="book_image"/>
+                                                    </span>
+                                                    <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput"><small>Remove</small></a>
+                                                </div> 
+                                            </div>
+                                            <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">구성/크기</label>
+                                            <div class="col-sm-5"><input type="text" class="form-control input-sm" id="book_config" name="book_config" value="" placeholder=""/></div>
+                                        </div>
+                                        <div class="form-group" style="margin-bottom: 5px">
+                                            <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 소비자가</label>
+                                            <div class="col-sm-5">
+                                                <input type="text" class="form-control input-sm text-right number" id="book_price" name="book_price" value="0" placeholder="소비자가"/>
+                                            </div>
+                                            <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">재고수량</label>
+                                            <div class="col-sm-5"><input type="text" class="form-control input-sm text-right number" id="stock_count" name="stock_count" value="" placeholder="0"/></div>
+                                        </div>
+                                        <div class="form-group" style="margin-bottom: 5px">
+                                            <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">요약설명</label>
+                                            <div class="col-sm-5"><input type="text" class="form-control input-sm" id="book_summary" name="book_summary" value="" placeholder=""/></div>
+                                            <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 상태</label>
+                                            <div class="col-sm-5">
+                                                <?array_radio("book_state", $_book_state, 'ON_SALE')?>
                                             </div>
                                         </div>
-
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">재고수량</label>
-                                        <div class="col-sm-5"><input type="text" class="form-control input-sm" placeholder=""></div>
-                                    </div>
-                                    <div class="form-group" style="margin-bottom: 5px">
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">요약설명</label>
-                                        <div class="col-sm-5"><input type="text" class="form-control input-sm" placeholder=""></div>
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 상태</label>
-                                        <div class="col-sm-5">
-                                            <label class="radio-inline"><input type="radio" value="option1" id="inlineCheckbox1" checked=""> 판매중 </label>
-                                            <label class="radio-inline"><input type="radio" value="option1" id="inlineCheckbox1"> 일시판매중지 </label>
-                                            <label class="radio-inline"><input type="radio" value="option1" id="inlineCheckbox1"> 판매중지 </label>  
-                                            <label class="radio-inline"><input type="radio" value="option1" id="inlineCheckbox1"> 판매예정 </label>  
+                                        <div class="form-group" style="margin-bottom: 5px">
+                                            <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 교재설명</label>
+                                            <div class="col-sm-11">
+                                                <textarea id="book_content" name="book_content" runat="server" class="summernote" clientIDMode="static"></textarea>                                       
+                                            </div>
                                         </div>
-                                    </div>
-
-                                    <div class="form-group" style="margin-bottom: 5px">
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 교재설명</label>
-                                        <div class="col-sm-11">
-                                            <div class="summernote"></div>                                            
+                                        <div class="form-group" style="margin-bottom: 5px">
+                                            <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">관리메모</label>
+                                            <div class="col-sm-11"><textarea class="form-control" rows="3" id="book_memo" name="book_memo"></textarea></div>
                                         </div>
-                                    </div>
-
-                                    <div class="form-group" style="margin-bottom: 5px">
-                                        <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">관리메모</label>
-                                        <div class="col-sm-11"><textarea class="form-control" rows="3"></textarea></div>
-                                    </div>
-
-                                    <div class="form-group pull-right" style="margin-bottom: 0px; padding-right: 15px">
-                                        <a type="button" class="btn btn-sm btn-success" href="board_manager_add.php">Add</a>
-                                        <a type="button" class="btn btn-sm btn-success" href="board_manager_add.php">Cancel</a>
-                                    </div>
+                                        <div class="form-group pull-right" style="margin-bottom: 0px; padding-right: 15px">
+                                            <button type="submit" class="btn btn-sm btn-success">add</button>
+                                            <a type="button" class="btn btn-sm btn-success" href="javascript:history.go(-1)">Cancel</a>
+                                        </div>
+                                    </form>
 
                                 </fieldset>
-
                             </div>
                         </div>
-
                     </div>
-                    
                 </div>
             </div>
 
@@ -152,42 +143,36 @@
     <!-- DROPZONE -->
     <script src="inspinia/js/plugins/dropzone/dropzone.js"></script>
 
+    <script src="js/jquery.number.min.js"></script>
+
     <script>
 
         $(document).ready(function() {
 
             $('.summernote').summernote({
-                height: 200
+                height: 200,
+                lang: 'ko-KR',
             });
 
-            $('#date_added').datepicker({
-                format: "yyyy-mm-dd",
-                language: "kr",
-                todayBtn: "linked",
-                keyboardNavigation: false,
-                forceParse: false,
-                calendarWeeks: false,
-                autoclose: true
-            });
+            $('input.number').number(true);
 
-            $('#date_added_01').datepicker({
-                format: "yyyy-mm-dd",
-                language: "kr",
-                todayBtn: "linked",
-                keyboardNavigation: false,
-                forceParse: false,
-                calendarWeeks: false,
-                autoclose: true
-            });
-
-            $('#date_modified').datepicker({
-                format: "yyyy-mm-dd",
-                language: "kr",
-                todayBtn: "linked",
-                keyboardNavigation: false,
-                forceParse: false,
-                calendarWeeks: false,
-                autoclose: true
+            $("#book_add").validate({
+                rules: {
+                    book_type: {
+                        required: true
+                    },
+                    book_name: {
+                        required: true,
+                        rangelength: [4, 40]
+                    },
+                    book_price: {
+                        required: true
+                    }
+                }, submitHandler: function (form) {
+                    if (confirm("등록 하시겠습니까?")) {
+                        form.submit();
+                    }     
+                }
             });
         });
         

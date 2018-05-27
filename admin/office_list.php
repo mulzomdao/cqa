@@ -53,15 +53,21 @@
              , a.reg_date
              , a.modify_id
              , a.modify_date
-             , case when b.recommend_count is null then 0
-                    else b.recommend_count
-                end recommend_count
-          From cqa_office_v a left OUTER JOIN cqa_member_recommend_v b on a.office_id = b.recommend_id
+             , case when b.office_count is null then 0
+                    else b.office_count
+                end office_count
+          From cqa_office_v a left OUTER JOIN cqa_member_office_v b on a.office_id = b.office_id
          where a.use_flag = 'Y' $filter
          order by a.office_id
     ";    
     // var_dump($query);
     $result = mysqli_query($connect, $query);
+
+    if ($result === false) {            
+        var_dump($query);
+        echo mysqli_error($connect);
+        // echo("<script>history.go(-1);</script>"); 
+    }
 ?>
 
 <!DOCTYPE html>
@@ -148,7 +154,7 @@
 
                         </div>
                         
-                        <table class="footable table table-stripped toggle-arrow-tiny" style="margin-bottom: 0px">
+                        <table class="footable table table-stripped" data-page-size="20" style="margin-bottom: 0px">
                             <thead>
                             <tr>
                                 <th width="48" class="text-center">No</th>
@@ -169,12 +175,12 @@
                                 <td><?echo $total?></td>
                                 <td><?echo $rows[office_area]?></td>
                                 <td class="text-left">
-                                    <?if ($rows[sub_office_num] != "") {echo "&nbsp;&nbsp;&nbsp;&nbsp; └ ";}?>
+                                    <?if ($rows[sub_office_num] != "00") {echo "&nbsp;&nbsp;&nbsp;&nbsp; └ ";}?>
                                     <a href="office_edit.php?office_id=<?echo $rows[office_id]?>"><?echo $rows[office_id]?></a>
                                 </td>
                                 <td><?echo $rows[member_name]?></td>
                                 <td><?echo $rows[office_name]?></td>
-                                <td><?echo $rows[recommend_count]?></td>
+                                <td><?echo $rows[office_count]?></td>
                                 <td><?echo $rows[reg_date]?></td>
                                 <td class="text-right">
                                     <div class="btn-group">
@@ -191,29 +197,11 @@
                             </tbody>
                             <tfoot>
                             <tr>
-                                <td colspan="8" style="padding-right: 0px; padding-left: 0px; padding-bottom: 0px;">
-                                                                    
+                                <td colspan="3" style="padding-right: 0px; padding-left: 0px; padding-bottom: 0px;">
                                     <a type="button" class="btn btn-sm btn-success" href="office_add.php">Add</a>
-                                    <!-- <a type="button" class="btn btn-sm btn-success">Excel Down</a> -->
-
-                                    <!-- <div class="btn-group pull-right">
-                                        <button type="button" class="btn btn-sm btn-white"><i class="fa fa-angle-double-left"></i></button>
-                                        <button type="button" class="btn btn-sm btn-white"><i class="fa fa-angle-left"></i></button>
-                                        <button class="btn btn-sm btn-white">1</button>
-                                        <button class="btn btn-sm btn-white  active">2</button>
-                                        <button class="btn btn-sm btn-white">3</button>
-                                        <button class="btn btn-sm btn-wh btn-smite">4</button>
-                                        <button type="button" class="btn btn-sm btn-white"><i class="fa fa-angle-right"></i> </button>
-                                        <button type="button" class="btn btn-sm btn-white"><i class="fa fa-angle-double-right"></i> </button>
-                                    </div> -->
-
-                                    <div class="btn-group pull-right">
-                                        <button type="button" class="btn btn-sm btn-white"><i class="fa fa-angle-double-left"></i></button>
-                                        <button type="button" class="btn btn-sm btn-white"><i class="fa fa-angle-left"></i></button>
-                                        <button class="btn btn-sm btn-white active">1</button>
-                                        <button type="button" class="btn btn-sm btn-white"><i class="fa fa-angle-right"></i> </button>
-                                        <button type="button" class="btn btn-sm btn-white"><i class="fa fa-angle-double-right"></i> </button>
-                                    </div>
+                                </td>
+                                <td colspan="5" style="padding-right: 0px; padding-left: 0px; padding-bottom: 0px;">
+                                    <ul class="pagination pull-right"></ul>
                                 </td>
                             </tr>
                             </tfoot>
@@ -257,7 +245,7 @@
 
         function office_delete(office_id) {
             if (confirm("삭제하시겠습니까?")) {
-                location.href="office_crud.php?db_access_flag=office_crud_delete&office_id="+office_id;
+                location.href="office_crud.php?db_access_flag=office_delete&office_id="+office_id;
             }
         }
     </script>

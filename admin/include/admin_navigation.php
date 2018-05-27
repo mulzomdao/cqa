@@ -1,8 +1,9 @@
 <?
-    $page_name = explode("_", str_replace('/admin/', '', $_SERVER['REQUEST_URI']));
+    $page_name = explode(".php", $_SERVER['REQUEST_URI']);
+    $page_name = explode("_", str_replace('/admin/', '', $page_name[0]));
     $page_1_name = $page_name[0];
 
-    if (count($page_name) > 1) {
+    if (count($page_name) > 2) {
         $page_2_name = $page_name[0] . "_" . $page_name[1];
     } else {
         $page_2_name = $page_1_name;
@@ -36,9 +37,9 @@
             </li>
             <li <?if ($page_1_name == 'board' || $page_1_name == 'popup') {echo "class='active'";}?>>
                 <a href="#"><i class="fa fa-certificate"></i><span class="nav-label">사이트관리</span> <span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level <?if ($page_1_name != 'board_manager.php' && $page_1_name != 'popup_manager.php') {echo "collapse";}?>">
+                <ul class="nav nav-second-level <?if ($page_1_name != 'board' && $page_1_name != 'popup') {echo "collapse";}?>">
                     <li <?if ($page_1_name == 'board') {echo "class='active'";}?>><a href="board_manager_list.php">게시판관리</a></li>
-                    <li <?if ($page_1_name == 'popup') {echo "class='active'";}?>><a href="popup_manager_list.php">팝업관리</a></li>
+                    <li <?if ($page_1_name == 'popup') {echo "class='active'";}?>><a href="popup_list.php">팝업관리</a></li>
                 </ul>
             </li>
             <li <?if ($page_1_name == 'office') {echo "class='active'";}?>>
@@ -49,15 +50,15 @@
             </li>
             <li <?if ($page_1_name == 'exam') {echo "class='active'";}?>>
                 <a href="#"><i class="fa fa-file-text-o"></i><span class="nav-label">자격시험/접수관리</span><span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level <?if ($page_1_name != 'exam_crud.php' && $page_1_name != 'exam_receive_crud.php') {echo "collapse";}?>">
-                    <li <?if ($page_2_name == 'exam_crud') {echo "class='active'";}?>><a href="exam_list.php">시험관리</a></li>
+                <ul class="nav nav-second-level <?if ($page_1_name != 'exam') {echo "collapse";}?>">
+                    <li <?if ($page_2_name == 'exam') {echo "class='active'";}?>><a href="exam_list.php">시험관리</a></li>
                     <li <?if ($page_2_name == 'exam_receive') {echo "class='active'";}?>><a href="exam_receive_list.php">시험접수관리</a></li>
                 </ul>
             </li>
             <li <?if ($page_1_name == 'education') {echo "class='active'";}?>>
                 <a href="#"><i class="fa fa-pencil-square-o"></i><span class="nav-label">교육/접수관리</span><span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level <?if ($page_1_name != 'education_manager.php' && $page_1_name != 'education_receive_manager.php') {echo "collapse";}?>">
-                    <li <?if ($page_2_name == 'education_manager') {echo "class='active'";}?>><a href="education_list.php">교육관리</a></li>
+                <ul class="nav nav-second-level <?if ($page_1_name != 'education') {echo "collapse";}?>">
+                    <li <?if ($page_2_name == 'education') {echo "class='active'";}?>><a href="education_list.php">교육관리</a></li>
                     <li <?if ($page_2_name == 'education_receive') {echo "class='active'";}?>><a href="education_receive_list.php">교육접수관리</a></li>
                 </ul>
             </li>

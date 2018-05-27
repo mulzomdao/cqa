@@ -8,7 +8,7 @@
 	if ($_POST["db_access_flag"] == "office_add") {
 
         $query = "
-            INSERT INTO cqaquilt.cqa_office (office_num, sub_office_num, member_id, member_name, office_name, office_area, mobile
+            INSERT INTO cqa_office (office_num, sub_office_num, member_id, member_name, office_name, office_area, mobile
                  , email, homepage, confirm_flag, phone, zip_code, zip_address, detail_address, shop_phone, shop_zip_code
                  , shop_zip_address, shop_detail_address, office_memo, use_flag, reg_id, reg_date, modify_id, modify_date)
             SELECT '$_POST[office_num]'
@@ -51,7 +51,7 @@
     } else if ($_POST["db_access_flag"] == "office_edit") {
 
         $query = "
-            UPDATE cqaquilt.cqa_office
+            UPDATE cqa_office
                SET member_name = '$_POST[member_name]'
                  , office_name = '$_POST[office_name]'
                  , office_area = '$_POST[office_area]'
@@ -85,7 +85,7 @@
             echo("<script>location.replace('office_edit.php?office_id=". $_POST[office_id] ."');</script>"); 
         }
 
-    } else if ($_GET["db_access_flag"] == "office_crud_delete") {
+    } else if ($_GET["db_access_flag"] == "office_delete") {
 
         $query = "
             UPDATE cqa_office
@@ -95,7 +95,17 @@
              WHERE use_flag = 'Y'
                and if(sub_office_num != '', CONCAT(office_num, '-', sub_office_num), office_num) = '$_GET[office_id]'
         ";
-
+        $result = mysqli_query($connect, $query);
+        
+        if ($result === false) {
+            echo mysqli_error($connect);
+        }
+        
+        $query = "
+            UPDATE cqa_member
+               SET office_id = '00-00'
+             WHERE office_id = '$_GET[office_id]'
+        ";
         $result = mysqli_query($connect, $query);
 
         if ($result === false) {

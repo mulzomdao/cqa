@@ -32,12 +32,15 @@
     $query = "
         select exam_seq
              , exam_name
+             , exam_subject
           From cqa_exam_v
          where use_flag = 'Y'
+           and exam_seq = $_GET[exam_seq]
          order by exam_seq desc
     ";    
     // var_dump($query);
     $result = mysqli_query($connect, $query);
+    $c = mysqli_fetch_array($result);
 ?>
 
 <!DOCTYPE html>
@@ -88,6 +91,7 @@
 
                             <form role="form" id="exam_receive_add" action="exam_receive_crud.php" method="post">
                                 <input type="hidden" id="db_access_flag" name="db_access_flag" value="exam_receive_add">
+                                <input type="hidden" id="exam_seq" name="exam_seq" value="$_GET[exam_seq]">
 
                                 <div class="form-group" style="margin-bottom: 5px">
                                     <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 아이디</label>
@@ -101,49 +105,41 @@
                                     </div>
                                     <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 자격검정</label>
                                     <div class="col-sm-5">
-                                        <select class="form-control input-sm m-b" id="exam_seq" name="exam_seq" style="padding-bottom: 2px; margin-bottom: 0px; padding-top: 0px; padding-left: 5px;">
-                                            <?while ($rows = mysqli_fetch_array($result)) {?>
-                                            <option value="<?echo $rows[exam_seq]?>"><?echo $rows[exam_name]?></option>
-                                            <?}?>
-                                        </select>
+                                        <input type="text" class="form-control input-sm" id="exam_name" name="exam_name" value="<?echo $exam_row[exam_name]?>" readonly>                                        
                                     </div>
                                 </div>
                                 <div class="form-group" style="margin-bottom: 5px">
                                     <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 성명(한글)</label>
-                                    <div class="col-sm-5"><input type="text" class="form-control input-sm" id="member_name" name="member_name" value="<?echo $row[member_name]?>" readonly></div>
+                                    <div class="col-sm-5">
+                                        <input type="text" class="form-control input-sm" id="member_name" name="member_name" value="<?echo $row[member_name]?>" readonly>
+                                    </div>
                                     <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 성명(영문)</label>
-                                    <div class="col-sm-5"><input type="text" class="form-control input-sm" id="member_eng_name" name="member_eng_name" value="<?echo $row[member_eng_name]?>"></div>
+                                    <div class="col-sm-5">
+                                        <input type="text" class="form-control input-sm" id="member_eng_name" name="member_eng_name" value="<?echo $row[member_eng_name]?>">
+                                    </div>
                                 </div>
                                 <div class="form-group" style="margin-bottom: 5px">
                                     <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 응시과목</label>
                                     <div class="col-sm-5">
                                         <select class="form-control input-sm m-b" id="receive_subject" name="receive_subject" style="padding-bottom: 2px; margin-bottom: 0px; padding-top: 0px; padding-left: 5px;">
                                             <option value="">응시과목선택</option>
-                                            <option value="hand_free">핸드면제</option>
-                                            <option value="machine_free">머신면제</option>
-                                            <option value="hand_quilt">핸드퀼트</option>
-                                            <option value="machine_quilt">머신퀼트</option>
+                                            <?token_combo($exam_row[exam_subject], '/', '')?>
                                         </select>              
                                     </div>
                                     <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 응시유형</label>
-                                    <div class="col-sm-5">                                            
-                                        <label class="radio-inline"><input type="radio" value="exam" id="receive_type" name="receive_type" checked>검정시험</label>
-                                        <label class="radio-inline"><input type="radio" value="exam_free" id="receive_type" name="receive_type">시험면제</label>
-                                        <label class="radio-inline"><input type="radio" value="trans" id="receive_type" name="receive_type">강사이관</label>  
+                                    <div class="col-sm-5">
+                                        <?array_radio('receive_type', $_receive_type, 'EXAM')?>
                                     </div>
                                 </div>
                                 <div class="form-group" style="margin-bottom: 5px">
                                     <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 상태</label>
                                     <div class="col-sm-5">
                                         <select class="form-control input-sm m-b" id="receive_status" name="receive_status" style="padding-bottom: 2px; margin-bottom: 0px; padding-top: 0px; padding-left: 5px;">
-                                            <option value="no_charge">미입금</option>
-                                            <option value="charge">입금완료</option>
-                                            <option value="no_pass">불합격</option>
-                                            <option value="pass">합격</option>
-                                        </select>                                         
+                                            <?array_combo($_exam_receive_status, 'NO_CHARGE')?>
+                                        </select>
                                     </div>
                                     <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 핸드폰</label>
-                                    <div class="col-sm-5"><input type="text" class="form-control input-sm" id="mobile" name="mobile" value="<?echo $row[mobile]?>" placeholder="'-'없이 입력하세요"></div>
+                                    <div class="col-sm-5"><input type="text" class="form-control input-sm" id="mobile" name="mobile" value="<?echo phone_number($row[mobile])?>" placeholder="'-' 없이 입력하세요"></div>
                                 </div>
                                 <div class="form-group" style="margin-bottom: 5px">
                                     <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">생년월일</label>
@@ -151,33 +147,19 @@
                                         <div class="col-sm-4" style="padding-left: 0px; padding-right: 2px;">                                                
                                             <select class="form-control input-sm m-b" name="birth_year" id="birth_year" style="padding-bottom: 2px; margin-bottom: 0px; padding-top: 0px; padding-left: 5px;">
                                                 <option value="">년도</option>
-                                            <?
-                                                for ($i = 2010; $i >= 1950; $i--) {                                                        
-                                                    echo "<option value='" . $i . "'>" . $i . "년</option>";
-                                                }
-                                            ?>
+                                                <?number_combo(2010, 1950, 0, '')?>
                                             </select>
                                         </div>
                                         <div class="col-sm-4" style="padding-left: 2px; padding-right: 2px;">                                              
                                             <select class="form-control input-sm m-b" name="birth_month" id="birth_month" style="padding-bottom: 2px; margin-bottom: 0px; padding-top: 0px; padding-left: 5px;">
                                                 <option value="">월</option>
-                                            <?
-                                                for ($i = 01; $i <= 12; $i++) {
-                                                    $month = str_pad($i, 2, "0", STR_PAD_LEFT);
-                                                    echo "<option value='" . $month . "'>" . $i . "월</option>";
-                                                }
-                                            ?>
+                                                <?number_combo(1, 12, 2, '')?>
                                             </select>
                                         </div>
                                         <div class="col-sm-4" style="padding-left: 2px; padding-right: 0px;">                                         
                                             <select class="form-control input-sm m-b" name="birth_date" id="birth_date" style="padding-bottom: 2px; margin-bottom: 0px; padding-top: 0px; padding-left: 5px;">
                                                 <option value="">일</option>
-                                            <?
-                                                for ($i = 01; $i <= 31; $i++) {
-                                                    $date = str_pad($i, 2, "0", STR_PAD_LEFT);
-                                                    echo "<option value='" . $date . "'>" . $i . "일</option>";
-                                                }
-                                            ?>
+                                                <?number_combo(1, 31, 2, '')?>
                                             </select>
                                         </div>
                                     </div>
@@ -201,7 +183,7 @@
                                     
                                     <div class="col-sm-6" style="padding: 0px">                            
                                         <label class="col-sm-2 control-label" style="padding-left: 0px; padding-right: 0px;">전화</label>
-                                        <div class="col-sm-10" style="margin-bottom: 5px;"><input type="text" class="form-control input-sm" id="phone" name="phone" value="<?echo $row[phone]?>" placeholder="'-'없이 입력하세요"></div>
+                                        <div class="col-sm-10" style="margin-bottom: 5px;"><input type="text" class="form-control input-sm" id="phone" name="phone" value="<?echo phone_number($row[phone])?>" placeholder="'-' 없이 입력하세요"></div>
 
                                         <label class="col-sm-2 control-label" style="padding-left: 0px; padding-right: 0px">이메일</label>
                                         <div class="col-sm-10"><input type="text" class="form-control input-sm" id="email" name="email" value="<?echo $row[email]?>"></div>
@@ -228,7 +210,7 @@
 
                                 <div class="form-group" style="margin-bottom: 5px">
                                     <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px">접수메모</label>
-                                    <div class="col-sm-11"><textarea class="form-control" rows="4" id="reciev" name=""></textarea></div>
+                                    <div class="col-sm-11"><textarea class="form-control" rows="4" id="receive_memo" name="receive_memo"></textarea></div>
                                 </div>
 
                                 <div class="form-group pull-right" style="margin-bottom: 0px; padding-right: 15px">
@@ -284,7 +266,7 @@
                         rangelength: [10, 14]
                     },
                     phone: {
-                        rangelength: [10, 14]
+                        rangelength: [9, 14]
                     }
                 }, submitHandler: function (form) {
                     if (confirm("등록 하시겠습니까?")) {
@@ -306,7 +288,7 @@
             function search_id() {
                 var search_id = $("#member_id").val();
                 if (search_id != "") {
-                    location.href="exam_receive_add.php?member_id=" + search_id
+                    location.href="exam_receive_add.php?exam_seq=<?echo $_GET[exam_seq]?>&member_id=" + search_id
                 }
             }
 

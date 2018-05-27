@@ -68,7 +68,7 @@
                             <div class="ibox-content" style="padding-bottom: 10px">
 
                                 <fieldset class="form-horizontal">
-                                    <form role="form" id="board_manager_edit" action="board_manager.php" method="post">
+                                    <form role="form" id="board_manager_edit" action="board_manager_crud.php" method="post">
                                         <input type="hidden" id="db_access_flag" name="db_access_flag" value="board_manager_edit">
                                         <div class="form-group" style="margin-bottom: 5px">
                                             <label class="col-sm-1 control-label" style="padding-left: 0px; padding-right: 0px"><i class="fa fa-check"></i> 게시판ID</label>
@@ -137,7 +137,7 @@
             
             $("#board_manager_delete").click(function(){
                 if (confirm('삭제 하시겠습니까?')) {
-                    location.replace('board_manager.php?db_access_flag=board_manager_delete&board_id=<?echo $row[board_id]?>');
+                    location.replace('board_manager_crud.php?db_access_flag=board_manager_delete&board_id=<?echo $row[board_id]?>');
                 }
             });
         });

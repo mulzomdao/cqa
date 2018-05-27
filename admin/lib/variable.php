@@ -1,40 +1,16 @@
 <?
 	$_datetime=date("Y-m-d H:i:s");
     $_date=date("Y-m-d");
+    $_member_right['00'] = "준회원 (cqa웹사이트 열람만 가능)";
+    $_member_right['01'] = "정회원 1년 (30,000원)";
+    $_member_right['02'] = "정회원 2년 (50,000원)";
+    $_member_right['03'] = "정회원 3년 (70,000원)";
+    $_member_right['99'] = "정회원 평생 (300,000원)";
     
-    $_recommend_id['10'] = "[LYDIA 30] 장흥숙 (10-00)";
-    $_recommend_id['07'] = "[S퀼트] 송재란 (07-00)";
-    $_recommend_id['09'] = "[그린퀼트] 김경주 (09-00)";
-    $_recommend_id['04-01'] = "[생활의향기] 이현정 (04-01)";
-    $_recommend_id['07-07'] = "[소소공방] 현미경 (07-07)";
-    $_recommend_id['08'] = "[아원퀼트] 최은영 (08-00)";
-    $_recommend_id['03-05'] = "[요술나라 요술 손] 유미숙 (03-05)";
-    $_recommend_id['01-04'] = "[퀼트 수작] 변성혜 (01-04)";
-    $_recommend_id['08-03'] = "[퀼트 조] 조현화 (08-03)";
-    $_recommend_id['11-03'] = "[퀼트&돌] 오승미 (11-03)";
-    $_recommend_id['07-04'] = "[퀼트&미] 김미정 (07-04)";
-    $_recommend_id['09-05'] = "[퀼트나들이] 박정애 (09-05)";
-    $_recommend_id['07-06'] = "[퀼트바람] 이수연 (07-06)";
-    $_recommend_id['01'] = "[퀼트지음] 엄재영/오선희 (01-00)";
-    $_recommend_id['03'] = "[한혜경퀼트] 한혜경 (03-00)";
-    $_recommend_id['03-04'] = "[허니비퀼트] 김정미 (03-04)";
-    $_recommend_id['00-00'] = "추천인 없음 (00-00)";
-
-    $_member_right[0] = "준회원 (cqa웹사이트 열람만 가능)";
-    $_member_right[1] = "정회원 1년 (30,000원)";
-    $_member_right[2] = "정회원 2년 (50,000원)";
-    $_member_right[3] = "정회원 3년 (70,000원)";
-    $_member_right[100] = "정회원 평생 (300,000원)";
-    
-    $_member_level[9] = "레벨9 (준회원)";
-    $_member_level[8] = "레벨8 (상실회원)";
-    $_member_level[7] = "레벨7 (정회원)";
-    $_member_level[6] = "레벨6 (지부장)";
-    $_member_level[5] = "레벨5 (지회장)";
-    $_member_level[4] = "레벨4 ";
-    $_member_level[3] = "레벨3 (관리자)";
-    $_member_level[2] = "레벨2 ";
-    $_member_level[1] = "레벨1 (최고관리자)";
+    $_member_level['4'] = "준회원";
+    $_member_level['3'] = "정회원";
+    $_member_level['2'] = "지회장";
+    $_member_level['1'] = "관리자";
 
     $_right_flag['TEMP'] = "준회원";
     $_right_flag['ACTIVE'] = "유효";
@@ -44,5 +20,51 @@
     $_exam_status['RECEIVING'] = "접수중";
     $_exam_status['RECEIVE_END'] = "접수완료";
     $_exam_status['EXAM_END'] = "시험종료";
+
+    $_education_status['RECEIVE_WAIT'] = "접수대기";
+    $_education_status['RECEIVING'] = "접수중";
+    $_education_status['RECEIVE_END'] = "접수완료";
+    $_education_status['EDUCATION_END'] = "교육종료";
+
+    $_receive_subject['HAND_FREE'] = "핸드면제";
+    $_receive_subject['MACHINE_FREE'] = "머신면제";
+    $_receive_subject['HAND_QUILT'] = "핸드퀼트";
+    $_receive_subject['MACHINE_QUILT'] = "머신퀼트";
+
+    $_exam_receive_status['NO_CHARGE'] = "미입금";
+    $_exam_receive_status['CHARGE'] = "입금완료";
+    $_exam_receive_status['NO_PASS'] = "불합격";
+    $_exam_receive_status['PASS'] = "합격";
+
+    $_education_receive_status['NO_CHARGE'] = "미입금";
+    $_education_receive_status['CHARGE'] = "입금완료";
+    $_education_receive_status['NO_PASS'] = "미수료";
+    $_education_receive_status['PASS'] = "수료";
+
+    $_receive_type['EXAM'] = "검정시험";
+    $_receive_type['EXAM_FREE'] = "시험면제";
+    $_receive_type['TRANS'] = "강사이관";    
+
+    $_book_type['TEXT_BOOK'] = "교재";
+    $_book_type['TEMPLATE'] = "템플릿";  
+      
+    $_book_state['EXPECT'] = "판매예정";    
+    $_book_state['ON_SALE'] = "판매중";    
+    $_book_state['PAUSE'] = "일시판매중지";    
+    $_book_state['SUSPEND'] = "판매중지";    
+
+    $_sex['W'] = "여";
+    $_sex['M'] = "남";
+
+    //이미지 업로드 확장자명
+    $_file_upload_extention = "jpg|jpeg|gif|png";
     
+	//첨부파일용량 10M
+    $_file_upload_size = 10 * 1000000;
+    
+    $_file_upload_error['OVER_SIZE'] = "UPLOAD 파일 용량을 초과하였습니다.";
+    $_file_upload_error['NO_EXTENSION'] = "파일 확장자가 없습니다.";
+    $_file_upload_error['NOT_EXTENSION'] = "허용된 확장자가 아닙니다.";
+    $_file_upload_error['NO_DIRECTORY'] = "UPLOAD 디렉토리가 없습니다.";
+    $_file_upload_error['ERROR'] = "에러가 발생하였습니다.";
 ?>
